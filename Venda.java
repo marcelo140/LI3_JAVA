@@ -12,8 +12,8 @@ public class Venda
     private int mes;
     private int filial;
 
-	public Venda(String produto, String cliente, double preco, int unidades,
-                 boolean promocao, int mes, int filial) 
+	public Venda(String produto, double preco, int unidades, boolean promocao,
+                 String cliente, int mes, int filial) 
 	{
 		this.produto = produto;
 		this.cliente = cliente;
@@ -86,10 +86,10 @@ public class Venda
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Produto: ").append(produto).append("\n");
-		sb.append("Cliente: ").append(cliente).append("\n");
 		sb.append("Preço: ").append(preco).append("\n");
 		sb.append("Unidades: ").append(unidades).append("\n");
 		sb.append("Promoção: ").append(promocao).append("\n");
+		sb.append("Cliente: ").append(cliente).append("\n");
 		sb.append("Mês: ").append(mes).append("\n");
 		sb.append("Filial: ").append(filial).append("\n");
 		
