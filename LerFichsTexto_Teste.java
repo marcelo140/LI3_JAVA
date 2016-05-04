@@ -9,16 +9,37 @@ import java.lang.*;
 public class LerFichsTexto_Teste
 {
     public static void main(String[] args) {
-        Crono.start();
-        ArrayList<String> linhas = readLinesWithBuff(args[0]);
-        //ArrayList<Venda> vendas = parseAllLinhas(linhas);
-        HashSet setVendas = parseAllLinhasToSet(linhas);
-    
-        System.out.println(Crono.print());
-        System.out.println("\nLinhas lidas: " + linhas.size());
-        //System.out.println("Número de vendas: " + setVendas.size());
+        ArrayList<Venda> vendas = readVendasWithBuff(args[0]);
+       	HashSet<String> clientes;
+ 
+        //System.out.println("Vendas por filial: " + comprasEmFilial(vendas, 2) + "\n");
+        //System.out.println("Compras a zero: " + comprasDadas(vendas) + "\n");
+        //System.out.println("Produtos por letra: " + produtosPorLetra(vendas, 'C') + "\n");
+        clientes = clientesPorFilial(vendas, 2); System.out.println("Clientes por filial: " + clientes.size() + "\n");
     }
 
+    public static int comprasEmFilial(ArrayList<Venda> vendas, int filial) {
+        return (int) vendas.stream().filter(v -> v.getFilial() == filial).count();
+    }
+
+    public static int comprasDadas(ArrayList<Venda> vendas) {
+        return (int) vendas.stream().filter(v -> v.getPreco() == 0.0).count();
+    }
+    
+    public static int produtosPorLetra(ArrayList<Venda> vendas, char letra) {
+        return (int) vendas.stream().filter(v -> v.getProduto().toCharArray()[0] == letra).count();
+    }
+    
+    public static HashSet<String> clientesPorFilial(ArrayList<Venda> vendas, int filial) {
+        HashSet<String> clientes = new HashSet<>();
+        
+        for(Venda v: vendas)
+            if (v.getFilial() == filial)
+                clientes.add(v.getCliente());
+                
+        return clientes;
+    }
+    
     public static ArrayList<String> readLinesWithBuff(String fich) {
         ArrayList<String> linhas = new ArrayList<>();
         BufferedReader inStream = null;
@@ -35,6 +56,7 @@ public class LerFichsTexto_Teste
         System.out.println(Crono.print());
         return linhas;
     }
+
     public static ArrayList<String> readLinesArrayWithScanner(String ficheiro) {
         ArrayList<String> linhas = new ArrayList<>();
         Scanner scanFile = null;
@@ -54,6 +76,30 @@ public class LerFichsTexto_Teste
         }
 
         return linhas;
+    }
+
+    public static ArrayList<Venda> readVendasWithBuff(String ficheiro) {
+        ArrayList<Venda> vendas = new ArrayList<>();
+        Scanner scanFile = null;
+        String linha;
+        
+        try {
+            scanFile = new Scanner(new FileReader(ficheiro));
+            scanFile.useDelimiter("\n\r");
+            while(scanFile.hasNext()){
+                linha = scanFile.nextLine();
+                vendas.add(parseLinhaVenda(linha));
+            }
+        }
+        catch(IOException ioExc){ 
+            System.out.println(ioExc.getMessage()); return null; 
+        }
+
+        finally {
+            if(scanFile != null) scanFile.close();
+        }
+
+        return vendas;
     }
 
     public static Venda parseLinhaVenda(String linha) {
