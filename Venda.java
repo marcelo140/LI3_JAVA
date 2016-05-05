@@ -1,19 +1,26 @@
-
+import java.io.Serializable;
 /**
  * Venda é a class que descreve os elementos envolvidos numa transação
  */
 public class Venda implements Serializable
 {
-    private final String produto;
-    private final String cliente;
-    private final double preco;
-    private final int unidades;
-    private final boolean promocao;
-    private final int mes;
-    private final int filial;
+    private String produto;
+    private String cliente;
+    private double preco;
+    private int unidades;
+    private boolean promocao;
+    private int mes;
+    private int filial;
 
 	/**
  	 * Construtor por argumentos
+         * @param produto
+         * @param preco
+         * @param unidades
+         * @param promocao
+         * @param cliente
+         * @param mes
+         * @param filial
  	 */
 	public Venda(String produto, double preco, int unidades, boolean promocao,
                  String cliente, int mes, int filial) 
@@ -29,6 +36,7 @@ public class Venda implements Serializable
 
 	/**
  	 * Construtor por cópia
+         * @param v
  	 */
 	public Venda(Venda v) {
 		produto = v.getProduto();

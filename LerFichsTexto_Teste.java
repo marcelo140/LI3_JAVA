@@ -6,8 +6,8 @@ import java.lang.*;
  * Write a description of class Cenas here.
  */
 
-public class LerFichsTexto_Teste
-{
+public class LerFichsTexto_Teste{
+
     public static void main(String[] args) {
         ArrayList<Venda> vendas = readVendasWithBuff(args[0]);
        	HashSet<String> clientes;
@@ -15,7 +15,13 @@ public class LerFichsTexto_Teste
         //System.out.println("Vendas por filial: " + comprasEmFilial(vendas, 2) + "\n");
         //System.out.println("Compras a zero: " + comprasDadas(vendas) + "\n");
         //System.out.println("Produtos por letra: " + produtosPorLetra(vendas, 'C') + "\n");
-        clientes = clientesPorFilial(vendas, 2); System.out.println("Clientes por filial: " + clientes.size() + "\n");
+        //clientes = clientesPorFilial(vendas, 2); System.out.println("Clientes por filial: " + clientes.size() + "\n");
+        
+		ArrayList<ParStringDouble> paresSD = (ArrayList<ParStringDouble>)
+                     Arrays.asList(new ParStringDouble("X500", 20.75),
+                                   new ParStringDouble("Z398", 11.45),
+                                   new ParStringDouble("A113", 2.5),
+                                   new ParStringDouble("W455", 12.5));
     }
 
     public static int comprasEmFilial(ArrayList<Venda> vendas, int filial) {
@@ -109,12 +115,22 @@ public class LerFichsTexto_Teste
         boolean promocao;
 
         dados = linha.trim().split(" ");
+		
+		try {
+        	preco = Double.parseDouble(dados[1].trim());
+		}catch(NullPointerException | NumberFormatException e) {
+			return null;
+		}
 
-        preco = Double.parseDouble(dados[1]);
-        unidades = Integer.parseInt(dados[2]);
-        promocao = !dados[3].equals("N");
-        mes = Integer.parseInt(dados[5]);
-        filial = Integer.parseInt(dados[6]);
+		try {
+			unidades = Integer.parseInt(dados[2].trim());
+        	mes = Integer.parseInt(dados[5].trim());
+        	filial = Integer.parseInt(dados[6].trim());
+		}catch(NumberFormatException e) {
+			return null;
+		}
+
+        promocao = !dados[3].trim().equals("N");
 
         return new Venda(dados[0], preco, unidades, promocao, dados[4], mes, filial);
     }
