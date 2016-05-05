@@ -31,13 +31,13 @@ public class Venda implements Serializable
  	 * Construtor por cópia
  	 */
 	public Venda(Venda v) {
-		this.produto = v.getProduto();
-		this.cliente = v.getCliente();
-		this.preco = v.getPreco();
-		this.unidades = v.getUnidades();
-		this.promocao = v.getPromocao();
-		this.mes = v.getMes();
-		this.filial = v.getFilial();
+		produto = v.getProduto();
+		cliente = v.getCliente();
+		preco = v.getPreco();
+		unidades = v.getUnidades();
+		promocao = v.getPromocao();
+		mes = v.getMes();
+		filial = v.getFilial();
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Venda implements Serializable
  	 * @return Produto
  	 */
 	public String getProduto() {
-		return this.produto;
+		return produto;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class Venda implements Serializable
  	 * @return Cliente
  	 */
 	public String getCliente() {
-		return this.cliente;
+		return cliente;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class Venda implements Serializable
  	 * @return Preço
  	 */
 	public double getPreco() {
-		return this.preco;
+		return preco;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class Venda implements Serializable
  	 * @return Unidades
  	 */
 	public int getUnidades() {
-		return this.unidades;
+		return unidades;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class Venda implements Serializable
  	 * @return 
  	 */
 	public boolean getPromocao() {
-		return this.promocao;
+		return promocao;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Venda implements Serializable
  	 * @return Mês
  	 */
 	public int getMes() {
-		return this.mes;
+		return mes;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Venda implements Serializable
  	 * @return Filial
  	 */
 	public int getFilial() {
-		return this.filial;
+		return filial;
 	}
 
 	/**
