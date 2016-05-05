@@ -1,17 +1,20 @@
 
 /**
- * Write a description of class Venda here.
+ * Venda é a class que descreve os elementos envolvidos numa transação
  */
-public class Venda
+public class Venda implements Serializable
 {
-    private String produto;
-    private String cliente;
-    private double preco;
-    private int unidades;
-    private boolean promocao;
-    private int mes;
-    private int filial;
+    private final String produto;
+    private final String cliente;
+    private final double preco;
+    private final int unidades;
+    private final boolean promocao;
+    private final int mes;
+    private final int filial;
 
+	/**
+ 	 * Construtor por argumentos
+ 	 */
 	public Venda(String produto, double preco, int unidades, boolean promocao,
                  String cliente, int mes, int filial) 
 	{
@@ -24,6 +27,9 @@ public class Venda
 		this.filial = filial;
 	}
 
+	/**
+ 	 * Construtor por cópia
+ 	 */
 	public Venda(Venda v) {
 		this.produto = v.getProduto();
 		this.cliente = v.getCliente();
@@ -34,38 +40,74 @@ public class Venda
 		this.filial = v.getFilial();
 	}
 
+	/**
+ 	 * Obter produto
+ 	 * @return Produto
+ 	 */
 	public String getProduto() {
 		return this.produto;
 	}
 
+	/**
+ 	 * Obter cliente
+ 	 * @return Cliente
+ 	 */
 	public String getCliente() {
 		return this.cliente;
 	}
 
+	/**
+ 	 * Obter preço
+ 	 * @return Preço
+ 	 */
 	public double getPreco() {
 		return this.preco;
 	}
 
+	/**
+ 	 * Obter unidades
+ 	 * @return Unidades
+ 	 */
 	public int getUnidades() {
 		return this.unidades;
 	}
 
+	/**
+ 	 * Verifica se a venda foi efetuada em promoção
+ 	 * @return 
+ 	 */
 	public boolean getPromocao() {
 		return this.promocao;
 	}
 
+	/**
+ 	 * Obter mês
+ 	 * @return Mês
+ 	 */
 	public int getMes() {
 		return this.mes;
 	}
 
+	/**
+ 	 * Obter filial
+ 	 * @return Filial
+ 	 */
 	public int getFilial() {
 		return this.filial;
 	}
 
+	/**
+ 	 * Cria uma cópia da venda
+ 	 * @return Venda
+ 	 */
 	public Venda clone() {
 		return new Venda(this);
 	}
 
+	/**
+ 	 * Compara a venda com o objeto dado
+ 	 * @return 
+ 	 */
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
@@ -83,6 +125,10 @@ public class Venda
                v.getFilial() == filial;
 	}
 
+	/**
+ 	 * Converte uma instância venda numa String
+ 	 * @return String
+ 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Produto: ").append(produto).append("\n");
