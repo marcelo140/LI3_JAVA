@@ -7,5 +7,5 @@ public interface Valid<E> {
  	 * Returns true if the product's code is valid.
  	 * @return true if the code is valid
  	 */
-	public boolean isValid();
+	public boolean isValid(E element);
 }
