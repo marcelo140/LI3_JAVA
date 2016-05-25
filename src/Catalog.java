@@ -17,7 +17,7 @@ public class Catalog<E> {
  	 */
 	public Catalog(int size) {
 		size = 0;
-		cat = new ArrayList<TreeSet<E>>(tamanho);
+		cat = new ArrayList<TreeSet<E>>(size);
 
 		for(TreeSet<E> tree: cat)
 			tree = new TreeSet<E>();
@@ -53,7 +53,7 @@ public class Catalog<E> {
  	 * Returns the number of indexes of this catalog
  	 * @return the number of indexes in this catalog
  	 */
-	public void indexes() {
+	public int indexes() {
 		return cat.size();
 	}
 
