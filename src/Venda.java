@@ -1,7 +1,9 @@
-import java.io.Serializable;
 /**
  * Venda é a class que descreve os elementos envolvidos numa transação
  */
+
+import java.io.Serializable;
+
 public class Venda implements Serializable
 {
     private String produto;
