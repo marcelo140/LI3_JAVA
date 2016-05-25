@@ -3,10 +3,8 @@
  */
 
 public class Product {
-    // Product's code length
-    private static final int CODE_LENGTH = 6;
-
     private String code;
+	private Valid<Product> validator;
 
     /**
      * Constructs a new product with the given code.
@@ -14,6 +12,18 @@ public class Product {
      */
     public Product(String code) {
         this.code = code;
+		this.validator = new ProductValid();
+    }
+
+    /**
+     * Constructs a new product with the given code and a validator that checks if it
+     * follows a set of rules.
+     * @param code code that identifies the product
+     * @param validator the validator that will be used to check if the code is valid
+     */
+    public Product(String code, Valid<Product> validator) {
+        this.code = code;
+		this.validator = validator;
     }
 
     /**
@@ -23,6 +33,7 @@ public class Product {
      */
     public Product(Product p) {
         this.code = p.getCode();
+		this.validator = p.getValidator();
     }
 
     /**
@@ -32,6 +43,14 @@ public class Product {
     public String getCode() {
         return code;    
     }
+
+	/**
+ 	 * Returns the validator used to check if the code is valid.
+ 	 * @return the validator used to check if the code is valid
+ 	 */
+	public Valid<Product> getValidator() {
+		return validator;
+	}
 
     /**
      * Compares this Product to the specified product. The result is true if and only if
@@ -48,12 +67,12 @@ public class Product {
             return false;
 
         Product p = (Product) obj;
-        return code.equals(p.code);
+        return code.equals(p.code) && validator.equals(p.validator);
     }
 
     /**
-     * Creates a copy of this object.
-     * @return a clone of this instance
+     * Creates a copy of this product.
+     * @return a clone of this product 
      */
     public Product clone() {
         return new Product(this);
@@ -79,29 +98,16 @@ public class Product {
         int hash = 7;
 
         hash = 31*hash + code.hashCode();
+		hash = 31*hash + validator.hashCode();
 
         return hash;
     }
 
-    /**
-     * Returns true if the product's code is valid. A valid code is a code
-     * constituded of six characters where the the first two are capital letters and the 
-     * later four represents a number between 1000 and 1999.
-     * @return true if the code is valid
-     */
-    public boolean isValid() {
-        if (code.length() != CODE_LENGTH)
-            return false;
-
-            
-        return Character.isUpperCase(code.charAt(0)) && 
-               Character.isUpperCase(code.charAt(1)) &&
-               code.charAt(2) == '1' &&
-               code.charAt(3) >= '0' && code.charAt(3) <= '9' &&
-               code.charAt(4) >= '0' && code.charAt(4) <= '9' &&
-               code.charAt(5) >= '0' && code.charAt(5) <= '9';
-                      
-        
-    }
-
+	/**
+ 	 * Returns true if the product's code is valid. 
+ 	 * @return true if the product's code is valid
+ 	 */
+	public boolean isValid() {
+		return validator.isValid(this);
+	}
 }
