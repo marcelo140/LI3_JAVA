@@ -10,7 +10,7 @@ public class Product {
 
     /**
      * Constructs a new product with the given code.
-     * @param code - code that identifies the product
+     * @param code code that identifies the product
      */
     public Product(String code) {
         this.code = code;
@@ -19,7 +19,7 @@ public class Product {
     /**
      * Constructs a new product which will represent the same product that is given as an
      * argument. Use of this constructor is unnecessary since Products are immutable.
-     * @param p - A product
+     * @param p a product
      */
     public Product(Product p) {
         this.code = p.getCode();
@@ -37,17 +37,17 @@ public class Product {
      * Compares this Product to the specified product. The result is true if and only if
      * the argument is not null and is a product that represents the same product as this 
      * object.
-     * @param o - The object to compare this Product against
+     * @param obj the object to compare this Product against
      * @return true if the given object represents a Product equivalent to this product
      */
-    public boolean equals(Object o) {
-        if (o == this)
+    public boolean equals(Object obj) {
+        if (obj == this)
             return true;
 
-        if (o == null || o.getClass() != this.getClass())
+        if (obj == null || obj.getClass() != this.getClass())
             return false;
 
-        Product p = (Product) o;
+        Product p = (Product) obj;
         return code.equals(p.code);
     }
 
