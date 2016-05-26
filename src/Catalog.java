@@ -2,6 +2,7 @@
  * 
  */
 
+import java.util.*;
 import java.util.Set;
 import java.util.List;
 import java.util.TreeSet;
@@ -37,6 +38,28 @@ public class Catalog<E> {
 	/**
  	 * Construtor por cópia
 	 */
+	public Catalog(Catalog<E> c) {
+		int i = 0;
+		size = c.size();
+		cat = new ArrayList<TreeSet<E>>(size);
+
+		for (TreeSet<E> tree : cat) {
+			tree = new TreeSet<E>(c.getSet(i));	
+			i++;
+		}
+	}
+
+	/**
+	 * Devolve o set de um dado índice do catálogo
+	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
+	 * @param index Índice
+	 */
+	public Set<E> getSet(int index) throws IndexOutOfBoundsException {
+		if (index < 0 || index >= size) 
+			throw new IndexOutOfBoundsException(); 
+
+		return new TreeSet<E> (cat.get(index));
+	}
 
 	/**
  	 * Inserts the specified element at the specified position in catalog.
@@ -81,4 +104,27 @@ public class Catalog<E> {
 	public boolean isEmpty() {
 		return (size == 0);
 	}
+
+	/**
+	 * Retorna uma copia desta instancia de Catalog.
+	 * @return um clone desta instancia de Catalog
+	 */
+	public Catalog<E> clone() {
+		return new Catalog<E>(this);
+	}
+
+	/**
+	 * Verifica se o elemento E já existe no catálogo no índice index.
+	 * @param index índice
+	 * @param element Elemento a procurar
+	 * @throws IndexOutOfBoundsException Caso o índice não se encontre no catálogo
+	 * @return true se o elemento existe, false caso contrário
+	 */
+	public boolean contains(int index, E element) throws IndexOutOfBoundsException{
+		if (index < 0 || index >= size) 
+			throw new IndexOutOfBoundsException(); 
+	
+		return cat.get(index).contains(element); 
+	}
+
 }
