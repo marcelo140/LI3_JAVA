@@ -127,4 +127,14 @@ public class CatalogSet<E> {
 		return cat.get(index).contains(element); 
 	}
 
+	public CatalogMap<E, Object> toMap() {
+		CatalogMap<E, Object> map = new CatalogMap<>();
+
+		for (int i = 0; i < size; i++) {
+			for (E element : cat.get(i)) 
+				map.put(i, element, null);
+		}
+
+		return map;
+	}
 }
