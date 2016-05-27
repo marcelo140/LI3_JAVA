@@ -42,11 +42,11 @@ public class ProductSale {
 	 * @param cliente Cliente
 	 * @throws ClienteNaoExisteException Caso o cliente pedido não comprou este produto
 	 */
-	public int getTipo(String cliente) throws ClienteNaoExistenteException {
+	public int getTipo(String cliente) throws ClienteNaoExisteException {
 		ClientUnit c = clientes.get(cliente);
 
 		if (c == null) 
-			throw new ClienteNaoExistenteException("O Cliente pedido não comprou este produto");
+			throw new ClienteNaoExisteException("O Cliente pedido não comprou este produto");
 	
 		return c.getTipo();
 	} 
