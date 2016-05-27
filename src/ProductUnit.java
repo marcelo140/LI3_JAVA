@@ -53,7 +53,7 @@ public class ProductUnit {
 	 * Adiciona uma venda ao ProductUnit
 	 * @param v Venda a adicionar
 	 */
-	public void addVenda(Venda v) {
+	public void add(Venda v) {
 		int mes = v.getMes();
 		
 		faturado[mes] += v.getUnidades() * v.getPreco();	

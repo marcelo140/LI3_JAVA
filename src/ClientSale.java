@@ -38,7 +38,7 @@ public class ClientSale {
 	/**
 	 * Retorna o total quantidade de todos os meses deste cliente
 	 */
-	public int[] getGasto() {
+	public int[] getFaturado() {
 		return quantidade;
 	}	
 
