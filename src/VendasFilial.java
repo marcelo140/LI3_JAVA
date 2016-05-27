@@ -60,8 +60,7 @@ public class VendasFilial {
 	    String produto = v.getProduto();
 	    String cliente = v.getCliente();
 	    
-	    System.out.print("Maria " + mes);
-	//	produtos.get(mes, produto).add(v);
+		produtos.get(mes, produto).add(v);
 		clientes.get(mes, cliente).add(v);
 	}
 	
