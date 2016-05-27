@@ -74,6 +74,7 @@ public class ClientSale {
 		this.quantidade[mes] += quantidade;
 
 		pu = produtos.get(produto);
+		if (pu == null) pu = new ProductUnit();
 		pu.add(v);
 		produtos.put(produto, pu);
 		

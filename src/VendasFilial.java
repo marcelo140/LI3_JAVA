@@ -13,8 +13,8 @@ public class VendasFilial {
      * Construtor padrão 
      */
     public VendasFilial() {
-		clientes = new CatalogMap<String, ClientSale>();
-		produtos = new CatalogMap<String, ProductSale>();
+		clientes = new CatalogMap<String, ClientSale>(12);
+		produtos = new CatalogMap<String, ProductSale>(12);
     }
 
 	/**
@@ -56,9 +56,13 @@ public class VendasFilial {
 	 * @param venda Venda a adicionar
 	 */
 	public void add(Venda v) {
-		
-		produtos.add(v);
-		clientes.add(v);
+		int mes = v.getMes();
+	    String produto = v.getProduto();
+	    String cliente = v.getCliente();
+	    
+	    System.out.print("Maria " + mes);
+	//	produtos.get(mes, produto).add(v);
+		clientes.get(mes, cliente).add(v);
 	}
 	
 }

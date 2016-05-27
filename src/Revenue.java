@@ -18,8 +18,8 @@ public class Revenue
 	}
 
 	public Revenue(Revenue r){
-		this.faturacao = faturacao.getFaturacao();
-		this.quantidade = quantidade.getQuantidade();
+		this.faturacao = r.getFaturacao();
+		this.quantidade = r.getQuantidade();
 	}
 
 	public double[][][] getFaturacao(){
@@ -68,8 +68,8 @@ public class Revenue
     	int i;
     	if (v.getPromocao() == true) i = 1;
     	else i = 0;
-    	faturacao [v.getMes()][v.getFilial()][i] = (v.getPreco()) * (v.getQuantidade());
-    	quantidade [v.getMes()][v.getFilial()][i] += v.getQuantidade();  
+    	faturacao [v.getMes()][v.getFilial()][i] = (v.getPreco()) * (v.getUnidades());
+    	quantidade [v.getMes()][v.getFilial()][i] += v.getUnidades();  
     }
 
 
