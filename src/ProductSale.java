@@ -1,33 +1,51 @@
-
+import java.util.*;
 /**
- * Write a description of class ProductSale here.
+ * Classe productSale que guardará a quantidade total vedida e o total
+ * faturado de um certo produto, bem como uma lista de os clientes que 
+ * o comprou em N, P, ou N+P 
  * 
- * @author (your name) 
- * @version (a version number or a date)
  */
-public class ProductSale
-{
-    // instance variables - replace the example below with your own
-    private int x;
+public class ProductSale {
+	private int quantidade;
+	private double faturacao;
+	private HashMap<String, ClientUnit> clientes;
 
     /**
-     * Constructor for objects of class ProductSale
+     * Construtor padrão; 
      */
-    public ProductSale()
-    {
-        // initialise instance variables
-        x = 0;
+    public ProductSale() {
+		quantidade = 0;
+		faturacao  = 0;
+		clientes   = new HashMap<>();
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
+	/**
+	 * Adiciona uma nova venda a este ProductSale
+	 * @param v Venda a adicionar
+	 */
+	public void add(Venda v) {
+		String cliente = v.getCliente();
+		ClientUnit c;
+		quantidade += v.getUnidades();
+		faturacao  += v.getUnidades() * v.getPreco();
+		
+		c = clientes.get(cliente);
+		c.add(v);
+		clientes.put(cliente, c);
+	}
+
+	/**
+	 * Devolve a quantidade total vendida deste produto
+	 */
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	/**
+	 * Devolve o total faturado por este produto
+	 */
+	public double getFaturado() {
+		return faturacao;
+	}
+
 }
