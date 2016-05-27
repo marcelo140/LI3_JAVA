@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.ArrayList;
 
-public class Catalog<E> {
+public class CatalogSet<E> {
 	private List<TreeSet<E>> cat;
 	int size;
 
@@ -16,7 +16,7 @@ public class Catalog<E> {
  	 * Constructs an empty catalog with the specified capacity.
  	 * @param tamanho
  	 */
-	public Catalog(int size) {
+	public CatalogSet(int size) {
 		size = 0;
 		cat = new ArrayList<TreeSet<E>>(size);
 
@@ -27,7 +27,7 @@ public class Catalog<E> {
 	/**
  	 * Constructs an empty catalog with capacity ten.
  	 */
-	public Catalog() {
+	public CatalogSet() {
 		size = 0;
 		cat = new ArrayList<TreeSet<E>>();
 		
@@ -38,13 +38,13 @@ public class Catalog<E> {
 	/**
  	 * Construtor por cópia
 	 */
-	public Catalog(Catalog<E> c) {
+	public CatalogSet(CatalogSet<E> c) {
 		int i = 0;
 		size = c.size();
 		cat = new ArrayList<TreeSet<E>>(size);
 
 		for (TreeSet<E> tree : cat) {
-			tree = new TreeSet<E>(c.getSet(i));	
+			tree = new TreeSet<E>(c.get(i));	
 			i++;
 		}
 	}
@@ -54,7 +54,7 @@ public class Catalog<E> {
 	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
 	 * @param index Índice
 	 */
-	public Set<E> getSet(int index) throws IndexOutOfBoundsException {
+	public Set<E> get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index >= size) 
 			throw new IndexOutOfBoundsException(); 
 
@@ -106,11 +106,11 @@ public class Catalog<E> {
 	}
 
 	/**
-	 * Retorna uma copia desta instancia de Catalog.
-	 * @return um clone desta instancia de Catalog
+	 * Retorna uma copia desta instancia de CatalogSet.
+	 * @return um clone desta instancia de CatalogSet
 	 */
-	public Catalog<E> clone() {
-		return new Catalog<E>(this);
+	public CatalogSet<E> clone() {
+		return new CatalogSet<E>(this);
 	}
 
 	/**

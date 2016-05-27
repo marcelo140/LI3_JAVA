@@ -44,7 +44,7 @@ public class CatalogMap<K,V> {
 		cat = new ArrayList<HashMap<K,V>>(size);
 
 		for (HashMap<K,V> map : cat) {
-			map = new HashMap<K,V>(c.getMap(i));	
+			map = new HashMap<K,V>(c.get(i));	
 			i++;
 		}
 	}
@@ -54,7 +54,7 @@ public class CatalogMap<K,V> {
 	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
 	 * @param index Índice
 	 */
-	public Map<K,V> getMap(int index) throws IndexOutOfBoundsException {
+	public Map<K,V> get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index >= size) 
 			throw new IndexOutOfBoundsException(); 
 
