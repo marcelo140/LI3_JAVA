@@ -1,113 +1,162 @@
+import java.util.*;
 /**
- * Class that describes a client
+ * Classe que representa Client.
+ * Contém o total quantidade de todos os meses, bem como
+ * a quantidade total e faturado de cada mes para cada produto 
  */
-
 public class Client {
-	private String code;
-	private Valid<Client> validator;
 
-    /**
-     * Constructs a new client with the given code.
-     * @param code code that identifies the client 
-     */
-    public Client(String code) {
-        this.code = code;
-		this.validator = new ClientValid();
-    }
+	private final int MESES = 12;
+	private int[] quantidade;
+	private HashMap<String, ProductUnit> produtos;
+	private boolean comprou;
+	//private double gastosTotal ???
+	private int[] comprasRealizadas;
+	private double[] gastos;
 
-    /**
-     * Constructs a new client with the given code and a validator that checks if it follows
-     * a set of rules
-     * @param code code that identifies the client
-     * @param validator the validator that will be used to check if the code is valid
+    
+	/**
+     * Construtor padrão 
      */
-    public Client(String code, Valid<Client> validator) {
-        this.code = code;
-		this.validator = validator;
-    }
-
-    /**
-     * Constructs a new client which will represent the same client that is given as an
-     * argument. Use of this constructor is unnecessary since Clients are immutable.
-     * @param c a client
-     */
-    public Client(Client c) {
-        this.code = c.getCode();
-		this.validator = c.getValidator();
-    }
-
-    /**
-     * Returns the code that identifies the client.
-     * @return the code that identifies the client 
-     */
-    public String getCode() {
-        return code;    
+    public Client() {
+		quantidade = new int[MESES];
+		produtos = new HashMap<>();
+		comprou = false;
+		comprasRealizadas = new int[MESES] ();
+		gastos = new double[MESES];
     }
 
 	/**
- 	 * Returns the validator used to check if the code is valid.
- 	 * @return the validator used to check if the code is valid
- 	 */
-	public Valid<Client> getValidator() {
-		return validator;
+	 * Construtor por parametros
+	 */
+	public Client(int[] quantidade, Map<String, ProductUnit> produtos, boolean comprou, int[] comprasRealizadas, double[] gastos) {
+		this.quantidade = quantidade;
+		this.produtos = new HashMap<String, ProductUnit>(produtos);
+		this.comprou = comprou;
+		this.comprasRealizadas = comprasRealizadas;
+		this.gastos= gastos;
+
 	}
 
-    /**
-     * Compares this Client to the specified client. The result is true if and only if
-     * the argument is not null and is a client that represents the same client as this 
-     * object.
-     * @param obj the object to compare this Client against
-     * @return true if the given object represents a Client equivalent to this client 
-     */
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
+	/**
+	 * Construtor por cópia
+	 */
+	public Client(Client c) {
+		quantidade = c.getFaturado();
+		produtos = c.getProdutos();
+		comprou = c.comprou();
+		comprasRealizadas = c.getComprasRealizadas();
+		gastos = c.getGastos();	
+	}
 
-        if (obj == null || obj.getClass() != this.getClass())
-            return false;
+	/**
+	 * Retorna as quantidades compradas de todos os meses deste cliente
+	 */
+	public int[] getFaturado() {
+		return quantidade;
+	}	
 
-        Client c = (Client) obj;
-        return code.equals(c.code) && validator.equals(c.validator);
-    }
+	/**
+	 * Retorna uma mapeamento de Produto com ProductUnit (que contém
+	 * a quantidade total e o total quantidade de cada mes desse produto)
+	 */
+	public Map<String, ProductUnit> getProdutos() {
+		return new HashMap<String, ProductUnit> (produtos);
+	}
 
-    /**
-     * Creates a copy of this client.
-     * @return a clone of this client 
-     */
-    public Client clone() {
-        return new Client(this);
-    }
+	/**
+	 * Retorna true se e só se o cliente comprou algo
+	 */
+	public boolean comprou() {
+		return comprou;
+	}
 
-    /**
-     * Returns a string representation of this client.
-     * @return a string representation of this client
-     */
-    public String toString() {
+	/**
+	 * Retorna o total de compras realizadas cada mês deste cliente
+	 */
+	public int[] getComprasRealizadas() {
+		return comprasRealizadas;
+	}
+
+	/**
+	 * Retorna o total de gastos em cada mês deste cliente
+	 */
+	public double[] getGastos() {
+		return gastos;
+	}
+
+
+	public int getNumeroProdutos(){
+		return produtos.size();
+	}
+
+	public double getGastos(int mes) throws InvalidMonthException{
+		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
+		return gastos[mes];
+	}
+
+	public int getCompras (int mes) throws InvalidMonthException{
+		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
+		return comprasRealizadas[mes];
+	}
+
+	/**
+	 * Adiciona uma nova venda a este Cliente
+	 * @param venda Venda a adicionar
+	 */
+	public void add(Venda v) {
+		String produto = v.getProduto();
+		int quantidade = v.getUnidades();
+		int mes = v.getMes();
+		ProductUnit pu;
+
+		this.quantidade[mes] += quantidade;
+
+		pu = produtos.get(produto);
+		if (pu == null) pu = new ProductUnit();
+		pu.add(v);
+		produtos.put(produto, pu);
+		
+	}
+
+	public Cliente clone(){
+		return new Cliente(this);
+	}
+
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		
+		if (o == null || o.getClass() != this.getClass())
+			return false;
+
+		Cliente c = (Cliente) o;
+		return c.getFaturado().equals(quantidade) &&
+               c.getProdutos().equals(produtos) &&
+			   c.comprou().equals(comprou) &&
+               c.getComprasRealizadas().equals(comprasRealizadas) &&
+			   c.getGastos().equals(gastos);
+	}
+
+	public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append("Código do cliente: ").append(code).append("\n");
-
+        sb.append("Quantidades compradas por mês: ").append(quantidades).append("\n");
+        sb.append("Produtos comprados pelo cliente: ").append(produtos).append("\n");
+        sb.append("Comprou? ").append(comprou).append("\n");
+        sb.append("Número de compras realizadas cada mês: ").append(comprasRealizadas).append("\n");
+        sb.append("Gastos em cada mês ").append(gastos).append("\n");
         return sb.toString();
     }
 
-    /**
-     * Returns a hash code for this client.
-     * @return a hash code for this client
-     */
-    public int hashCode() {
+	public int hashCode() {
         int hash = 7;
 
-        hash = 31*hash + code.hashCode();
-		hash = 31*hash + validator.hashCode();
-
-        return hash;
+        hash = 31*hash + quantidade.hashCode();
+        hash = 31*hash + produtos.hashCode();
+        hash = 31*hash + comprou.hashCode();
+        hash = 31*hash + comprasRealizadas.hashCode();
+        hash = 31*hash + gastos.hashCode();
+		return hash;
     }
-
-	/**
- 	 * Returns true if the client's code is valid. 
- 	 * @return true if the client's code is valid
- 	 */
-	public boolean isValid() {
-		return validator.isValid(this);
-	}
+	
 }
