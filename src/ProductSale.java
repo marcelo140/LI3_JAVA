@@ -48,7 +48,8 @@ public class ProductSale {
 		if (c == null) 
 			throw new ClienteNaoExisteException("O Cliente pedido não comprou este produto");
 	
-		return c.getTipo();
+		//return c.getTipo();
+		return 0;
 	} 
 	
 
