@@ -129,6 +129,14 @@ public class CatalogMap<K,V> implements Map<K,V> {
     }
 
     /**
+     * Devolve um set com todos os mapeamentos deste objeto
+     * @return um Set com todos os mapeamentos deste objeto
+     */
+     public Set<Map<K,V>> getMaps() {
+         return new TreeSet<Map<K,V>>(cat);
+     }
+
+    /**
      * Remove todos os mapeamentos deste mapa
      */
     public void clear() {
