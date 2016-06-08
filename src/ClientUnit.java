@@ -1,60 +1,63 @@
+import java.util.ArrayList;
 /**
- * Write a description of class ClientUnit here.
+ * Cada cliente terá a quantidade vendida e o total gasto.
  * 
  */
 public class ClientUnit {
+    private final int MESES = 12; 
 	
-	private final int VAZIO    = 0;
-	private final int NORMAL   = 1;
-	private final int PROMOCAO = 2;
-	private final int NP       = 3;
-
-	private int tipo;	
+	private int quantidade; 
+	private double faturado;
 
     /**
-     * Construtor 
+     * Construtor padrão 
      */
     public ClientUnit() {
-    	tipo = VAZIO;
+		quantidade = 0;
+		faturado   = 0; 
+    }
+
+	/**
+	 * Construtor por parametros
+	 */
+	public ClientUnit(int quantidade, double faturado) {
+		this.quantidade = quantidade;
+		this.faturado = faturado;
 	}
 
 	/**
 	 * Construtor por cópia
 	 */
-	public ClientUnit(ClientUnit c) {
-		tipo = c.tipo;
+	public ClientUnit(ClientUnit p) {
+		quantidade = p.getQuantidade();
+		faturado = p.getFaturado();
 	}
 
 	/**
-	 * Devolve o tipo de venda do cliente
-	 * 0 - Vazio
-	 * 1 - Normal
-	 * 2 - Promoção
-	 * 3 - Normal e Promoção
-	 * @return o tipo de venda do cliente
+	 * Retorna a quantidade total comprada pelo cliente 
+	 * @return Quantidade total comprada pelo cliente
 	 */
-	public int getTipo() {
-		return tipo;
+	public int getQuantidade() {
+		return quantidade;
 	}
 
 	/**
-	 * Adiciona uma venda a este ClientUnit
-	 * @param venda Venda a adicionar a este ClientUnit
+	 * Retorna o total gasto pelo cliente
+	 * @return Total gasto pelo cliente 
+	 */
+	public double getFaturado() {
+		return faturado;
+	}
+
+	/**
+	 * Adiciona uma venda ao ClientUnit
+	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
-		int tipo;
-
-		if (v.getPromocao()) tipo = PROMOCAO;
-		else tipo = NORMAL;
-
-		if (this.tipo == VAZIO) {
-			this.tipo = tipo;
-		} else if (this.tipo == NORMAL) {
-			if (tipo == PROMOCAO) this.tipo = NP;
-		} else if (this.tipo == PROMOCAO) {
-			if (tipo == NORMAL) this.tipo = NP;
-		}
-	}
+		
+		faturado += v.getUnidades() * v.getPreco();	
+		quantidade += v.getUnidades();
+	} 
 
 	/**
 	 * Retorna uma copia desta instancia de ClientUnit.
@@ -62,5 +65,47 @@ public class ClientUnit {
 	 */
 	public ClientUnit clone() {
 		return new ClientUnit(this);
+	}
+
+	/**
+	 * Cria uma string de acordo com as variáveis deste objeto
+	 * @return String que representa esta instancia de ClientUnit
+	 */
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		str.append("ClientUnit:\n");
+		str.append("Quantidade:" + quantidade + "\n");
+		str.append("Faturado:" + faturado + "\n");
+		
+		return str.toString();
+	}
+
+	/**
+	 * Compara um dado objeto com esta instancia de ClientUnit.
+	 * @param o Objeto a ser comparado com este ClientUnit
+	 * @return True caso o objeto dado seja igual a este, 
+	 * false caso contrário
+	 */
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if ( o == null || o.getClass() != this.getClass() ) return false;
+
+		ClientUnit pu = (ClientUnit) o;
+		return (pu.getQuantidade() == this.getQuantidade() &&
+				pu.getFaturado() == this.getFaturado());
+	}
+
+	/**
+	 * Devolve um hash único para esta instancia de ClientUnit
+	 * @return hash único para esta instancia
+	 */
+	public int hashCode() {
+		ArrayList<Object> lista = new ArrayList<>();
+
+		lista.add(quantidade);
+		lista.add(faturado);
+
+		return lista.hashCode();
 	}
 }
