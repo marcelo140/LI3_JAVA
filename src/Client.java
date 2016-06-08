@@ -90,11 +90,13 @@ public class Client {
 		return produtos.size();
 	}
 
-	public double getGastos(int mes){
+	public double getGastos(int mes) throws InvalidMonthException{
+		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
 		return gastos[mes];
 	}
 
-	public int getCompras (int mes) {
+	public int getCompras (int mes) throws InvalidMonthException{
+		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
 		return comprasRealizadas[mes];
 	}
 
