@@ -9,19 +9,19 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 
 public class CatalogSet<E> {
-	private List<TreeSet<E>> cat;
+	private ArrayList<TreeSet<E>> cat;
 	int size;
 
 	/**
  	 * Constructs an empty catalog with the specified capacity.
  	 * @param tamanho
  	 */
-	public CatalogSet(int size) {
+	public CatalogSet(int tam) {
 		size = 0;
-		cat = new ArrayList<TreeSet<E>>(size);
+		cat = new ArrayList<TreeSet<E>>(tam);
 
-		for(TreeSet<E> tree: cat)
-			tree = new TreeSet<E>();
+		for(int i = 0; i < tam; i++)
+			cat.add(new TreeSet<E>());
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class CatalogSet<E> {
 	 * @param index Índice
 	 */
 	public Set<E> get(int index) throws IndexOutOfBoundsException {
-		if (index < 0 || index >= size) 
+		if (index < 0 || index >= cat.size()) 
 			throw new IndexOutOfBoundsException(); 
 
 		return new TreeSet<E> (cat.get(index));
@@ -125,6 +125,21 @@ public class CatalogSet<E> {
 			throw new IndexOutOfBoundsException(); 
 	
 		return cat.get(index).contains(element); 
+	}
+
+	/**
+ 	 * Verifica se o elemento E existe no catálogo
+ 	 * @param element Elemento a encontrar
+ 	 * return true se o elemento existe
+ 	 */
+	public boolean contains(E element) {
+		boolean r = true;
+		int size = cat.size();
+
+		for(int i = 0; r && i < size; i++)
+			r = cat.get(i).contains(element);
+
+		return r;
 	}
 
 	public CatalogMap<E, Object> toMap() {
