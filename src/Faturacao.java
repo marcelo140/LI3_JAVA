@@ -32,41 +32,49 @@ public class Faturacao implements Serializable
     
     
     public Faturacao() {
-        this.produtos = new CatalogMap<String, Boolean> ();
-        this.produtosComprados=0;
-        this.filiais=1;
-        this.vendasZero=0;
-        this.numeroCompras=new int[12];
-        this.fat= new double[12][3];
-        this.quant= new int[12][3];    
-    }
-    
-    public Faturacao(CatalogMap<String, Boolean> prod,int filiais){
-        this.produtos=prod;
-        this.filiais=filiais;
+        produtos = new CatalogMap<String, Boolean> ();
+        filiais = 1;
         
+		numeroCompras = new int[12];
+        fat = new double[12][filiais];
+        quant = new int[12][filiais];    
+        
+		produtosComprados = 0;
+        vendasZero = 0;
+    }
+    
+    public Faturacao(CatalogMap<String, Boolean> produtos, int filiais){
+        this.produtos = produtos.clone();
+        this.filiais = filiais;
+        
+		numeroCompras = new int[12];
+        quant         = new int[12][filiais];    
+        fat           = new double[12][filiais];
+
+		produtosComprados = 0;
+		vendasZero = 0;
     }
     
     
-    public Faturacao(CatalogMap<String, Boolean> prod,int filiais, int prodsComprados, int vendasZero, int[] numCompras, double[][]fat, int[][]quant){
-        this.produtos=prod;
-        this.filiais=filiais;
-        this.produtosComprados= prodsComprados;
-        this.vendasZero= vendasZero;
-        this.numeroCompras=numCompras;
-        this.fat=fat;
-        this.quant=quant;
+    public Faturacao(CatalogMap<String, Boolean> produtos, int filiais, int prodsComprados, int vendasZero, int[] numCompras, double[][]fat, int[][]quant){
+        this.produtos = produtos.clone();
+        this.filiais = filiais;
+        this.produtosComprados = prodsComprados;
+        this.vendasZero = vendasZero;
+        this.numeroCompras = numCompras;
+        this.fat = fat;
+        this.quant = quant;
         
     }
     
     public Faturacao(Faturacao c){
-        this.produtos = c.getProdutos();
-        this.produtosComprados=c.getProdutosComprados();
-        this.filiais=c.getFiliais();
-        this.vendasZero=c.getVendasZero();
-        this.numeroCompras=c.getNumCompras();
-        this.fat=c.getFat();
-        this.quant=c.getQuant();
+        produtos = c.getProdutos();
+        produtosComprados=c.getProdutosComprados();
+        filiais=c.getFiliais();
+        vendasZero=c.getVendasZero();
+        numeroCompras=c.getNumCompras();
+        fat=c.getFat();
+        quant=c.getQuant();
     }
     
     public CatalogMap<String, Boolean> getProdutos() {
@@ -96,6 +104,20 @@ public class Faturacao implements Serializable
     public int[][] getQuant(){
         return quant;
     }
+    
+    public void addSale(Venda v){
+		int mes = v.getMes();
+		int filial = v.getFilial();
+		int unidades = v.getUnidades();
+
+        fat[mes][filial] = v.getPreco() * unidades;
+        quant[mes][filial] += unidades;
+
+        numeroCompras[mes]++;
+        produtosComprados += v.getUnidades();
+
+        produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , TRUE);
+    }
 
     
     public int getNumCompras(int mes) throws InvalidMonthException{
@@ -104,41 +126,54 @@ public class Faturacao implements Serializable
     }
     
     
+<<<<<<< HEAD
     public double getFaturacaoMes(int mes) throws InvalidMonthException{
         if (mes<0 || mes>11) throw new InvalidMonthException ("Mês inválido.");
         double soma = 0;
         for(int i = 0; i < filiais; i++) {
+=======
+    public double getFaturacaoMes(int mes) {
+        double soma= 0;
+
+        for(int i = 0; i < filiais; i++)
+>>>>>>> b1095723422dbc7046593378d943b190920e0949
             soma += fat[mes][i];
-        }
+
         return soma;
-        
     }
     
     public int getQuantidadeMes(int mes) throws InvalidMonthException {
         if (mes<0 || mes>11) throw new InvalidMonthException ("Mês inválido.");
         int soma = 0;
-        for(int i=0; i<this.filiais;i++) {
+
+        for(int i = 0; i < filiais; i++)
            soma += quant[mes][i];
-        }
+ 
         return soma;
-        
     }
     
     public double getFaturacaoFilial(int filial) throws InvalidBranchException {
         if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         double soma = 0;
-        for (int m = 0; m < 12; m++) {
+
+        for (int m = 0; m < 12; m++)
             soma += fat[m][filial];
-        }
+
         return soma;
     }
     
+<<<<<<< HEAD
     public int getQuantidadeFilial(int filial) throws InvalidBranchException{
         if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         int soma = 0 ;
         for(int m=0; m<12; m++) {
+=======
+    public int getQuantidadeFilial(int filial) {
+        int soma = 0;
+
+        for(int m = 0; m < 12; m++)
+>>>>>>> b1095723422dbc7046593378d943b190920e0949
             soma += quant[m][filial];
-        }
         
         return soma;
     }
@@ -150,30 +185,37 @@ public class Faturacao implements Serializable
     }
     
     
+<<<<<<< HEAD
     public int getQuantidade(int mes,int filial) throws InvalidMonthException, InvalidBranchException{
         if (mes < 0 || mes > 11) throw new InvalidMonthException ("Mês inválido.");
         if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
+=======
+    public int getQuantidade(int mes, int filial){
+>>>>>>> b1095723422dbc7046593378d943b190920e0949
         return quant[mes][filial];
     }
     
     public double getFaturacaoTotal(){
         double soma= 0;
-        for(int f = 0 ; f < filiais ; f++){
+
+        for(int f=0 ; f < filiais ; f++){
             for (int m = 0 ; m < 12 ; m++) 
                 soma += fat [m][f];
-            }
-            return soma;
-        
+        }
+
+		return soma;
     }
     
     public int getQuantidadeTotal(){
         int soma= 0;
-        for(int f = 0 ; f < filiais ; f++){
+        
+		for(int f = 0 ; f < filiais ; f++){
             for (int m = 0 ; m < 12 ; m++) 
                 soma += quant [m][f];
-            }
-            return soma;
         }
+
+        return soma;
+    }
         
         
         
@@ -199,9 +241,10 @@ public class Faturacao implements Serializable
     
 
     public void addProduto(String nome){
-        this.produtos.put(nome.charAt(0)-'A' , nome , FALSE);
+        produtos.put(nome.charAt(0)-'A' , nome , FALSE);
     }
     
+<<<<<<< HEAD
     public void addSale(Venda v){
         int mes = v.getMes();
         int filial = v.getFilial();
@@ -216,26 +259,29 @@ public class Faturacao implements Serializable
     }
 
 
+=======
+>>>>>>> b1095723422dbc7046593378d943b190920e0949
     public Faturacao clone() {
         return new Faturacao(this);
     }
     
 
     public boolean equals(Object o) {
-        if(o==this) {
+        if(o==this)
             return true;
-        }
-        if(o==null || o.getClass() != this.getClass()) {
+
+        if(o==null || o.getClass() != this.getClass())
             return false;
-        }
+
         Faturacao f = (Faturacao) o;
-        return f.getProdutos().equals(produtos) 
-                && f.getProdutosComprados()== this.produtosComprados
-                && f.getFiliais() == this.filiais
-                && f.getVendasZero() == this.vendasZero
-                && f.getNumCompras().equals(numeroCompras)
-                && f.getFat().equals(fat)
-                && f.getQuant().equals(quant);
+
+        return f.getProdutos().equals(produtos) &&
+               f.getProdutosComprados() == this.produtosComprados &&
+               f.getFiliais() == this.filiais &&
+               f.getVendasZero() == this.vendasZero &&
+               f.getNumCompras().equals(numeroCompras) &&
+               f.getFat().equals(fat) &&
+               f.getQuant().equals(quant);
     }
     
 
