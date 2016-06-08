@@ -68,5 +68,51 @@ public class ProductUnit {
 		return new ProductUnit(this);
 	}
 
-	//TODO implementar compares
+	/**
+	 * Cria uma string de acordo com as variáveis deste objeto
+	 * @return String que representa esta instancia de ProductUnit
+	 */
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		str.append("ProductUnit:\n");
+
+		str.append("Quantidade:\n");
+		for (int i = 0; i < 12 ; i++)
+			str.append("\tMês " + i + ": " + quantidade[i] + "\n");
+		
+		str.append("Faturado:\n");
+		for (int i = 0; i < 12 ; i++)
+			str.append("\tMês " + i + ": " + faturado[i] + "\n");
+		
+		return str.toString();
+	}
+
+	/**
+	 * Compara um dado objeto com esta instancia de ProductUnit.
+	 * @param o Objeto a ser comparado com este ProductUnit
+	 * @return True caso o objeto dado seja igual a este, 
+	 * false caso contrário
+	 */
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if ( o == null || o.getClass() != this.getClass() ) return false;
+
+		ProductUnit pu = (ProductUnit) o;
+		return (pu.getQuantidade() == this.getQuantidade() &&
+				pu.getFaturado() == this.getFaturado());
+	}
+
+	/**
+	 * Devolve um hash único para esta instancia de ProductUnit
+	 * @return hash único para esta instancia
+	 */
+	public int hashCode() {
+		int hash = 7;
+
+		hash = 31*hash + quantidade.hashCode();
+		hash = 31*hash + faturado.hashCode();
+
+		return hash;
+	}
 }
