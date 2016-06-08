@@ -54,11 +54,11 @@ public class CatalogSet<E> {
 	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
 	 * @param index Índice
 	 */
-	public Set<E> get(int index) throws IndexOutOfBoundsException {
+	public TreeSet<E> get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index >= cat.size()) 
 			throw new IndexOutOfBoundsException(); 
 
-		return new TreeSet<E> (cat.get(index));
+		return new TreeSet<E>(cat.get(index));
 	}
 
 	/**
@@ -68,6 +68,7 @@ public class CatalogSet<E> {
  	 */
 	public void add(int index, E element) {
 		TreeSet<E> tree = cat.get(index);
+
 		tree.add(element);
 		size++;
 	}
