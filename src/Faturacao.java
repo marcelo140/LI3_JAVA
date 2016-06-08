@@ -32,30 +32,38 @@ public class Faturacao implements Serializable
     
     
     public Faturacao() {
-        this.produtos=new CatalogMap<String, Boolean> ();
-        this.produtosComprados=0;
-        this.filiais=1;
-        this.vendasZero=0;
-        this.numeroCompras=new int[12];
-        this.fat= new double[12][3];
-        this.quant= new int[12][3];    
-    }
-    
-    public Faturacao(CatalogMap<String, Boolean> prod,int filiais){
-        this.produtos=prod;
-        this.filiais=filiais;
+        produtos = new CatalogMap<String, Boolean> ();
+        filiais = 1;
         
+		numeroCompras = new int[12];
+        fat = new double[12][filiais];
+        quant = new int[12][filiais];    
+        
+		produtosComprados = 0;
+        vendasZero = 0;
+    }
+    
+    public Faturacao(CatalogMap<String, Boolean> produtos, int filiais){
+        this.produtos = produtos.clone();
+        this.filiais = filiais;
+        
+		numeroCompras = new int[12];
+        quant         = new int[12][filiais];    
+        fat           = new double[12][filiais];
+
+		produtosComprados = 0;
+		vendasZero = 0;
     }
     
     
-    public Faturacao(CatalogMap<String, Boolean> prod,int filiais, int prodsComprados, int vendasZero, int[] numCompras, double[][]fat, int[][]quant){
-        this.produtos=prod;
-        this.filiais=filiais;
-        this.produtosComprados= prodsComprados;
-        this.vendasZero= vendasZero;
-        this.numeroCompras=numCompras;
-        this.fat=fat;
-        this.quant=quant;
+    public Faturacao(CatalogMap<String, Boolean> produtos, int filiais, int prodsComprados, int vendasZero, int[] numCompras, double[][]fat, int[][]quant){
+        this.produtos = produtos.clone();
+        this.filiais = filiais;
+        this.produtosComprados = prodsComprados;
+        this.vendasZero = vendasZero;
+        this.numeroCompras = numCompras;
+        this.fat = fat;
+        this.quant = quant;
         
     }
     
@@ -74,37 +82,36 @@ public class Faturacao implements Serializable
     }
     
     public int getProdutosComprados() {
-        return this.produtosComprados;   
+        return produtosComprados;   
     }
     
     public int getFiliais() {
-        return this.filiais;   
+        return filiais;   
     }
     
     public int getVendasZero() {
-        return this.vendasZero;
+        return vendasZero;
     }
     
     public int[] getNumCompras() {
-        return this.numeroCompras;   
+        return numeroCompras;   
     }
     
     public double[][] getFat() {
-        return this.fat;
+        return fat;
     }
     
     public int[][] getQuant(){
-        return this.quant;
+        return quant;
     }
     
     
     public void addSale(Venda v){
-        this.fat[v.getMes()][v.getFilial()] = (v.getPreco()) * (v.getUnidades());
-        this.quant[v.getMes()][v.getFilial()] += v.getUnidades();
-        this.numeroCompras[v.getMes()] += v.getUnidades();
-        this.produtosComprados ++;
-        this.produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , true);
-     
+        fat[v.getMes()][v.getFilial()] = v.getPreco() * v.getUnidades();
+        quant[v.getMes()][v.getFilial()] += v.getUnidades();
+        numeroCompras[v.getMes()] += v.getUnidades();
+        produtosComprados++;
+        produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , true);
     }
     
     public int getNumCompras(int mes) {
@@ -114,35 +121,38 @@ public class Faturacao implements Serializable
     
     public double getFaturacaoMes(int mes) {
         double soma= 0;
-        for(int i = 0; i < this.filiais; i++) {
+
+        for(int i = 0; i < filiais; i++)
             soma += fat[mes][i];
-        }
+
         return soma;
         
     }
     
     public int getQuantidadeMes(int mes) {
         int soma = 0;
-        for(int i=0; i<this.filiais;i++) {
+
+        for(int i = 0; i < filiais; i++)
            soma += quant[mes][i];
-        }
+ 
         return soma;
         
     }
     
     public double getFaturacaoFilial(int filial) {
         double soma = 0;
-        for (int m = 0; m < 12; m++) {
+
+        for (int m = 0; m < 12; m++)
             soma += fat[m][filial];
-        }
+
         return soma;
     }
     
     public int getQuantidadeFilial(int filial) {
-        int soma = 0 ;
-        for(int m=0; m<12; m++) {
+        int soma = 0;
+
+        for(int m = 0; m < 12; m++)
             soma += quant[m][filial];
-        }
         
         return soma;
     }
@@ -152,28 +162,31 @@ public class Faturacao implements Serializable
     }
     
     
-    public int getQuantidade(int mes,int filial){
+    public int getQuantidade(int mes, int filial){
         return quant[mes][filial];
     }
     
     public double getFaturacaoTotal(){
         double soma= 0;
-        for(int f = 0 ; f < filiais ; f++){
+
+        for(int f=0 ; f < filiais ; f++){
             for (int m = 0 ; m < 12 ; m++) 
                 soma += fat [m][f];
-            }
-            return soma;
-        
+        }
+
+		return soma;
     }
     
     public int getQuantidadeTotal(){
         int soma= 0;
-        for(int f = 0 ; f < filiais ; f++){
+        
+		for(int f = 0 ; f < filiais ; f++){
             for (int m = 0 ; m < 12 ; m++) 
                 soma += quant [m][f];
-            }
-            return soma;
         }
+
+        return soma;
+    }
         
         
         /**
@@ -183,7 +196,7 @@ public class Faturacao implements Serializable
     
     
     public void addProduto(String nome){
-        this.produtos.put(nome.charAt(0)-'A' , nome , false);
+        produtos.put(nome.charAt(0)-'A' , nome , false);
     }
     
     public Faturacao clone() {
@@ -191,20 +204,21 @@ public class Faturacao implements Serializable
     }
     
     public boolean equals(Object o) {
-        if(o==this) {
+        if(o==this)
             return true;
-        }
-        if(o==null || o.getClass() != this.getClass()) {
+
+        if(o==null || o.getClass() != this.getClass())
             return false;
-        }
+
         Faturacao f = (Faturacao) o;
-        return f.getProdutos().equals(produtos) 
-                && f.getProdutosComprados()== this.produtosComprados
-                && f.getFiliais() == this.filiais
-                && f.getVendasZero() == this.vendasZero
-                && f.getNumCompras().equals(numeroCompras)
-                && f.getFat().equals(fat)
-                && f.getQuant().equals(quant);
+
+        return f.getProdutos().equals(produtos) &&
+               f.getProdutosComprados() == this.produtosComprados &&
+               f.getFiliais() == this.filiais &&
+               f.getVendasZero() == this.vendasZero &&
+               f.getNumCompras().equals(numeroCompras) &&
+               f.getFat().equals(fat) &&
+               f.getQuant().equals(quant);
     }
     
     
