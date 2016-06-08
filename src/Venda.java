@@ -107,6 +107,39 @@ public class Venda implements Serializable
 	}
 
 	/**
+ 	 * Converte uma String numa Venda
+ 	 */
+    public static Venda parseLinhaVenda(String linha) throws VendaParseException {
+		String[] dados;
+		int unidades, mes, filial;
+		double preco;
+		boolean promocao;
+		
+		dados = linha.trim().split(" ");
+		
+		try {
+			preco    = Double.parseDouble(dados[1].trim());
+			unidades = Integer.parseInt(dados[2].trim());
+			mes      = Integer.parseInt(dados[5].trim());
+			filial   = Integer.parseInt(dados[6].trim());
+		}catch(NullPointerException | NumberFormatException e) {
+			throw new VendaParseException(e.getMessage());
+		}
+
+        promocao = !dados[3].trim().equals("N");
+
+        return new Venda(dados[0], preco, unidades, promocao, dados[4], mes, filial);
+	}
+
+
+	/**
+ 	 * Verifica se uma venda é válida
+ 	 */
+	public boolean isValid(CatalogSet<String> produtos, CatalogSet<String> clientes) {
+		return produtos.contains(produto) && clientes.contains(cliente);
+	}
+
+	/**
  	 * Cria uma cópia da venda
  	 * @return Venda
  	 */

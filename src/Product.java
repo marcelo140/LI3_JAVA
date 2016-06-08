@@ -1,19 +1,35 @@
+import java.util.HashMap;
 /**
  * Class that describes a product
  */
 
 public class Product {
-    private String code;
-	private Valid<Product> validator;
+
+	private final int MESES = 12;
+
+	private int unidadesVendidas;
+	private double faturadoTotal;
+	private int[] vendas;
+	private double[] faturado;
+	private HashMap<String, ClientUnit>[] validator;
+
+	/**
+	 * Construtor padrão
+	 */
+	public Product() {
+		unidadesVendidas = 0;
+		faturadoTotal = 0;
+		vendas = new int[MESES];
+		faturado = new double[MESES];
+	}
 
     /**
      * Constructs a new product with the given code.
      * @param code code that identifies the product
      */
     public Product(String code) {
-        this.code = code;
-		this.validator = new ProductValid();
-    }
+    
+	}
 
     /**
      * Constructs a new product with the given code and a validator that checks if it
@@ -22,8 +38,7 @@ public class Product {
      * @param validator the validator that will be used to check if the code is valid
      */
     public Product(String code, Valid<Product> validator) {
-        this.code = code;
-		this.validator = validator;
+      
     }
 
     /**
@@ -32,8 +47,7 @@ public class Product {
      * @param p a product
      */
     public Product(Product p) {
-        this.code = p.getCode();
-		this.validator = p.getValidator();
+      
     }
 
     /**
@@ -41,7 +55,7 @@ public class Product {
      * @return the code that identifies the product
      */
     public String getCode() {
-        return code;    
+        return null;    
     }
 
 	/**
@@ -49,7 +63,7 @@ public class Product {
  	 * @return the validator used to check if the code is valid
  	 */
 	public Valid<Product> getValidator() {
-		return validator;
+		return null;
 	}
 
     /**
@@ -60,14 +74,7 @@ public class Product {
      * @return true if the given object represents a Product equivalent to this product
      */
     public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-
-        if (obj == null || obj.getClass() != this.getClass())
-            return false;
-
-        Product p = (Product) obj;
-        return code.equals(p.code) && validator.equals(p.validator);
+        return false;
     }
 
     /**
@@ -85,7 +92,7 @@ public class Product {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Código do produto: ").append(code).append("\n");
+        sb.append("Código do produto: \n");
 
         return sb.toString();
     }
@@ -97,9 +104,6 @@ public class Product {
     public int hashCode() {
         int hash = 7;
 
-        hash = 31*hash + code.hashCode();
-		hash = 31*hash + validator.hashCode();
-
         return hash;
     }
 
@@ -108,6 +112,6 @@ public class Product {
  	 * @return true if the product's code is valid
  	 */
 	public boolean isValid() {
-		return validator.isValid(this);
+		return true;
 	}
 }

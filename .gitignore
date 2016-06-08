@@ -1,9 +1,17 @@
 # bluej trash
-Vendas_3M.txt
-Vendas_5M.txt
 package.bluej
 README.TXT
+
+# data
+Vendas_3M.txt
+Vendas_5M.txt
+
+# Compilation trash
 *.class
 *.ctxt
+
+# vim
 *.swp
+
+# Other
 .DS_Store
