@@ -1,26 +1,24 @@
 
 /**
- * Cada produto terá a quantidade vendida e o total faturado em cada mês.
+ * Cada produto terá a quantidade vendida e o total faturado. 
  * 
  */
 public class ProductUnit {
-    private final int MESES = 12; 
-	
-	private int[] quantidade; //Quantidade total de cada mes
-	private double[] faturado; //Total faturado de cada mes
+	private int quantidade; 
+	private double faturado;
 
     /**
      * Construtor padrão 
      */
     public ProductUnit() {
-		quantidade = new int[MESES];
-		faturado   = new double[MESES];
+		quantidade = 0;
+		faturado   = 0;
     }
 
 	/**
 	 * Construtor por parametros
 	 */
-	public ProductUnit(int[] quantidade, double[] faturado) {
+	public ProductUnit(int quantidade, double faturado) {
 		this.quantidade = quantidade;
 		this.faturado = faturado;
 	}
@@ -34,18 +32,18 @@ public class ProductUnit {
 	}
 
 	/**
-	 * Retorna a quantidade total vendida em cada mes
-	 * @return Quantidade total vendida em cada mes
+	 * Retorna a quantidade total vendida
+	 * @return Quantidade total vendida 
 	 */
-	public int[] getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 
 	/**
-	 * Retorna o total faturado em cada mes
-	 * @return Total faturado em cada mes
+	 * Retorna o total faturado 
+	 * @return Total faturado 
 	 */
-	public double[] getFaturado() {
+	public double getFaturado() {
 		return faturado;
 	}
 
@@ -54,10 +52,9 @@ public class ProductUnit {
 	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
-		int mes = v.getMes();
 		
-		faturado[mes] += v.getUnidades() * v.getPreco();	
-		quantidade[mes] += v.getUnidades();
+		faturado += v.getUnidades() * v.getPreco();	
+		quantidade += v.getUnidades();
 	} 
 
 	/**
@@ -76,14 +73,8 @@ public class ProductUnit {
 		StringBuilder str = new StringBuilder();
 
 		str.append("ProductUnit:\n");
-
-		str.append("Quantidade:\n");
-		for (int i = 0; i < 12 ; i++)
-			str.append("\tMês " + i + ": " + quantidade[i] + "\n");
-		
-		str.append("Faturado:\n");
-		for (int i = 0; i < 12 ; i++)
-			str.append("\tMês " + i + ": " + faturado[i] + "\n");
+		str.append("Quantidade: ").append(quantidade).append("\n");
+		str.append("Faturado: ").append(faturado).append("\n");
 		
 		return str.toString();
 	}
@@ -108,11 +99,11 @@ public class ProductUnit {
 	 * @return hash único para esta instancia
 	 */
 	public int hashCode() {
-		int hash = 7;
+		ArrayList<Object> lista = new ArrayList<>();
 
-		hash = 31*hash + quantidade.hashCode();
-		hash = 31*hash + faturado.hashCode();
+		lista.add(faturado);
+		lista.add(quantidade);
 
-		return hash;
+		return lista.hashCode();
 	}
 }
