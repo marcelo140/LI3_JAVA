@@ -8,8 +8,8 @@ import java.io.Serializable;
 /**
  * Write a description of class Faturacao here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Grupo 85) 
+ * @version (junho 2016)
  */
 public class Faturacao implements Serializable
 {
@@ -32,7 +32,7 @@ public class Faturacao implements Serializable
     
     
     public Faturacao() {
-        this.produtos=new CatalogMap<String, Boolean> ();
+        this.produtos = new CatalogMap<String, Boolean> ();
         this.produtosComprados=0;
         this.filiais=1;
         this.vendasZero=0;
@@ -70,42 +70,33 @@ public class Faturacao implements Serializable
     }
     
     public CatalogMap<String, Boolean> getProdutos() {
-        return null;
+        return produtos.clone();
     }
     
     public int getProdutosComprados() {
-        return this.produtosComprados;   
+        return produtosComprados;   
     }
     
     public int getFiliais() {
-        return this.filiais;   
+        return filiais;   
     }
     
     public int getVendasZero() {
-        return this.vendasZero;
+        return vendasZero;
     }
     
     public int[] getNumCompras() {
-        return this.numeroCompras;   
+        return numeroCompras;   
     }
     
     public double[][] getFat() {
-        return this.fat;
+        return fat;
     }
     
     public int[][] getQuant(){
-        return this.quant;
+        return quant;
     }
-    
-    
-    public void addSale(Venda v){
-        this.fat[v.getMes()][v.getFilial()] = (v.getPreco()) * (v.getUnidades());
-        this.quant[v.getMes()][v.getFilial()] += v.getUnidades();
-        this.numeroCompras[v.getMes()] += v.getUnidades();
-        this.produtosComprados ++;
-        this.produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , true);
-     
-    }
+
     
     public int getNumCompras(int mes) {
         return numeroCompras[mes];
@@ -114,7 +105,7 @@ public class Faturacao implements Serializable
     
     public double getFaturacaoMes(int mes) {
         double soma= 0;
-        for(int i = 0; i < this.filiais; i++) {
+        for(int i = 0; i < filiais; i++) {
             soma += fat[mes][i];
         }
         return soma;
@@ -176,20 +167,46 @@ public class Faturacao implements Serializable
         }
         
         
-        /**
-         * public CatalogMap<String, Boolean> getListaComprados() {}
-         */
+        
+    public List<String> getListaComprados() {
+        List<String > lista = new ArrayList<String>();
+
+        for (TreeMap t : produtos.getMaps()) {
+            for(String prod : t.keySet())
+                if(t.get(prod) == TRUE) lista.add(prod);
+         }
+         return lista;
+    }
+
+    public List<String> getListaNaoComprados() {
+        List<String > lista = new ArrayList<String>();
+
+        for (TreeMap t : this.produtos.getMaps()) {
+            for(String prod : t.keySet())
+                if(t.get(prod) == FALSE) lista.add(prod);
+         }
+         return lista;
+        }
     
-    
-    
+
     public void addProduto(String nome){
-        this.produtos.put(nome.charAt(0)-'A' , nome , false);
+        this.produtos.put(nome.charAt(0)-'A' , nome , FALSE);
     }
     
+    public void addSale(Venda v){
+        this.fat[v.getMes()][v.getFilial()] = (v.getPreco()) * (v.getUnidades());
+        this.quant[v.getMes()][v.getFilial()] += v.getUnidades();
+        this.numeroCompras[v.getMes()] ++;
+        this.produtosComprados += v.getUnidades();
+        this.produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , TRUE);
+    }
+
+
     public Faturacao clone() {
         return new Faturacao(this);
     }
     
+
     public boolean equals(Object o) {
         if(o==this) {
             return true;
@@ -207,18 +224,33 @@ public class Faturacao implements Serializable
                 && f.getQuant().equals(quant);
     }
     
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Lista de todos os produtos do hipermercado ").append(produtos).append("\n");
+        sb.append("Número de produtos comprados: ").append(produtosComprados).append("\n");
+        sb.append("Número de filiais: ").append(filiais).append("\n");
+        sb.append("Número de vendas a preço zero: ").append(vendasZero).append("\n");
+        sb.append("Número de compras por mês: ").append(numeroCompras).append("\n");
+        sb.append("Faturação por mês e filial: ").append(fat).append("\n");
+        sb.append("Quantidades por mês e filial: ").append(quant).append("\n");
+        return sb.toString();
+    }
     
-    /**public int hashCode() {
+
+    public int hashCode() {
         int hash = 7;
 
         hash = 31*hash + this.produtos.hashCode();
         hash = 31*hash + this.produtosComprados.hashCode();
         hash = 31*hash + this.filiais.hashCode();
         hash = 31*hash + this.vendasZero.hashCode();
-        hash = 31*hash + this.produtos.hashCode();
+        hash = 31*hash + this.numeroCompras.hashCode();
+        hash = 31*hash + this.fat.hashCode();
+        hash = 31*hash + this.quant.hashCode();
 
         return hash;
-    }*/
+    }
 }
 
 
