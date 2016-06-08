@@ -29,7 +29,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Constructs an empty catalog with capacity ten.
      */
     public CatalogMap() {
-        size = 0;
+        size = 1;
         cat = new ArrayList<HashMap<K,V>>();
 
         for (int i = 0 ; i < size; i++)
@@ -38,6 +38,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
 
     /**
      * Construtor por cópia
+     * TODO isto não funciona
      */
     public CatalogMap(CatalogMap<K,V> c) {
         size = c.size();
@@ -134,6 +135,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
      public Set<Map<K,V>> getMaps() {
          return new TreeSet<Map<K,V>>(cat);
+
      }
 
     /**
@@ -211,7 +213,11 @@ public class CatalogMap<K,V> implements Map<K,V> {
         return true;
      }
 
-    public int hashCode() {
+     /**
+      * Retorna o código de hash para este mapa
+      * @return código de hash para este mapa
+      */
+     public int hashCode() {
         int hash = 7;
 
         hash = 31*hash + size;
@@ -220,6 +226,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
         return hash;
     }
 
+    /**
+     * Retorna um Set com todas as chaves deste mapa
+     * @return Set com todas as chaves deste mapa
+     */
     public Set<K> keySet() {
         Set<K> ret = new TreeSet<>();
         Set<K> aux;
@@ -234,35 +244,103 @@ public class CatalogMap<K,V> implements Map<K,V> {
         return ret;
     }
 
-    public boolean containsKey(Object key) {
-
+    /**
+     * Verifica se o objeto dado é Chave deste mapeamento
+     * @param key Chave cuja presença neste mapeamento será testada0
+     * @return true caso este mapeamento contem a chave dada
+     * @throws ClassCastException Caso o tipo da chave não seja
+     * apropriada para este mapeamento
+     * @throws NullPointerException Caso a chave especificada for null e
+     * este mapeamento não permitir chaves a null
+     */
+    public boolean containsKey(Object key)
+                    throws ClassCastException, NullPointerException {
         for (int i = 0 ; i < size; i++)
             if (cat.get(i).containsKey(key)) return true;
 
         return false;
     }
 
-    public boolean containsValue(Object val) {
-
-        for (int i = 0; i < size; i++)
-            if (cat.get(i).containsValue(val)) return true;
+    /**
+     * Retorna true caso este mapa contenha um mapeamento de uma
+     * ou mais chaves para o valor dado.
+     * @param value Valor cuja presença neste mapeamento será testada
+     * @return true caso este mapa contiver um mapeamento de
+     * uma ou mais chaves para o valor dado
+     * @throws ClassCastException Caso o valor dado não seja apropriado
+     * para este mapeamento
+     * @throws NullPointerException caso o valor dado seja null e este
+     * mapeamento não permitir valores a null
+     */
+    public boolean containsValue(Object value)
+                    throws ClassCastException, NullPointerException {
+        for (int i = 0; i < size; i++) {
+            if (cat.get(i).containsValue(value)) return true;
+        }
 
         return false;
     }
 
-    public V get(Object k) {
+    /**
+     * Retorna o valor que está mapeado à chave dada, ou null caso
+     * tal mapeamento não existir.
+     * @param key Chave cujo valor associado será retornado
+     * @return o valor que está mapeado à chave dada, ou null caso
+     * tal mapeamento não existir
+     * @throws ClassCastException Caso a chave não seja do tipo apropriado
+     * para este mapeamento
+     * @throws NullPointerException Caso a chave especificada for null e
+     * este mapeamento não permitir chaves a null
+     */
+    public V get(Object key) throws ClassCastException, NullPointerException {
+        V ret = null;
+
+        for (HashMap hm : cat)
+            if ((ret = hm.get(key)) != null) return ret;
+
+        return ret;
+    }
+
+    /**
+     * Esta função não é suportada por este mapa!
+     * Associa neste mapeamento valor dado à chave dada.
+     * Se já existir um mapeamento desta chave, o valor antigo será
+     * substituido pelo valor dado.
+     * @param key chave que será associada ao valor dado
+     * @param value valor que será associado à chave dada
+     * @return o valor anteriormente associado a esta chave,
+     * ou null caso não exista um mapeamento anterior desta chave
+     * @throws UnsupportedOperationException este mapeamento não suporta
+     * esta operação, por isso é garantido que será atirada esta exceção
+     */
+    private V put(K key, V value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Este put não é suportado");
+
         return null;
     }
 
-    public V put(K key, V value) {
-        return null;
+    /**
+     * Atira a exceção UnsupportedOperationException
+     * @throws UnsupportedOperationException
+     */
+    private void putAll(Map<? extends K, ? extends V> m)
+                    throws UnsupportedOperationException{
+
+        throw new UnsupportedOperationException("putAll não suportado.");
     }
 
-    public void putAll(Map<? extends K, ? extends V> m) {
-
-    }
-
-    public V remove(Object key) {
+    /**
+     * Remove <b>todos</b> os mapeamentos desta chave.
+     * Retorna o último valor que removeu associado a esta chave.
+     * @param key chave cujos mapeamentos serão todos removidos
+     * @return o último valor que removeu associado a esta chave
+     * @throws ClassCastException caso o tipo da chave não seja apropriado
+     * a este mapa
+     * @throws NullPointerException caso a chave seja null e este mapa não
+     * permitir chaves a null
+     */
+    public V remove(Object key) throws ClassCastException,
+                                       NullPointerException {
         K chave = (K) key;
         Object r = null;
 
@@ -272,6 +350,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
         return (V) r;
     }
 
+    /**
+     * Retorna uma coleção com todos os valores mapeados neste mapa.
+     * @return uma coleção com todos os valores mapeados neste mapa
+     */
     public Collection<V> values() {
         Collection<V> cols = new TreeSet<>();
         Collection<V> aux;
