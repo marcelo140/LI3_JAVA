@@ -162,17 +162,10 @@ public class Faturacao implements Serializable
         return soma;
     }
     
-<<<<<<< HEAD
-    public int getQuantidadeFilial(int filial) throws InvalidBranchException{
-        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
-        int soma = 0 ;
-        for(int m=0; m<12; m++) {
-=======
     public int getQuantidadeFilial(int filial) {
         int soma = 0;
 
         for(int m = 0; m < 12; m++)
->>>>>>> b1095723422dbc7046593378d943b190920e0949
             soma += quant[m][filial];
         
         return soma;
@@ -185,13 +178,9 @@ public class Faturacao implements Serializable
     }
     
     
-<<<<<<< HEAD
     public int getQuantidade(int mes,int filial) throws InvalidMonthException, InvalidBranchException{
         if (mes < 0 || mes > 11) throw new InvalidMonthException ("Mês inválido.");
-        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
-=======
-    public int getQuantidade(int mes, int filial){
->>>>>>> b1095723422dbc7046593378d943b190920e0949
+        if (filial < 0 || filial > filiais) throw new InvalidBranchException ("Filial inválida.");
         return quant[mes][filial];
     }
     
@@ -244,23 +233,25 @@ public class Faturacao implements Serializable
         produtos.put(nome.charAt(0)-'A' , nome , FALSE);
     }
     
-<<<<<<< HEAD
     public void addSale(Venda v){
         int mes = v.getMes();
         int filial = v.getFilial();
-        fat[mes][filial] = (v.getPreco()) * (v.getUnidades());
+   		String nome = v.getNome();
+ 
+	    fat[mes][filial] = v.getPreco() * v.getUnidades();
         quant[mes][filial] += v.getUnidades();
-        numeroCompras[mes] ++;
-        if (produtos.get(v.getProduto().charAt(0) - 'A', v.getProduto()) == FALSE) {
+        numeroCompras[mes]++;
+
+        if (produtos.get(nome.charAt(0) - 'A', nome) == FALSE) {
             produtosComprados ++;
-            produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , TRUE);
+            produtos.put(nome.charAt(0) - 'A', nome, TRUE);
         } 
-        if (v.getPreco() == 0.0) vendasZero ++;
+
+        if (v.getPreco() == 0.0)
+			 vendasZero ++;
     }
 
 
-=======
->>>>>>> b1095723422dbc7046593378d943b190920e0949
     public Faturacao clone() {
         return new Faturacao(this);
     }
