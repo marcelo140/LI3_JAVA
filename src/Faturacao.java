@@ -98,13 +98,15 @@ public class Faturacao implements Serializable
     }
 
     
-    public int getNumCompras(int mes) {
+    public int getNumCompras(int mes) throws InvalidMonthException{
+        if (mes<0 || mes>11) throw new InvalidMonthException ("Mês inválido.");
         return numeroCompras[mes];
     }
     
     
-    public double getFaturacaoMes(int mes) {
-        double soma= 0;
+    public double getFaturacaoMes(int mes) throws InvalidMonthException{
+        if (mes<0 || mes>11) throw new InvalidMonthException ("Mês inválido.");
+        double soma = 0;
         for(int i = 0; i < filiais; i++) {
             soma += fat[mes][i];
         }
@@ -112,7 +114,8 @@ public class Faturacao implements Serializable
         
     }
     
-    public int getQuantidadeMes(int mes) {
+    public int getQuantidadeMes(int mes) throws InvalidMonthException {
+        if (mes<0 || mes>11) throw new InvalidMonthException ("Mês inválido.");
         int soma = 0;
         for(int i=0; i<this.filiais;i++) {
            soma += quant[mes][i];
@@ -121,7 +124,8 @@ public class Faturacao implements Serializable
         
     }
     
-    public double getFaturacaoFilial(int filial) {
+    public double getFaturacaoFilial(int filial) throws InvalidBranchException {
+        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         double soma = 0;
         for (int m = 0; m < 12; m++) {
             soma += fat[m][filial];
@@ -129,7 +133,8 @@ public class Faturacao implements Serializable
         return soma;
     }
     
-    public int getQuantidadeFilial(int filial) {
+    public int getQuantidadeFilial(int filial) throws InvalidBranchException{
+        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         int soma = 0 ;
         for(int m=0; m<12; m++) {
             soma += quant[m][filial];
@@ -138,12 +143,16 @@ public class Faturacao implements Serializable
         return soma;
     }
     
-    public double getFaturacao(int mes, int filial){
+    public double getFaturacao(int mes, int filial) throws InvalidMonthException, InvalidBranchException{
+        if (mes < 0 || mes > 11) throw new InvalidMonthException ("Mês inválido.");
+        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         return fat[mes][filial];
     }
     
     
-    public int getQuantidade(int mes,int filial){
+    public int getQuantidade(int mes,int filial) throws InvalidMonthException, InvalidBranchException{
+        if (mes < 0 || mes > 11) throw new InvalidMonthException ("Mês inválido.");
+        if (filial < 0 || filial >= filiais) throw new InvalidBranchException ("Filial inválida.");
         return quant[mes][filial];
     }
     
@@ -194,11 +203,16 @@ public class Faturacao implements Serializable
     }
     
     public void addSale(Venda v){
-        this.fat[v.getMes()][v.getFilial()] = (v.getPreco()) * (v.getUnidades());
-        this.quant[v.getMes()][v.getFilial()] += v.getUnidades();
-        this.numeroCompras[v.getMes()] ++;
-        this.produtosComprados += v.getUnidades();
-        this.produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , TRUE);
+        int mes = v.getMes();
+        int filial = v.getFilial();
+        fat[mes][filial] = (v.getPreco()) * (v.getUnidades());
+        quant[mes][filial] += v.getUnidades();
+        numeroCompras[mes] ++;
+        if (produtos.get(v.getProduto().charAt(0) - 'A', v.getProduto()) == FALSE) {
+            produtosComprados ++;
+            produtos.put((v.getProduto().charAt(0)) - 'A', v.getProduto() , TRUE);
+        } 
+        if (v.getPreco() == 0.0) vendasZero ++;
     }
 
 
@@ -241,10 +255,10 @@ public class Faturacao implements Serializable
     public int hashCode() {
         int hash = 7;
 
-        hash = 31*hash + this.produtos.hashCode();
-        hash = 31*hash + this.produtosComprados.hashCode();
-        hash = 31*hash + this.filiais.hashCode();
-        hash = 31*hash + this.vendasZero.hashCode();
+        hash = 31*hash + produtos.hashCode();
+        hash = 31*hash + produtosComprados;
+        hash = 31*hash + filiais;
+        hash = 31*hash + vendasZero;
         hash = 31*hash + this.numeroCompras.hashCode();
         hash = 31*hash + this.fat.hashCode();
         hash = 31*hash + this.quant.hashCode();
