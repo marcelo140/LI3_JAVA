@@ -4,7 +4,7 @@ import java.util.*;
  * Contém o total quantidade de todos os meses, bem como
  * a quantidade total e faturado de cada mes para cada produto
  */
-public class Client implements Cloneable{
+public class Client {
 
 	private final int MESES = 12;
 	private HashMap<String, ProductUnit> produtos;

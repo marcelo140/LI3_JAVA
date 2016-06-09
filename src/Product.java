@@ -3,7 +3,7 @@ import java.util.*;
  * Class that describes a product
  */
 
-public class Product implements Cloneable {
+public class Product {
 
 	private final int MESES = 12;
 
