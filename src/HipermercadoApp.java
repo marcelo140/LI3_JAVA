@@ -26,15 +26,22 @@ public class HipermercadoApp {
 		
 			System.out.println("A carregar vendas...");
 			inicio = System.nanoTime();
-			hm.carregarVendas(vendas1mFilename);
+			int vendas = hm.carregarVendas(vendas1mFilename);
 			fim = System.nanoTime();
+			System.out.println("Vendas válidas: " + vendas);
 			System.out.println("Vendas carregadas em " + ((double) (fim-inicio) / 1000000000) + " segundos");
 
 		} catch(IOException e) {
 			System.out.println(e.getMessage());
+			return;
 		}
 
+		System.out.println("Todos os produtos: " + hm.getProdutos());
+		System.out.println("Produtos comprados: " + hm.getProdutosComprados());
+		System.out.println("Produtos não comprados: " + hm.getListaNaoComprados().toString() + "\n");
 
+		System.out.println("Faturação total: " + hm.getFaturacaoTotal());
+		System.out.println("Venda a zero: " + hm.getVendasZero());
 	}
 
 }

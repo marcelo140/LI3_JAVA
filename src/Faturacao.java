@@ -42,7 +42,7 @@ public class Faturacao implements Serializable
     }
     
     public Faturacao(Faturacao c){
-        produtos = c.getProdutos();
+        //produtos = c.getProdutos();
 
         numeroCompras = c.getNumCompras();
         quant         = c.getQuant();
@@ -52,11 +52,11 @@ public class Faturacao implements Serializable
 		produtosComprados = c.getProdutosComprados();
         vendasZero = c.getVendasZero();
     }
-    
+   /** 
     private CatalogMap<String, Marked> getProdutos() {
         return produtos.clone();
     }
-    
+    */
     public int getProdutosComprados() {
         return produtosComprados;   
     }
@@ -174,9 +174,9 @@ public class Faturacao implements Serializable
 	public double getFaturacaoTotal(){
         double soma= 0;
 
-        for(int f=0 ; f < filiais ; f++){
-            for (int m = 0 ; m < 12 ; m++) 
-                soma += fat [m][f];
+        for (int m = 0 ; m < 12 ; m++) 
+        	for(int f=0 ; f < filiais ; f++){
+                soma += fat[m][f];
         }
 
 		return soma;
@@ -210,7 +210,7 @@ public class Faturacao implements Serializable
  
         for (int i = 0; i < letras; i++) {
 			produtos.get(i)
-			        .forEach( (k,v) -> { if (v.isMarked()) lista.add(k); } );
+			        .forEach( (k,v) -> { if (!v.isMarked()) lista.add(k); } );
 		}
 
         return lista;
@@ -226,13 +226,13 @@ public class Faturacao implements Serializable
         int filial = v.getFilial();
    		String produto = v.getProduto();
  
-	    fat[mes][filial] = v.getPreco() * v.getUnidades();
+	    fat[mes][filial] += v.getPreco() * v.getUnidades();
         quant[mes][filial] += v.getUnidades();
         numeroCompras[mes]++;
 
 		Marked m = produtos.get(produto.charAt(0) - 'A', produto);
         if (!m.isMarked()) {
-            produtosComprados ++;
+            produtosComprados++;
 			m.negate();
         }
 
@@ -255,7 +255,7 @@ public class Faturacao implements Serializable
 
         Faturacao f = (Faturacao) o;
 
-        return f.getProdutos().equals(produtos) &&
+        return //f.getProdutos().equals(produtos) &&
                f.getProdutosComprados() == this.produtosComprados &&
                f.getFiliais() == this.filiais &&
                f.getVendasZero() == this.vendasZero &&

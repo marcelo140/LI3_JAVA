@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.List;
 
 public class Hipermercado {
 	private static final int filiais = 3;
@@ -20,28 +21,53 @@ public class Hipermercado {
 		this.fat = fat.clone();
 	}
 
+	public int getProdutos() {
+		return produtos.size();
+	}
+
+	public int getProdutosComprados() {
+		return fat.getProdutosComprados();
+	}
+
+	public List<String> getListaNaoComprados() {
+		return fat.getListaNaoComprados();
+	}
+
+	public int getVendasZero() {
+		return fat.getVendasZero();
+	}
+
+	public double getFaturacaoTotal() {
+		return fat.getFaturacaoTotal();
+	}
+
 	public void clear() {
 		produtos = new CatalogSet<>();
 		clientes = new CatalogSet<>();
 		fat = new Faturacao(filiais);
 	}
 
-	public void carregarVendas(String fich) throws IOException {
+	public int carregarVendas(String fich) throws IOException {
 		BufferedReader inStream = null;
 		String linha = null;
+		int valid = 0;
 
 		inStream = new BufferedReader(new FileReader(fich));
 
 		try {
 			while ( (linha = inStream.readLine()) != null) {
 				Venda v = Venda.parse(linha);
-				if (v.isValid(produtos, clientes))
+				if (v.isValid(produtos, clientes)) {
+					valid++;
 					fat.addSale(v);
+				}
 			}
 		}
 		catch (VendaParseException e) {
 			System.out.println("String could not be parsed");
 		}
+
+		return valid;
 	}
 
     public void carregarProdutos(String fich) throws IOException {
