@@ -1,14 +1,14 @@
 
 /**
- * Cada produto terá a quantidade vendida e o total faturado. 
- * 
+ * Cada produto terá a quantidade vendida e o total faturado.
+ *
  */
-public class ProductUnit implements Cloneable {
-	private int quantidade; 
+public class ProductUnit {
+	private int quantidade;
 	private double faturado;
 
     /**
-     * Construtor padrão 
+     * Construtor padrão
      */
     public ProductUnit() {
 		quantidade = 0;
@@ -33,15 +33,15 @@ public class ProductUnit implements Cloneable {
 
 	/**
 	 * Retorna a quantidade total vendida
-	 * @return Quantidade total vendida 
+	 * @return Quantidade total vendida
 	 */
 	public int getQuantidade() {
 		return quantidade;
 	}
 
 	/**
-	 * Retorna o total faturado 
-	 * @return Total faturado 
+	 * Retorna o total faturado
+	 * @return Total faturado
 	 */
 	public double getFaturado() {
 		return faturado;
@@ -52,10 +52,10 @@ public class ProductUnit implements Cloneable {
 	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
-		
-		faturado += v.getUnidades() * v.getPreco();	
+
+		faturado += v.getUnidades() * v.getPreco();
 		quantidade += v.getUnidades();
-	} 
+	}
 
 	/**
 	 * Retorna uma copia desta instancia de ProductUnit.
@@ -75,14 +75,14 @@ public class ProductUnit implements Cloneable {
 		str.append("ProductUnit:\n");
 		str.append("Quantidade: ").append(quantidade).append("\n");
 		str.append("Faturado: ").append(faturado).append("\n");
-		
+
 		return str.toString();
 	}
 
 	/**
 	 * Compara um dado objeto com esta instancia de ProductUnit.
 	 * @param o Objeto a ser comparado com este ProductUnit
-	 * @return True caso o objeto dado seja igual a este, 
+	 * @return True caso o objeto dado seja igual a este,
 	 * false caso contrário
 	 */
 	public boolean equals(Object o) {

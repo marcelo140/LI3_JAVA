@@ -3,7 +3,7 @@ import java.util.ArrayList;
  * Cada cliente terá a quantidade vendida e o total gasto.
  *
  */
-public class ClientUnit implements Cloneable {
+public class ClientUnit {
     private final int MESES = 12;
 
 	private int quantidade;

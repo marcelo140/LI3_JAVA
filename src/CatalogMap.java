@@ -38,18 +38,6 @@ public class CatalogMap<K,V> implements Map<K,V> {
     }
 
     /**
-     * Construtor por cópia
-     * TODO isto não funciona
-     */
-    public CatalogMap(CatalogMap<K,V> c) {
-        size = c.size();
-        cat = new ArrayList<TreeMap<K,V>>(size);
-
-        for (int i = 0 ; i < size; i++)
-            cat.add(new TreeMap<K,V>(c.get(i)));
-    }
-
-    /**
      * Devolve um map de um dado índice do catálogo
      * @param index Índice
      * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
@@ -120,14 +108,6 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public boolean isEmpty() {
         return (size == 0);
-    }
-
-    /**
-     * Retorna uma copia desta instancia de Catalog.
-     * @return um clone desta instancia de Catalog
-     */
-    public CatalogMap<K,V> clone() {
-        return new CatalogMap<K,V>(this);
     }
 
     /**
