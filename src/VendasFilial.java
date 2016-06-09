@@ -6,40 +6,41 @@
  */
 public class VendasFilial {
 
-    private CatalogMap<String, ClientSale> clientes;
-	private CatalogMap<String, ProductSale> produtos;
+    private CatalogMap<String, Client> clientes;
+	private CatalogMap<String, Product> produtos;
 
 	/**
      * Construtor padrão 
      */
     public VendasFilial() {
-		clientes = new CatalogMap<String, ClientSale>(12);
-		produtos = new CatalogMap<String, ProductSale>(12);
+		clientes = new CatalogMap<String, Client>(12);
+		produtos = new CatalogMap<String, Product>(12);
     }
 
 	/**
 	 * Construtor por parametros
 	 */
-	public VendasFilial(CatalogMap<String, ClientSale> clientes, 
-			CatalogMap<String, ProductSale> produtos) {
-		this.clientes = new CatalogMap<String, ClientSale>(clientes);
-		this.produtos = new CatalogMap<String, ProductSale>(produtos);
+	public VendasFilial(CatalogMap<String, Client> clientes, 
+			CatalogMap<String, Product> produtos) {
+		this.clientes = clientes;
+		this.produtos = produtos;
 	}
 
 	/**
 	 * Construtor por cópia
+	 * NÃO FUNCIONA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
 	public VendasFilial(VendasFilial v) {
-		clientes = new CatalogMap<String, ClientSale> (v.getClientes());
-		produtos = new CatalogMap<String, ProductSale>(v.getProdutos());	
+		clientes = v.getClientes();
+		produtos = v.getProdutos();	
 	}
 
 	/**
 	 * Retorna um CatalogMap que mapeia para cada Cliente, a quantidade que
 	 * comprou e, para cada produto, a quantidade comprada e o total gasto.
 	 */
-	public CatalogMap<String, ClientSale> getClientes() {
-		return new CatalogMap<String, ClientSale>(clientes);
+	private CatalogMap<String, Client> getClientes() {
+		return clientes;
 	}
 
 	/**
@@ -47,8 +48,8 @@ public class VendasFilial {
 	 * total vendida e total faturado, e, para cada cliente, o tipo de
 	 * promoção a que este o comprou.
 	 */
-	public CatalogMap<String, ProductSale> getProdutos() {
-		return new CatalogMap<String, ProductSale>(produtos);
+	private CatalogMap<String, Product> getProdutos() {
+		return produtos;
 	}
 
 	/**
@@ -59,9 +60,9 @@ public class VendasFilial {
 		int mes = v.getMes();
 	    String produto = v.getProduto();
 	    String cliente = v.getCliente();
-	    
+	    /*
 		produtos.get(mes, produto).add(v);
-		clientes.get(mes, cliente).add(v);
+		clientes.get(mes, cliente).add(v); */
 	}
 	
 }

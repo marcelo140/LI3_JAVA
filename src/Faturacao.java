@@ -54,7 +54,7 @@ public class Faturacao implements Serializable
     }
     
     private CatalogMap<String, Marked> getProdutos() {
-        return produtos.clone();
+        return produtos;
     }
     
     public int getProdutosComprados() {
