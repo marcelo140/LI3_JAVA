@@ -40,11 +40,13 @@ public class Product {
 
     /**
 	 * Constroi um novo Product que será igual ao produto dado.
-	 *
      * @param p product to copy
      */
     public Product(Product p) {
-
+		unidadesVendidas = p.getUnidadesVendidas();
+		vendas = p.getVendas();
+		faturado = p.getFaturado();
+		clientes = p.getClientes();
     }
 
 	/**
@@ -77,6 +79,14 @@ public class Product {
 	}
 
 	/**
+	 * Devolve o total faturado num array com todos os meses.
+	 * @return o total faturado num array com todos os meses
+	 */
+	public double[] getFaturado() {
+		return faturado;
+	}
+
+	/**
 	 * Devolve o total faturado do mês dado entre 0 e 11
 	 * @param mes Mês cujo o total faturado deve ser retornado
 	 * @return o total faturado de mês dado
@@ -86,8 +96,8 @@ public class Product {
 		if (mes < 0 || mes > 11)
 		   		throw new InvalidMonthException("Mês inválido.");
 
-		   return faturado[mes];
-	   }
+		return faturado[mes];
+	}
 
 	/**
 	 * Devolve o número de clientes de um dado mês entre 0 e 11
@@ -108,7 +118,7 @@ public class Product {
 	 * um cliente ao seu correspondente ClientUnit
 	 */
 	 private CatalogMap<String, ClientUnit> getClientes() {
-	     return clientes;
+	     return new CatalogMap<>(clientes);
 	 }
 
 	/**
@@ -125,19 +135,27 @@ public class Product {
 	}
 
 	/**
-     * Compares this Product to the specified product. The result is true if and only if
-     * the argument is not null and is a product that represents the same product as this
-     * object.
-     * @param obj the object to compare this Product against
-     * @return true if the given object represents a Product equivalent to this product
+	 * Compara este produto ao objeto dado. Retorna true se e só se o argumento
+	 * não for null e o produto representar o mesmo produto que este objeto.
+     * @param obj Objeto cuja igualdade será testada
+     * @return true se e só se o objeto dado não for null e o produto
+	 * representar o mesmo produto que este objeto
      */
     public boolean equals(Object obj) {
-        return false;
+        if (this == obj) return true;
+		if ( obj == null || obj.getClass() != this.getClass()) return false;
+
+		Product p = (Product) obj;
+		return (p.getUnidadesVendidas() == this.getUnidadesVendidas() &&
+				p.getVendas() == this.getVendas() &&
+				p.getFaturado() == this.getFaturado() &&
+				p.clientes.equals(clientes));
     }
 
     /**
-     * Creates a copy of this product.
-     * @return a clone of this product
+     * Cria uma cópia oca deste produto, o que significa que não terá nenhum
+	 * cliente associado.
+     * @return uma cópia oca deste produto
      */
     public Product clone() {
         return new Product(this);
@@ -150,26 +168,35 @@ public class Product {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Código do produto: \n");
+        sb.append("Produto: \n");
+		sb.append("Unidades Vendidas: ").append(unidadesVendidas).append("\n");
+
+		sb.append("Vendas: \n");
+		for(int i = 0; i < 12; i++)
+			sb.append("\tMês " + (i+1) + ": ").append(vendas[i]).append("\n");
+
+		sb.append("Faturado: \n");
+		for(int i = 0 ; i < 12 ; i++)
+			sb.append("\tMês " + (i+1) + ": ").append(faturado[i]).append("\n");
+
+		sb.append("Clientes: \n");
+		sb.append(clientes.toString());
 
         return sb.toString();
     }
 
     /**
-     * Returns a hash code for this product.
-     * @return a hash code for this product
-     */
+	 * Retorna uma hash para este Product.
+	 * @return uma hash para este Product
+	 */
     public int hashCode() {
-        int hash = 7;
+    	ArrayList<Object> lista = new ArrayList<>();
 
-        return hash;
+		lista.add(unidadesVendidas);
+		lista.add(vendas);
+		lista.add(faturado);
+		lista.add(clientes);
+
+        return lista.hashCode();
     }
-
-	/**
- 	 * Returns true if the product's code is valid.
- 	 * @return true if the product's code is valid
- 	 */
-	public boolean isValid() {
-		return true;
-	}
 }
