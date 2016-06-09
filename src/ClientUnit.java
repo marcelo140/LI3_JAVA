@@ -1,20 +1,20 @@
 import java.util.ArrayList;
 /**
  * Cada cliente terá a quantidade vendida e o total gasto.
- * 
+ *
  */
-public class ClientUnit {
-    private final int MESES = 12; 
-	
-	private int quantidade; 
+public class ClientUnit implements Cloneable {
+    private final int MESES = 12;
+
+	private int quantidade;
 	private double faturado;
 
     /**
-     * Construtor padrão 
+     * Construtor padrão
      */
     public ClientUnit() {
 		quantidade = 0;
-		faturado   = 0; 
+		faturado   = 0;
     }
 
 	/**
@@ -34,7 +34,7 @@ public class ClientUnit {
 	}
 
 	/**
-	 * Retorna a quantidade total comprada pelo cliente 
+	 * Retorna a quantidade total comprada pelo cliente
 	 * @return Quantidade total comprada pelo cliente
 	 */
 	public int getQuantidade() {
@@ -43,7 +43,7 @@ public class ClientUnit {
 
 	/**
 	 * Retorna o total gasto pelo cliente
-	 * @return Total gasto pelo cliente 
+	 * @return Total gasto pelo cliente
 	 */
 	public double getFaturado() {
 		return faturado;
@@ -54,10 +54,10 @@ public class ClientUnit {
 	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
-		
-		faturado += v.getUnidades() * v.getPreco();	
+
+		faturado += v.getUnidades() * v.getPreco();
 		quantidade += v.getUnidades();
-	} 
+	}
 
 	/**
 	 * Retorna uma copia desta instancia de ClientUnit.
@@ -77,14 +77,14 @@ public class ClientUnit {
 		str.append("ClientUnit:\n");
 		str.append("Quantidade:" + quantidade + "\n");
 		str.append("Faturado:" + faturado + "\n");
-		
+
 		return str.toString();
 	}
 
 	/**
 	 * Compara um dado objeto com esta instancia de ClientUnit.
 	 * @param o Objeto a ser comparado com este ClientUnit
-	 * @return True caso o objeto dado seja igual a este, 
+	 * @return True caso o objeto dado seja igual a este,
 	 * false caso contrário
 	 */
 	public boolean equals(Object o) {

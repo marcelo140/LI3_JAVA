@@ -2,9 +2,9 @@ import java.util.*;
 /**
  * Classe que representa Client.
  * Contém o total quantidade de todos os meses, bem como
- * a quantidade total e faturado de cada mes para cada produto 
+ * a quantidade total e faturado de cada mes para cada produto
  */
-public class Client {
+public class Client implements Cloneable{
 
 	private final int MESES = 12;
 	private HashMap<String, ProductUnit> produtos;
@@ -13,9 +13,9 @@ public class Client {
 	private int[] comprasRealizadas;
 	private double[] gastos;
 
-    
+
 	/**
-     * Construtor padrão 
+     * Construtor padrão
      */
     public Client() {
 		produtos = new HashMap<>();
@@ -42,7 +42,7 @@ public class Client {
 		produtos = c.getProdutos();
 		comprou = c.comprou();
 		comprasRealizadas = c.getComprasRealizadas();
-		gastos = c.getGastos();	
+		gastos = c.getGastos();
 	}
 
 
@@ -105,7 +105,7 @@ public class Client {
 		if (pu == null) pu = new ProductUnit();
 		pu.add(v);
 		produtos.put(produto, pu);
-		
+
 	}
 
 	public Cliente clone(){
@@ -115,7 +115,7 @@ public class Client {
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
-		
+
 		if (o == null || o.getClass() != this.getClass())
 			return false;
 
@@ -144,5 +144,5 @@ public class Client {
         hash = 31*hash + gastos.hashCode();
 		return hash;
     }
-	
+
 }
