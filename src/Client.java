@@ -20,7 +20,7 @@ public class Client {
     public Client() {
 		produtos = new HashMap<>();
 		comprou = false;
-		comprasRealizadas = new int[MESES] ();
+		comprasRealizadas = new int[MESES];
 		gastos = new double[MESES];
     }
 
@@ -39,7 +39,7 @@ public class Client {
 	 * Construtor por cópia
 	 */
 	public Client(Client c) {
-		produtos = c.getProdutos();
+		produtos = new HashMap(c.getProdutos());
 		comprou = c.comprou();
 		comprasRealizadas = c.getComprasRealizadas();
 		gastos = c.getGastos();
@@ -59,6 +59,19 @@ public class Client {
 	 */
 	public boolean comprou() {
 		return comprou;
+	}
+
+	/**
+	 * Retorna true se e só se o cliente comprou algo no mês dado.
+	 * @param mes mês para o qual vai verificar se comprou
+	 * @return true se e só se o cliente comprou algo no mês dado
+	 * @throws InvalidMonthException caso o mês dado não seja válido
+	 */
+	public boolean comprou(int mes) throws InvalidMonthException {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido!");
+
+		return comprasRealizadas[mes] == 0;
 	}
 
 	/**
@@ -99,7 +112,7 @@ public class Client {
 		int mes = v.getMes();
 		ProductUnit pu;
 
-		this.quantidade[mes] += quantidade;
+		this.comprasRealizadas[mes] += v.getUnidades();
 
 		pu = produtos.get(produto);
 		if (pu == null) pu = new ProductUnit();
@@ -108,8 +121,8 @@ public class Client {
 
 	}
 
-	public Cliente clone(){
-		return new Cliente(this);
+	public Client clone(){
+		return new Client(this);
 	}
 
 	public boolean equals(Object o) {
@@ -119,9 +132,9 @@ public class Client {
 		if (o == null || o.getClass() != this.getClass())
 			return false;
 
-		Cliente c = (Cliente) o;
+		Client c = (Client) o;
 		return c.getProdutos().equals(produtos) &&
-			   c.comprou().equals(comprou) &&
+			   c.comprou() == this.comprou() &&
                c.getComprasRealizadas().equals(comprasRealizadas) &&
 			   c.getGastos().equals(gastos);
 	}
@@ -136,13 +149,14 @@ public class Client {
     }
 
 	public int hashCode() {
-        int hash = 7;
+	    ArrayList<Object> lista = new ArrayList<>();
 
-        hash = 31*hash + produtos.hashCode();
-        hash = 31*hash + comprou.hashCode();
-        hash = 31*hash + comprasRealizadas.hashCode();
-        hash = 31*hash + gastos.hashCode();
-		return hash;
+	    lista.add(produtos);
+	    lista.add(comprou);
+	    lista.add(comprasRealizadas);
+	    lista.add(gastos);
+
+	    return lista.hashCode();
     }
 
 }

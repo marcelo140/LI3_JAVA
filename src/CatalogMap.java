@@ -18,7 +18,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @param tamanho
      */
     public CatalogMap(int size) {
-        this.size = size;
+        this.size = 0;
         cat = new ArrayList<TreeMap<K,V>>(size);
 
         for (int i = 0 ; i < size; i++)
@@ -27,14 +27,24 @@ public class CatalogMap<K,V> implements Map<K,V> {
     }
 
     /**
+     * Constroi um catalogMap oco com base no dado
+     * @param cm CatalogMap molde para este novo CatalogMap
+     */
+    public CatalogMap(CatalogMap<K,V> cm) {
+        size = 0;
+        cat = new ArrayList<TreeMap<K,V>>(cm.length());
+
+        for (int i = 0 ; i < cm.length() ; i++)
+            cat.add(new TreeMap<K,V> (cm.get(i)));
+    }
+
+    /**
      * Constructs an empty catalog with capacity ten.
      */
     public CatalogMap() {
-        size = 1;
+        size = 0;
         cat = new ArrayList<TreeMap<K,V>>();
-
-        for (int i = 0 ; i < size; i++)
-            cat.add(new TreeMap<K,V>());
+        cat.add(new TreeMap<K,V>());
     }
 
     /**
@@ -43,7 +53,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
      */
     public Map<K,V> get(int index) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= cat.size())
             throw new IndexOutOfBoundsException();
 
         return new TreeMap<K,V> (cat.get(index));
@@ -57,7 +67,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
      */
     public V get(int index, K key) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= cat.size())
             throw new IndexOutOfBoundsException();
 
         return cat.get(index).get(key);
@@ -81,7 +91,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Returns the number of indexes of this catalog
      * @return the number of indexes in this catalog
      */
-    public int indexes() {
+    public int length() {
         return cat.size();
     }
 
@@ -136,7 +146,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @return true se a chave dada é mapeada neste mapeamento
      */
     public boolean containsKey(int index, K key) throws IndexOutOfBoundsException{
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= cat.size())
             throw new IndexOutOfBoundsException();
 
         return cat.get(index).containsKey(key);
@@ -151,7 +161,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @throws IndexOutOfBoundsException Caso o índice não se encontre no catálogo
      */
     public boolean containsValue(int index, V value) throws IndexOutOfBoundsException{
-        if (index < 0 || index >= size)
+        if (index < 0 || index >= cat.size())
             throw new IndexOutOfBoundsException();
 
         return cat.get(index).containsValue(value);
@@ -186,9 +196,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
 
         CatalogMap<K,V> cat = (CatalogMap<K,V>) o;
 
-        if (cat.size() != this.size()) return false;
+        if (cat.size() != this.size() || cat.length() != this.length())
+            return false;
 
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < length(); i++)
             if (this.get(i) != cat.get(i)) return false;
 
         return true;
