@@ -29,7 +29,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Constructs an empty catalog with capacity ten.
      */
     public CatalogMap() {
-        size = 0;
+        size = 1;
         cat = new ArrayList<HashMap<K,V>>();
 
         for (int i = 0 ; i < size; i++)
@@ -38,6 +38,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
 
     /**
      * Construtor por cópia
+     * TODO isto não funciona
      */
     public CatalogMap(CatalogMap<K,V> c) {
         size = c.size();
