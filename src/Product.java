@@ -30,15 +30,12 @@ public class Product {
 	 * @param clientes Lista com HashMap de Clientes para ClientUnit.
      */
     public Product(int unidadesVendidas, int[] vendas,
-					double[] faturado, CatalogMap<String, ClientUnit>) {
+					double[] faturado, CatalogMap<String, ClientUnit> clientes) {
 
 		this.unidadesVendidas = unidadesVendidas;
 		this.vendas = vendas;
 		this.faturado = faturado;
-		this.clientes = new CatalogMap<>(MESES);
-
-		for (i = 0; i < MESES; i++)
-			this.clientes.put(i, clientes.get(i).clone());
+		this.clientes = clientes;
 	}
 
     /**
@@ -72,11 +69,11 @@ public class Product {
 	 * @return o número de venas de cada mês
 	 * @throws InvalidMonthException caso o mês dado não seja válido
 	 */
-	public int getVendas(int mes) {
+	public int getVendas(int mes) throws InvalidMonthException {
 		if (mes < 0 || mes > 11)
 			throw new InvalidMonthException("Mês inválido.");
 
-		return vendas;
+		return vendas[mes];
 	}
 
 	/**
@@ -98,7 +95,7 @@ public class Product {
 	 * @return o número de clientes de um dado mês
 	 * @throws InvalidMonthException caso o mês dado não seja válido
 	 */
-	public int getNumeroClientes(int mes) {
+	public int getNumeroClientes(int mes) throws InvalidMonthException {
 		if (mes < 0 || mes > 11)
 			throw new InvalidMonthException("Mês inválido.");
 		return clientes.get(mes).size();
@@ -110,8 +107,8 @@ public class Product {
 	 * @return um CatalogMap que mapeia, para cada mês,
 	 * um cliente ao seu correspondente ClientUnit
 	 */
-	 public CatalogMap<String, ClientUnit> getClientes() {
-		 return new CatalogMap<String, ClientUnit> (clientes);
+	 private CatalogMap<String, ClientUnit> getClientes() {
+	     return clientes;
 	 }
 
 	/**
