@@ -2,6 +2,7 @@
  *
  */
 
+import java.lang.*;
 import java.util.*;
 import java.util.Set;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 
 public class CatalogMap<K,V> implements Map<K,V> {
-    private List<HashMap<K,V>> cat;
+    private List<TreeMap<K,V>> cat;
     private int size;
 
     /**
@@ -18,10 +19,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public CatalogMap(int size) {
         this.size = size;
-        cat = new ArrayList<HashMap<K,V>>(size);
+        cat = new ArrayList<TreeMap<K,V>>(size);
 
         for (int i = 0 ; i < size; i++)
-            cat.add(new HashMap<K,V>());
+            cat.add(new TreeMap<K,V>());
 
     }
 
@@ -30,10 +31,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public CatalogMap() {
         size = 1;
-        cat = new ArrayList<HashMap<K,V>>();
+        cat = new ArrayList<TreeMap<K,V>>();
 
         for (int i = 0 ; i < size; i++)
-            cat.add(new HashMap<K,V>());
+            cat.add(new TreeMap<K,V>());
     }
 
     /**
@@ -42,10 +43,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public CatalogMap(CatalogMap<K,V> c) {
         size = c.size();
-        cat = new ArrayList<HashMap<K,V>>(size);
+        cat = new ArrayList<TreeMap<K,V>>(size);
 
         for (int i = 0 ; i < size; i++)
-            cat.add(new HashMap<K,V>(c.get(i)));
+            cat.add(new TreeMap<K,V>(c.get(i)));
     }
 
     /**
@@ -57,7 +58,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException();
 
-        return new HashMap<K,V> (cat.get(index));
+        return new TreeMap<K,V> (cat.get(index));
     }
 
     /**
@@ -83,7 +84,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @param value Valor que será associado à chave dada.
      */
     public void put(int index, K key, V value) {
-        HashMap<K,V> map = cat.get(index);
+        TreeMap<K,V> map = cat.get(index);
         map.put(key, value);
         size++;
     }
@@ -142,8 +143,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Remove todos os mapeamentos deste mapa
      */
     public void clear() {
-        for (HashMap hm : cat)
-            hm.clear();
+        for (TreeMap<K,V> tm : cat)
+            tm.clear();
     }
 
     /**
@@ -184,8 +185,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Set<Map.Entry<K,V>> set = new TreeSet<>();
         Set<Map.Entry<K,V>> aux;
 
-        for (HashMap hm : cat) {
-            aux = hm.entrySet();
+        for (TreeMap<K,V> tm : cat) {
+            aux = tm.entrySet();
 
             for (Map.Entry<K,V> m : aux)
                 set.add(m);
@@ -234,8 +235,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Set<K> ret = new TreeSet<>();
         Set<K> aux;
 
-        for (HashMap hm : cat) {
-            aux = hm.keySet();
+        for (TreeMap<K,V> tm : cat) {
+            aux = tm.keySet();
 
             for (K m : aux)
                 ret.add(m);
@@ -295,8 +296,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
     public V get(Object key) throws ClassCastException, NullPointerException {
         V ret = null;
 
-        for (HashMap hm : cat)
-            if ((ret = hm.get(key)) != null) return ret;
+        K k = (K) key;
+
+        for (TreeMap<K,V> tm : cat)
+            if ((ret = tm.get(k)) != null) return ret;
 
         return ret;
     }
@@ -313,17 +316,15 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @throws UnsupportedOperationException este mapeamento não suporta
      * esta operação, por isso é garantido que será atirada esta exceção
      */
-    private V put(K key, V value) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Este put não é suportado");
-
-        return null;
+    public V put(K key, V value) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("put não é suportado");
     }
 
     /**
      * Atira a exceção UnsupportedOperationException
      * @throws UnsupportedOperationException
      */
-    private void putAll(Map<? extends K, ? extends V> m)
+    public void putAll(Map<? extends K, ? extends V> m)
                     throws UnsupportedOperationException{
 
         throw new UnsupportedOperationException("putAll não suportado.");
@@ -344,8 +345,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
         K chave = (K) key;
         Object r = null;
 
-        for (HashMap hm : cat)
-            r = hm.remove(chave);
+        for (TreeMap<K,V> tm : cat)
+            r = tm.remove(chave);
 
         return (V) r;
     }
@@ -358,8 +359,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Collection<V> cols = new TreeSet<>();
         Collection<V> aux;
 
-        for(HashMap hm : cat) {
-            aux = hm.values();
+        for(TreeMap<K,V> tm : cat) {
+            aux = tm.values();
 
             for (V val : aux)
                 cols.add(val);
