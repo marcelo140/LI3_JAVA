@@ -7,7 +7,6 @@ import java.util.*;
 public class Client {
 
 	private final int MESES = 12;
-	private int[] quantidade;
 	private HashMap<String, ProductUnit> produtos;
 	private boolean comprou;
 	//private double gastosTotal ???
@@ -19,7 +18,6 @@ public class Client {
      * Construtor padrão 
      */
     public Client() {
-		quantidade = new int[MESES];
 		produtos = new HashMap<>();
 		comprou = false;
 		comprasRealizadas = new int[MESES] ();
@@ -29,8 +27,7 @@ public class Client {
 	/**
 	 * Construtor por parametros
 	 */
-	public Client(int[] quantidade, Map<String, ProductUnit> produtos, boolean comprou, int[] comprasRealizadas, double[] gastos) {
-		this.quantidade = quantidade;
+	public Client(Map<String, ProductUnit> produtos, boolean comprou, int[] comprasRealizadas, double[] gastos) {
 		this.produtos = new HashMap<String, ProductUnit>(produtos);
 		this.comprou = comprou;
 		this.comprasRealizadas = comprasRealizadas;
@@ -42,19 +39,12 @@ public class Client {
 	 * Construtor por cópia
 	 */
 	public Client(Client c) {
-		quantidade = c.getFaturado();
 		produtos = c.getProdutos();
 		comprou = c.comprou();
 		comprasRealizadas = c.getComprasRealizadas();
 		gastos = c.getGastos();	
 	}
 
-	/**
-	 * Retorna as quantidades compradas de todos os meses deste cliente
-	 */
-	public int[] getFaturado() {
-		return quantidade;
-	}	
 
 	/**
 	 * Retorna uma mapeamento de Produto com ProductUnit (que contém
@@ -106,7 +96,6 @@ public class Client {
 	 */
 	public void add(Venda v) {
 		String produto = v.getProduto();
-		int quantidade = v.getUnidades();
 		int mes = v.getMes();
 		ProductUnit pu;
 
@@ -131,8 +120,7 @@ public class Client {
 			return false;
 
 		Cliente c = (Cliente) o;
-		return c.getFaturado().equals(quantidade) &&
-               c.getProdutos().equals(produtos) &&
+		return c.getProdutos().equals(produtos) &&
 			   c.comprou().equals(comprou) &&
                c.getComprasRealizadas().equals(comprasRealizadas) &&
 			   c.getGastos().equals(gastos);
@@ -140,7 +128,6 @@ public class Client {
 
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Quantidades compradas por mês: ").append(quantidades).append("\n");
         sb.append("Produtos comprados pelo cliente: ").append(produtos).append("\n");
         sb.append("Comprou? ").append(comprou).append("\n");
         sb.append("Número de compras realizadas cada mês: ").append(comprasRealizadas).append("\n");
@@ -151,7 +138,6 @@ public class Client {
 	public int hashCode() {
         int hash = 7;
 
-        hash = 31*hash + quantidade.hashCode();
         hash = 31*hash + produtos.hashCode();
         hash = 31*hash + comprou.hashCode();
         hash = 31*hash + comprasRealizadas.hashCode();
