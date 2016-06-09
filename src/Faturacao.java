@@ -2,77 +2,116 @@ import java.util.*;
 import java.io.Serializable;
 
 /**
- * Write a description of class Faturacao here.
- * 
- * @author (Grupo 85) 
- * @version (junho 2016)
+ * A Faturação relaciona os produtos e as vendas, permitindo obter eficientemente
+ * dados como quantidades vendidas, números de vendas, produtos vendidos, etc
  */
-public class Faturacao implements Serializable
-{
-	private static final int meses = 12;
-	private static final int letras = 26;
+public class Faturacao implements Serializable {
+	private static final int MESES = 12;
+	private static final int LETRAS = 26;
 
-    /**
-     * String = produto, Marked = comprado? Ordenado por ordem alfabetica
-     */
+  	// Catálogo onde cada produto possui uma marca, identificando se este foi, ou não,
+  	// comprado
     private CatalogMap<String, Marked> produtos;
-
+ 	
+	// Número de produtos distintos que foram comprados
     private int produtosComprados;
 
+	// Número de filiais
     private int filiais;
 
+	// Número de transações em que o produto foi vendido a 0.0
     private int vendasZero;
-    
+   
+	// Número de transações efetuadas em cada mês 
     private int[] numeroCompras;
 
+	// Montante faturado em cada mês
     private double[][] fat;
 
+	// Quantidade de produtos vendidos em cada mês
     private int[][] quant;
-    
-    public Faturacao(int filiais){
-		produtos = new CatalogMap<String, Marked>(letras);
+   
+	/**
+ 	 * Cria uma nova instância de Faturacao com o número de filiais dado
+ 	 * @param filiais Número de filias
+ 	 */
+    public Faturacao(int nFiliais){
+		produtos = new CatalogMap<>(LETRAS);
         
-		numeroCompras = new int[meses];
-        quant         = new int[meses][filiais];    
-        fat           = new double[meses][filiais];
+		numeroCompras = new int[MESES];
+        quant         = new int[MESES][nFiliais];    
+        fat           = new double[MESES][nFiliais];
 
-        this.filiais  = filiais;
-		produtosComprados = 0;
 		vendasZero = 0;
+		produtosComprados = 0;
+        filiais = nFiliais;
     }
-    
-    public Faturacao(Faturacao c){
-        //produtos = c.getProdutos();
+   
+	/**
+ 	 * Cria uma nova instância de Faturacao a partir da faturação dada
+ 	 * @param f Faturação a ser copiada
+ 	 */
+    public Faturacao(Faturacao f){
+        produtos = f.getProdutos();
 
-        numeroCompras = c.getNumCompras();
-        quant         = c.getQuant();
-        fat           = c.getFat();
+        numeroCompras = f.getNumCompras();
+        quant         = f.getQuant();
+        fat           = f.getFat();
         
-        filiais = c.getFiliais();
-		produtosComprados = c.getProdutosComprados();
-        vendasZero = c.getVendasZero();
+        vendasZero = f.getVendasZero();
+		produtosComprados = f.getProdutosComprados();
+        filiais = f.getFiliais();
     }
-   /** 
+
+	/**
+ 	 * Obtém uma cópia do mapeamento de produtos
+ 	 * @return cópia do mapeamento dos produtos
+ 	 */
     private CatalogMap<String, Marked> getProdutos() {
-        return produtos;
+		CatalogMap<String, Marked> catalog = new CatalogMap<>(LETRAS);
+
+		for(int i = 0; i < LETRAS; i++)
+			produtos.get(i).forEach( (k,v) -> { catalog.put(k.charAt(0) - 'A', k, v.clone()); } );
+
+        return catalog;
     }
-    */
+
+	/**
+ 	 * Obtém número de produtos comprados
+ 	 * @return número de produtos comprados
+ 	 */	
     public int getProdutosComprados() {
         return produtosComprados;   
     }
-    
+   
+	/**
+ 	 * Obtém número de filiais
+ 	 * @return número de filiais
+ 	 */ 
     public int getFiliais() {
         return filiais;   
     }
     
+	/**
+ 	 * Obtém número de transações em que o produto foi vendido a 0.0
+ 	 * @return número de transações
+ 	 */
     public int getVendasZero() {
         return vendasZero;
     }
-    
+   
+	/**
+ 	 * Obtém uma cópia do número de transações efetuadas em cada mês
+ 	 * @return cópia do número de transações
+ 	 */ 
     private int[] getNumCompras() {
         return numeroCompras.clone();   
     }
-    
+   
+	/**
+ 	 * Obtém cópia dos montantes faturados ao longo do ano, filial a filial
+ 	 * @return cópia dos montantes faturados
+ 	 */ 
     private double[][] getFat() {
 		if (fat == null)
 			return null;
@@ -83,7 +122,11 @@ public class Faturacao implements Serializable
 
         return res;
     }
-    
+   
+	/**
+ 	 * Obtém cópia das quantidades vendidas ao longo do ano, filial a filial
+ 	 * @return cópia das quantidades vendidas
+ 	 */
     private int[][] getQuant(){
 		if (quant == null)
 			return null;
@@ -94,14 +137,26 @@ public class Faturacao implements Serializable
 
         return res;
     }
-    
+   
+	/**
+ 	 * Obtém número de compras efetuadas num dado mês 
+ 	 * @param mes mês em que as compras foram efetuadas
+ 	 * @return número de compras
+ 	 * @throws InvalidMonthException mês inválido
+ 	 */
     public int getNumCompras(int mes) throws InvalidMonthException {
         if (mes < 0 || mes > 11) 
 			throw new InvalidMonthException ("Mês inválido");
 
         return numeroCompras[mes];
     }
-    
+   
+	/**
+ 	 * Obtém montante faturado num dado mês
+ 	 * @param mes mês em que o montante foi faturado
+ 	 * @return montante faturado
+ 	 * @throws InvalidMonthException mês inválido
+ 	 */	 
     public double getFaturacaoMes(int mes) throws InvalidMonthException{
         if (mes < 0 || mes > 11) 
 			throw new InvalidMonthException ("Mês inválido");
@@ -112,7 +167,13 @@ public class Faturacao implements Serializable
 
         return soma;
     }
-    
+   
+	/**
+ 	 * Obtém quantidade vendida num dado mês
+ 	 * @param mes mês em que ocorreram as vendas
+ 	 * @return número de vendas
+ 	 * @throws InvalidMonthException mês inválido
+ 	 */ 
     public int getQuantidadeMes(int mes) throws InvalidMonthException {
         if (mes < 0 || mes > 11)
 			 throw new InvalidMonthException ("Mês inválido");
@@ -123,29 +184,49 @@ public class Faturacao implements Serializable
  
         return soma;
     }
-    
+   
+	/**
+ 	 * Obter o montante faturado numa dada filial
+ 	 * @param filial filial em que ocorreram as vendas
+ 	 * @return montante faturado
+ 	 * @throws InvalidBranchException filial inválida
+ 	 */ 
     public double getFaturacaoFilial(int filial) throws InvalidBranchException {
         if (filial < 0 || filial >= filiais) 
 			throw new InvalidBranchException ("Filial inválida");
 
         double soma = 0;
-        for (int m = 0; m < meses; m++)
+        for (int m = 0; m < MESES; m++)
             soma += fat[m][filial];
 
         return soma;
     }
-    
+   
+	/**
+ 	 * Obtém quantidades vendidas numa dada filial
+ 	 * @param filial que ocorreram as transações
+ 	 * @return quantidade vendida
+ 	 * @throws InvalidBranchException filial inválida
+ 	 */ 
     public int getQuantidadeFilial(int filial) throws InvalidBranchException {
 		if (filial < 0 || filial >= filiais)
 			throw new InvalidBranchException ("Filial inválida");
 
         int soma = 0;
-        for(int m = 0; m < meses; m++)
+        for(int m = 0; m < MESES; m++)
             soma += quant[m][filial];
         
         return soma;
     }
-    
+   
+	/**
+ 	 * Obtém montante faturado durante um dado mês, numa dada filial
+ 	 * @param mes mês em que ocorreram as transações
+ 	 * @param filial filial em que ocorreram as transações
+ 	 * @return montante faturado
+ 	 * @throws InvalidMonthException mês inválido
+ 	 * @throws InvalidBranchException filial inválida
+ 	 */ 
     public double getFaturacao(int mes, int filial) 
 							throws InvalidMonthException, InvalidBranchException{
 
@@ -158,7 +239,14 @@ public class Faturacao implements Serializable
         return fat[mes][filial];
     }
     
-    
+	/**
+ 	 * Obter quantidades vendidas durante um dado mês, numa dada filial
+ 	 * @param mes mês em que foram efetuadas as transações
+ 	 * @param filial filial em que foram efetuadas as transações
+ 	 * @return quantidades vendidas
+ 	 * @throws InvalidMonthException mês inválido
+ 	 * @throws InvalidBranchException filial inválida
+ 	 */
     public int getQuantidade(int mes,int filial) 
 							throws InvalidMonthException, InvalidBranchException{
 
@@ -170,7 +258,11 @@ public class Faturacao implements Serializable
 
         return quant[mes][filial];
     }
-        
+      
+	/**
+ 	 * Obtém o total faturado
+ 	 * @return montante faturado
+ 	 */  
 	public double getFaturacaoTotal(){
         double soma= 0;
 
@@ -181,7 +273,11 @@ public class Faturacao implements Serializable
 
 		return soma;
     }
-    
+   
+	/**
+ 	 * Obtém as quantidades vendidas
+ 	 * @return quantidades vendidas
+ 	 */ 
     public int getQuantidadeTotal(){
         int soma= 0;
         
@@ -192,12 +288,16 @@ public class Faturacao implements Serializable
 
         return soma;
     }
-        
+      
+	/**
+ 	 * Obtém uma lista de todos os produtos que foram comprados
+ 	 * @return lista dos produtos comprados
+ 	 */  
     public List<String> getListaComprados() {
         List<String> lista = new ArrayList<String>();
 		int i = 0;
 
-		for (i = 0; i < letras; i++) {
+		for (i = 0; i < LETRAS; i++) {
 			produtos.get(i)
 			        .forEach( (k, v) -> { if (v.isMarked()) lista.add(k); } );
 		}
@@ -205,10 +305,14 @@ public class Faturacao implements Serializable
         return lista;
     }
 
+	/**
+ 	 * Obtém uma lista de todos os produtos que não foram comprados
+ 	 * @return lista dos produtos não comprados
+ 	 */
     public List<String> getListaNaoComprados() {
         List<String > lista = new ArrayList<String>();
  
-        for (int i = 0; i < letras; i++) {
+        for (int i = 0; i < LETRAS; i++) {
 			produtos.get(i)
 			        .forEach( (k,v) -> { if (!v.isMarked()) lista.add(k); } );
 		}
@@ -216,11 +320,18 @@ public class Faturacao implements Serializable
         return lista;
    }
     
-
+	/**
+ 	 * Adiciona um produto ao catálogo
+ 	 * @param produto produto a ser adicionado
+ 	 */
     public void addProduto(String produto){
         produtos.put(produto.charAt(0)-'A', produto, new Marked(false));
     }
-    
+   
+	/**
+ 	 * Adiciona todos os dados de uma transação à faturação
+ 	 * @param v dados da transação
+ 	 */ 
     public void addSale(Venda v){
         int mes = v.getMes();
         int filial = v.getFilial();
@@ -240,12 +351,19 @@ public class Faturacao implements Serializable
 			 vendasZero ++;
     }
 
-
+	/**
+ 	 * Cria uma cópia desta instância
+ 	 * @return cópia
+ 	 */
     public Faturacao clone() {
         return new Faturacao(this);
     }
     
-
+	/**
+ 	 * Compara esta instância com o objeto dado
+ 	 * @param o objeto a ser comprado
+ 	 * @return true se os objetos tiverem a mesma informação
+ 	 */
     public boolean equals(Object o) {
         if(o==this)
             return true;
@@ -255,16 +373,19 @@ public class Faturacao implements Serializable
 
         Faturacao f = (Faturacao) o;
 
-        return //f.getProdutos().equals(produtos) &&
-               f.getProdutosComprados() == this.produtosComprados &&
-               f.getFiliais() == this.filiais &&
-               f.getVendasZero() == this.vendasZero &&
+        return f.getProdutos().equals(produtos) &&
+               f.getProdutosComprados() == produtosComprados &&
+               f.getFiliais() == filiais &&
+               f.getVendasZero() == vendasZero &&
                f.getNumCompras().equals(numeroCompras) &&
                f.getFat().equals(fat) &&
                f.getQuant().equals(quant);
     }
     
-
+	/**
+ 	 * Converte todos os dados da Faturação para uma String
+ 	 * @return string que descreve a Faturação
+ 	 */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Lista de todos os produtos do hipermercado ").append(produtos).append("\n");
@@ -277,7 +398,10 @@ public class Faturacao implements Serializable
         return sb.toString();
     }
     
-
+	/**
+ 	 * Obtém um código hash para esta Faturação
+ 	 * @return hash
+ 	 */
     public int hashCode() {
         int hash = 7;
 
@@ -285,9 +409,9 @@ public class Faturacao implements Serializable
         hash = 31*hash + produtosComprados;
         hash = 31*hash + filiais;
         hash = 31*hash + vendasZero;
-        hash = 31*hash + this.numeroCompras.hashCode();
-        hash = 31*hash + this.fat.hashCode();
-        hash = 31*hash + this.quant.hashCode();
+        hash = 31*hash + numeroCompras.hashCode();
+        hash = 31*hash + fat.hashCode();
+        hash = 31*hash + quant.hashCode();
 
         return hash;
     }
