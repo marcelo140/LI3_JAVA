@@ -62,6 +62,19 @@ public class Client {
 	}
 
 	/**
+	 * Retorna true se e só se o cliente comprou algo no mês dado.
+	 * @param mes mês para o qual vai verificar se comprou
+	 * @return true se e só se o cliente comprou algo no mês dado
+	 * @throws InvalidMonthException caso o mês dado não seja válido
+	 */
+	public boolean comprou(int mes) throws InvalidMonthException {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido!");
+
+		return comprasRealizadas[mes] == 0;
+	}
+
+	/**
 	 * Retorna o total de compras realizadas cada mês deste cliente
 	 */
 	public int[] getComprasRealizadas() {
@@ -137,12 +150,12 @@ public class Client {
 
 	public int hashCode() {
 	    ArrayList<Object> lista = new ArrayList<>();
-	    
+
 	    lista.add(produtos);
 	    lista.add(comprou);
 	    lista.add(comprasRealizadas);
 	    lista.add(gastos);
-	    
+
 	    return lista.hashCode();
     }
 
