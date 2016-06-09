@@ -11,7 +11,7 @@ public class Venda implements Serializable
     private String cliente;
     private double preco;
     private int unidades;
-    private boolean promocao;
+ //   private boolean promocao;
     private int mes;
     private int filial;
 
@@ -25,14 +25,14 @@ public class Venda implements Serializable
          * @param mes entre 1 e 12
          * @param filial
  	 */
-	public Venda(String produto, double preco, int unidades, boolean promocao,
+	public Venda(String produto, double preco, int unidades, /** boolean promocao,**/
                  String cliente, int mes, int filial)
 	{
 		this.produto = produto;
 		this.cliente = cliente;
 		this.preco = preco;
 		this.unidades = unidades;
-		this.promocao = promocao;
+//		this.promocao = promocao;
 		this.mes = mes;
 		this.filial = filial;
 	}
@@ -46,7 +46,7 @@ public class Venda implements Serializable
 		cliente = v.getCliente();
 		preco = v.getPreco();
 		unidades = v.getUnidades();
-		promocao = v.getPromocao();
+//		promocao = v.getPromocao();
 		mes = v.getMes();
 		filial = v.getFilial();
 	}
@@ -87,9 +87,9 @@ public class Venda implements Serializable
  	 * Verifica se a venda foi efetuada em promoção
  	 * @return
  	 */
-	public boolean getPromocao() {
-		return promocao;
-	}
+//	public boolean getPromocao() {
+//		return promocao;
+//	}
 
 	/**
  	 * Obter mês
@@ -114,7 +114,7 @@ public class Venda implements Serializable
 		String[] dados;
 		int unidades, mes, filial;
 		double preco;
-		boolean promocao;
+//		boolean promocao;
 
 		dados = linha.trim().split(" ");
 
@@ -127,9 +127,9 @@ public class Venda implements Serializable
 			throw new VendaParseException(e.getMessage());
 		}
 
-        promocao = !dados[3].trim().equals("N");
+//        promocao = !dados[3].trim().equals("N");
 
-        return new Venda(dados[0], preco, unidades, promocao, dados[4], mes, filial);
+        return new Venda(dados[0], preco, unidades/**, promocao**/, dados[4], mes, filial);
 	}
 
 
@@ -137,7 +137,8 @@ public class Venda implements Serializable
  	 * Verifica se uma venda é válida
  	 */
 	public boolean isValid(CatalogSet<String> produtos, CatalogSet<String> clientes) {
-		return produtos.contains(produto) && clientes.contains(cliente);
+		return produtos.contains(produto.charAt(0) - 'A', produto) && 
+		       clientes.contains(cliente.charAt(0) - 'A', cliente);
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class Venda implements Serializable
                v.getCliente().equals(cliente) &&
 			   v.getPreco() == preco &&
                v.getUnidades() == unidades &&
-               v.getPromocao() == promocao &&
+//               v.getPromocao() == promocao &&
 			   v.getMes() == mes &&
                v.getFilial() == filial;
 	}
@@ -178,7 +179,7 @@ public class Venda implements Serializable
 		sb.append("Produto: ").append(produto).append("\n");
 		sb.append("Preço: ").append(preco).append("\n");
 		sb.append("Unidades: ").append(unidades).append("\n");
-		sb.append("Promoção: ").append(promocao).append("\n");
+//		sb.append("Promoção: ").append(promocao).append("\n");
 		sb.append("Cliente: ").append(cliente).append("\n");
 		sb.append("Mês: ").append(mes).append("\n");
 		sb.append("Filial: ").append(filial).append("\n");
