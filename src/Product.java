@@ -112,6 +112,19 @@ public class Product {
 	 }
 
 	/**
+	 * Adiciona uma nova venda a este Product
+	 * @param venda Venda a adicionar
+	 */
+	public void add(Venda v) {
+		ClientUnit clu = new ClientUnit(v.getUnidades(), v.getPreco() * v.getUnidades());
+
+		unidadesVendidas += v.getUnidades();
+		vendas[v.getMes()]++;
+		faturado[v.getMes()] += v.getPreco() * v.getUnidades();
+		clientes.put(v.getMes(), v.getCliente(), clu);
+	}
+
+	/**
      * Compares this Product to the specified product. The result is true if and only if
      * the argument is not null and is a product that represents the same product as this
      * object.
