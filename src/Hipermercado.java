@@ -33,10 +33,10 @@ public class Hipermercado {
 		inStream = new BufferedReader(new FileReader(fich));
 
 		try {
-
 			while ( (linha = inStream.readLine()) != null) {
 				Venda v = Venda.parse(linha);
-				fat.addSale(v);
+				if (v.isValid(produtos, clientes))
+					fat.addSale(v);
 			}
 		}
 		catch (VendaParseException e) {

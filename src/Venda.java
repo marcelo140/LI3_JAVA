@@ -121,8 +121,8 @@ public class Venda implements Serializable
 		try {
 			preco    = Double.parseDouble(dados[1].trim());
 			unidades = Integer.parseInt(dados[2].trim());
-			mes      = Integer.parseInt(dados[5].trim());
-			filial   = Integer.parseInt(dados[6].trim());
+			mes      = Integer.parseInt(dados[5].trim()) - 1;
+			filial   = Integer.parseInt(dados[6].trim()) - 1;
 		}catch(NullPointerException | NumberFormatException e) {
 			throw new VendaParseException(e.getMessage());
 		}
