@@ -113,12 +113,54 @@ public class VendasFilial {
 	 * @param venda Venda a adicionar
 	 */
 	public void add(Venda v) {
-		int mes = v.getMes();
-	    String produto = v.getProduto();
-	    String cliente = v.getCliente();
-	    /*
-		produtos.get(mes, produto).add(v);
-		clientes.get(mes, cliente).add(v); */
-	}
+        if (!(clientes.get(v.getCliente()).comprou()))
+            numClientes++;
 
+        if (!(clientes.get(v.getCliente()).comprou(v.getMes())))
+            numClientesMes[v.getMes]++;
+
+        clientes.add(v);
+        produtos.add(v);
+    }
+
+    /**
+     * Cria um clone oco desta instância de VendasFilial.
+     * @return um clone oco desta instância de VendasFilial
+     */
+    public VendasFilial clone() {
+        return new VendasFilial(this);
+    }
+
+    /**
+     * Verifica se um objeto dado é igual a este VendasFilial.
+     * Retorna true se e só se o objeto dado não for null e seja igual a este.
+     * @param o objeto a comparar a este VendasFilial
+     * @return true se e só se o objeto dado não for null e seja igual a este
+     */
+     public boolean equals(Object o) {
+         if (this == o) return true;
+
+         if ( o == null || o.getClass() != this.getClass()) return false;
+
+         VendasFilial vf = (VendasFilial) o;
+         return (vf.getNumClientes() == this.getNumClientes() &&
+                 vf.getNumClientesMes() == this.getNumClientesMes() &&
+                 vf.clientes.equals(clientes) &&
+                 vf.produtos.equals(produtos));
+     }
+
+     /**
+      * Retorna hash desta instância de VendasFilial
+      * @return hash desta instância de VendasFilial
+      */
+      public int hashCode() {
+          ArrayList<Object> lista = new ArrayList<>();
+
+          lista.add(numClientes);
+          lista.add(numClientesMes);
+          lista.add(clientes);
+          lista.add(produtos);
+
+          return lista.hashCode();
+      }
 }
