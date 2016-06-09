@@ -30,7 +30,7 @@ public class Faturacao implements Serializable
     private int[][] quant;
     
     public Faturacao(int filiais){
-		produtos = new CatalogMap<String, Marked>();
+		produtos = new CatalogMap<String, Marked>(letras);
         
 		numeroCompras = new int[meses];
         quant         = new int[meses][filiais];    
@@ -170,24 +170,26 @@ public class Faturacao implements Serializable
 
         return quant[mes][filial];
     }
-    
-    public double getFaturacaoTotal(){
+        
+	public double getFaturacaoTotal(){
         double soma= 0;
 
-		fat.forEach( array -> { 
-		                        array.forEach( value -> { soma += value; } );
-		                      });
+        for(int f=0 ; f < filiais ; f++){
+            for (int m = 0 ; m < 12 ; m++) 
+                soma += fat [m][f];
+        }
 
 		return soma;
     }
     
     public int getQuantidadeTotal(){
         int soma= 0;
-
-		quant.forEach( array -> {
-		                         array.forEach( value -> { soma += value; } );
-		                        }
         
+		for(int f = 0 ; f < filiais ; f++){
+            for (int m = 0 ; m < 12 ; m++) 
+                soma += quant [m][f];
+        }
+
         return soma;
     }
         
