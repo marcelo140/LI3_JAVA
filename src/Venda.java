@@ -1,3 +1,4 @@
+import java.util.*;
 /**
  * Venda é a class que descreve os elementos envolvidos numa transação
  */
@@ -109,7 +110,7 @@ public class Venda implements Serializable
 	/**
  	 * Converte uma String numa Venda
  	 */
-    public static Venda parseLinhaVenda(String linha) throws VendaParseException {
+    public static Venda parse(String linha) throws VendaParseException {
 		String[] dados;
 		int unidades, mes, filial;
 		double preco;
