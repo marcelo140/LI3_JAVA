@@ -119,8 +119,8 @@ public class VendasFilial {
         if (!(clientes.get(v.getCliente()).comprou(v.getMes())))
             numClientesMes[v.getMes]++;
 
-        clientes.add(v);
-        produtos.add(v);
+        clientes.get(v.getCliente()).add(v);
+        produtos.get(v.getProduto())add(v);
     }
 
     /**
