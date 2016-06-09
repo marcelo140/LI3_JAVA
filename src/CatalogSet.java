@@ -134,10 +134,10 @@ public class CatalogSet<E> {
  	 * return true se o elemento existe
  	 */
 	public boolean contains(E element) {
-		boolean r = true;
-		int size = cat.size();
+		boolean r = false;
+		int length = cat.size();
 
-		for(int i = 0; r && i < size; i++)
+		for(int i = 0; !r && i < length; i++)
 			r = cat.get(i).contains(element);
 
 		return r;
