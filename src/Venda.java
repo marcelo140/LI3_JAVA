@@ -22,18 +22,18 @@ public class Venda implements Serializable
          * @param unidades
          * @param promocao
          * @param cliente
-         * @param mes
+         * @param mes entre 1 e 12
          * @param filial
  	 */
 	public Venda(String produto, double preco, int unidades, boolean promocao,
-                 String cliente, int mes, int filial) 
+                 String cliente, int mes, int filial)
 	{
 		this.produto = produto;
 		this.cliente = cliente;
 		this.preco = preco;
 		this.unidades = unidades;
 		this.promocao = promocao;
-		this.mes = mes;
+		this.mes = mes - 1;
 		this.filial = filial;
 	}
 
@@ -85,7 +85,7 @@ public class Venda implements Serializable
 
 	/**
  	 * Verifica se a venda foi efetuada em promoção
- 	 * @return 
+ 	 * @return
  	 */
 	public boolean getPromocao() {
 		return promocao;
@@ -115,9 +115,9 @@ public class Venda implements Serializable
 		int unidades, mes, filial;
 		double preco;
 		boolean promocao;
-		
+
 		dados = linha.trim().split(" ");
-		
+
 		try {
 			preco    = Double.parseDouble(dados[1].trim());
 			unidades = Integer.parseInt(dados[2].trim());
@@ -150,12 +150,12 @@ public class Venda implements Serializable
 
 	/**
  	 * Compara a venda com o objeto dado
- 	 * @return 
+ 	 * @return
  	 */
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
-		
+
 		if (o == null || o.getClass() != this.getClass())
 			return false;
 
@@ -182,7 +182,7 @@ public class Venda implements Serializable
 		sb.append("Cliente: ").append(cliente).append("\n");
 		sb.append("Mês: ").append(mes).append("\n");
 		sb.append("Filial: ").append(filial).append("\n");
-		
+
 		return sb.toString();
 	}
 }
