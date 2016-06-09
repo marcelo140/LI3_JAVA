@@ -33,7 +33,7 @@ public class Venda implements Serializable
 		this.preco = preco;
 		this.unidades = unidades;
 		this.promocao = promocao;
-		this.mes = mes - 1;
+		this.mes = mes;
 		this.filial = filial;
 	}
 
