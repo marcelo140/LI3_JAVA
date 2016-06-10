@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Classe que implementa Vendas por filial. Contém um conjunto de clientes,
@@ -7,6 +8,8 @@
 public class VendasFilial {
 
     private final int MESES = 12;
+	private final int LETRAS = 26;
+
     private int numClientes;
     private int[] numClientesMes;
     private CatalogMap<String, Client> clientes;
@@ -18,8 +21,8 @@ public class VendasFilial {
     public VendasFilial() {
         numClientes = 0;
         numClientesMes = new int[MESES];
-		clientes = new CatalogMap<String, Client>(MESES);
-		produtos = new CatalogMap<String, Product>(MESES);
+		clientes = new CatalogMap<String, Client>(LETRAS);
+		produtos = new CatalogMap<String, Product>(LETRAS);
     }
 
 	/**
@@ -108,19 +111,29 @@ public class VendasFilial {
         return new Product(produtos.get(produto));
     }
 
+	public void addProduto(String produto) {
+		produtos.put(produto.charAt(0) - 'A', produto, new Product());
+	}
+
+	public void addCliente(String cliente) {
+		clientes.put(cliente.charAt(0) - 'A', cliente, new Client());
+	}
+
 	/**
 	 * Adiciona uma venda a esta estrutura
 	 * @param venda Venda a adicionar
 	 */
-	public void add(Venda v) {
-        if (!(clientes.get(v.getCliente()).comprou()))
+	public void add(Venda v) throws InvalidMonthException {
+		Client c = clientes.get(v.getCliente().charAt(0) - 'A', v.getCliente());
+
+        if (!c.comprou())
             numClientes++;
 
-        if (!(clientes.get(v.getCliente()).comprou(v.getMes())))
-            numClientesMes[v.getMes]++;
-
-        clientes.get(v.getCliente()).add(v);
-        produtos.get(v.getProduto())add(v);
+		if (!(c.comprou(v.getMes())))
+	    	numClientesMes[v.getMes()]++;
+        
+		c.add(v);
+        produtos.get(v.getProduto().charAt(0) - 'A', v.getProduto()).add(v);
     }
 
     /**
