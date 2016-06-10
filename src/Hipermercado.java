@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Hipermercado {
-	private static final int filiais = 3;
 	private static final int NUML = 20;
 
 	private CatalogSet<String> produtos;
