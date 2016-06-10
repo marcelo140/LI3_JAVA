@@ -5,6 +5,7 @@ public class Navegador {
     private int linhasPorPagina;
     private int paginas;
     private int pagina;
+    private String ultimoCmd;
     private List<String> linhas;
 
     /**
@@ -16,6 +17,7 @@ public class Navegador {
         this.linhasPorPagina = linhasPorPagina;
         this.linhas = new ArrayList<String>(linhas);
         paginas = linhas.size() / linhasPorPagina + ((linhas.size() % linhasPorPagina == 0) ? 0 : 1);
+        ultimoCmd = new String();
     }
 
     /**
@@ -23,7 +25,7 @@ public class Navegador {
      */
     public void show() {
         try {
-            show(1);
+            show(0);
         } catch (InvalidPageException e) {
             System.out.println("Não foi possível apresentar.");
         }
@@ -37,20 +39,20 @@ public class Navegador {
     public void show(int page) throws InvalidPageException {
         int st, ed;
 
-        if (page < 0 || page > paginas)
+        if (page < 0 || page >= paginas)
             throw new InvalidPageException("Página inválida!");
 
-        pagina = page-1;
+        pagina = page;
         st = pagina * linhasPorPagina;
         ed = st + linhasPorPagina;
-        ed = (ed >= paginas) ? paginas-1 : ed;
+        ed = (ed >= linhas.size()) ? linhas.size() -1 : ed;
 
-        System.out.printf("================== %d / %d ==================", pagina, paginas);
+        System.out.printf("================== %d / %d ==================\n", pagina+1, paginas);
 
         for (String str : linhas.subList(st, ed))
             System.out.printf("\t%s\n", str);
 
-        System.out.printf("=============================================");
+        System.out.printf("=============================================\n");
 
         nextOperation();
     }
@@ -67,21 +69,30 @@ public class Navegador {
         System.out.printf("g: Saltar Página\tq: Sair\n");
         System.out.printf("\t>>");
 
-        op = is.next();
+        op = is.nextLine();
 
+        if (op.isEmpty()) op = ultimoCmd;
+
+        while(op.isEmpty())
+            op = is.nextLine();
+
+        ultimoCmd = op;
         switch(op.charAt(0)) {
             case 'b' :  if (op.length() > 1)
                             nextPage = pagina - Integer.parseInt(op.substring(1));
                         else nextPage = pagina-1;
+                        break;
             case 'n' : if (op.length() > 1)
                             nextPage = pagina + Integer.parseInt(op.substring(1));
                         else nextPage = pagina +1;
+                        break;
             case 'g' : if (op.length() > 1)
-                            nextPage = Integer.parseInt(op.substring(1));
+                            nextPage = Integer.parseInt(op.substring(1)) - 1;
+                        break;
             case 'q' : return;
         }
 
-        if (nextPage <= 0) nextPage = 1;
+        if (nextPage < 0) nextPage = 0;
         else if (nextPage >= paginas) nextPage = paginas-1;
 
         try {

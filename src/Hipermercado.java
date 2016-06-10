@@ -4,6 +4,7 @@ import java.util.*;
 public class Hipermercado {
 	private final int LETRAS = 26;
 	private final int MESES = 12;
+	private static final int NUML = 20;
 
 	private CatalogSet<String> produtos;
 	private CatalogSet<String> clientes;
@@ -26,7 +27,7 @@ public class Hipermercado {
 		this.produtos = produtos.clone();
 		this.clientes = clientes.clone();
 		this.fat = fat.clone();
-		this.filiais = filiais.clone();	
+		this.filiais = filiais.clone();
 	}
 
 	public int getProdutos() {
@@ -60,6 +61,10 @@ public class Hipermercado {
 		return fat.getListaNaoComprados();
 	}
 
+	public int getClientes() {
+		return clientes.size();
+	}
+
 	public int getVendasZero() {
 		return fat.getVendasZero();
 	}
@@ -88,11 +93,37 @@ public class Hipermercado {
 		return res;
 	}
 
+	public Par<int[], Par<int[], double[]>> getClientData(String cliente) {
+		Client[] f = new Client[filiais.length];
+
+		int[] comprasRealizadas = new int[MESES];
+		int[] produtosComprados = new int[MESES];
+		double[] faturado = new double[MESES];
+
+		for(int i = 0; i < filiais.length; i++) {
+			f[i] = filiais.get(cliente);
+
+		for(int j = 0; j < MESES; j++)
+			Set<String> produtos = new HashSet(128);
+	
+			for (int i = 0; i < filiais.length; i++) {
+				c[i].getProdutos.get(j).forEach((k,v) -> { produtos.add(k); });
+				comprasRealizadas[j] += f[i].getCompras(j);
+				faturado[j] += f[i].getGastos(j);
+			}
+
+			comprasRealizadas[j] += produtos.size();
+		}
+		
+		return new Par(comprasRealizadas, new Par(produtosComprados, faturado));
+	}
+
+
 	public void clear() {
 		produtos = new CatalogSet<>();
 		clientes = new CatalogSet<>();
 		fat = new Faturacao(filiais.length);
-		
+
 		for (int i = 0; i < filiais.length; i++)
 			filiais[i] = new VendasFilial();
 	}
@@ -145,7 +176,7 @@ public class Hipermercado {
 
 		while( (cliente = inStream.readLine()) != null ) {
 			clientes.add(cliente.charAt(0) - 'A', cliente);
-			
+
 			for (int i = 0; i < filiais.length; i++)
 				filiais[i].addCliente(cliente);
 		}
@@ -167,5 +198,29 @@ public class Hipermercado {
 
 		ois.close();
 		return hm;
+	}
+
+	/* ================ QUERIES ===================== */
+
+	 public void query1() {
+		 ArrayList<String> lista = new ArrayList<> (fat.getListaNaoComprados());
+		 Navegador nav;
+
+		 lista.sort((s1, s2) -> s1.compareTo(s2));
+		 nav = new Navegador(NUML, lista);
+		 nav.show();
+	 }
+
+	/* ================ ESTATÍSTICAS ===================== */
+
+	public void estatisticas(){
+		System.out.println("Todos os produtos:      " + getProdutos());
+		System.out.println("Produtos comprados:     " + getProdutosComprados());
+		System.out.println("Produtos não comprados: " + getListaNaoComprados().toString() + "\n");
+
+		System.out.println("Todos os clientes: " + getClientes() + "\n");
+
+		System.out.println("Faturação total: " + getFaturacaoTotal());
+		System.out.println("Vendas a zero:   " + getVendasZero());
 	}
 }

@@ -5,10 +5,11 @@ public class HipermercadoApp {
 	private static final String produtosFilename = "../data/Produtos.txt";
 	private static final String clientesFilename = "../data/Clientes.txt";
 	private static final String vendas1mFilename = "../data/Vendas_1M.txt";
-	private static Menu queries;
+	private static Menu queries, principal;
+	private static Hipermercado hm;
 
 	public static void main(String[] args) {
-		Hipermercado hm = new Hipermercado(3);
+ 		hm = new Hipermercado(3);
 		long inicio, fim;
 
 		carregaMenu();
@@ -38,20 +39,14 @@ public class HipermercadoApp {
 			System.out.println(e.getMessage());
 			return;
 		}
-/**
-		System.out.println("Todos os produtos: " + hm.getProdutos());
-		System.out.println("Produtos comprados: " + hm.getProdutosComprados());
-		System.out.println("Produtos não comprados: " + hm.getListaNaoComprados().toString() + "\n");
 
-		System.out.println("Faturação total: " + hm.getFaturacaoTotal());
-		System.out.println("Venda a zero: " + hm.getVendasZero());
-**/
 		executaMenu();
 	}
 
 	private static void carregaMenu() {
 
-	    String[] opcs = {" Lista de códigos nunca comprados e total",
+		String[] prc = {"Queries", "Estatísticas"};
+	    String[] qrs = {" Lista de códigos nunca comprados e total",
 		                 " Total de vendas e total de os clientes que as fizeram, por mês",
 		                 " Total de compras, produtos comprados e total gasto por mês de um cliente",
 		                 " Quantas vezes, e por quantos clientes o produto foi comprado e total faturado, mês a mês",
@@ -61,13 +56,29 @@ public class HipermercadoApp {
 		                 " N clientes com produtos diferentes",
 		                 " N clientes que mais compraram produto dado"};
 
-		queries = new Menu(opcs);
+
+		queries = new Menu(qrs);
+		principal = new Menu(prc);
 	}
 
 	private static void executaMenu() {
 		do {
+			principal.executa();
+			switch(principal.getOpcao()) {
+				case 1 : executaMenuQueries();
+			         	break;
+				case 2 : hm.estatisticas();
+					 	break;
+			}
+		} while (principal.getOpcao() != 0);
+	}
+
+	private static void executaMenuQueries() {
+		do {
 			queries.executa();
 			switch(queries.getOpcao()) {
+				case 1 : hm.query1();
+				         break;
 					/* queries */
 			}
 		} while(queries.getOpcao() != 0);

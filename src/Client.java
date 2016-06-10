@@ -55,7 +55,7 @@ public class Client implements Serializable {
 	 * a quantidade total e o total quantidade de cada mes desse produto)
 	 * @return mapeamento
 	 */
-	private List<Map<String, ProductUnit>> getProdutos() {
+	public List<Map<String, ProductUnit>> getProdutos() {
 		List<Map<String, ProductUnit>> produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
 
 		for(int i = 0; i < MESES; i++) {
