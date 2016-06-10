@@ -16,9 +16,7 @@ public class HipermercadoApp {
 		carregaMenu();
 
 		try {
-
-
-
+			carregaFicheiros();
 		} catch(IOException e) {
 			System.out.println(e.getMessage());
 			return;
@@ -81,7 +79,7 @@ public class HipermercadoApp {
 		} while(queries.getOpcao() != 0);
 	}
 
-	private static void carregaFicheiros() {
+	private static void carregaFicheiros() throws IOException {
 		Scanner is = new Scanner(System.in);
 
 		System.out.print("Ficheiro de Clientes: ");
