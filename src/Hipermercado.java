@@ -6,12 +6,14 @@ public class Hipermercado {
 	private final int MESES = 12;
 	private static final int NUML = 20;
 
+	private String produtosF, clientesF, vendasF;
 	private CatalogSet<String> produtos;
 	private CatalogSet<String> clientes;
 	private Faturacao fat;
 	private VendasFilial[] filiais;
 
-	public Hipermercado(int nFiliais) {
+	public Hipermercado(int nFiliais, String produtosF, String clientesF,
+	                    String vendasF) {
 		produtos = new CatalogSet<>(LETRAS);
 		clientes = new CatalogSet<>(LETRAS);
 		fat = new Faturacao(nFiliais);
@@ -19,15 +21,23 @@ public class Hipermercado {
 		filiais = new VendasFilial[nFiliais];
 		for(int i = 0; i < nFiliais; i++)
 			filiais[i] = new VendasFilial();
+
+		this.produtosF = produtosF;
+		this.clientesF = clientesF;
+		this.vendasF = vendasF;
 	}
 
 	public Hipermercado(CatalogSet<String> produtos, CatalogSet<String> clientes,
-					    Faturacao fat, VendasFilial[] filais) {
+	                    Faturacao fat, VendasFilial[] filais, String produtosF,
+	                    String clientesF, String vendasF) {
 
 		this.produtos = produtos.clone();
 		this.clientes = clientes.clone();
 		this.fat = fat.clone();
 		this.filiais = filiais.clone();
+		this.produtosF = produtosF;
+		this.clientesF = clientesF;
+		this.vendasF = vendasF;
 	}
 
 	public int getProdutos() {
@@ -118,7 +128,7 @@ public class Hipermercado {
 
 			produtosComprados[j] = p.size();
 		}
-		
+
 		return new Par(comprasRealizadas, new Par(produtosComprados, faturado));
 	}
 
