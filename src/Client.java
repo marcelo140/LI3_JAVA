@@ -7,10 +7,9 @@ import java.io.Serializable;
 
 public class Client implements Serializable {
 	private final int MESES = 12;
-	private final int PRODUCT_PER_CLIENT = 16;
 
 	private boolean comprou;
-	private HashMap<String, ProductUnit> produtos;
+	private List<Map<String, ProductUnit>> produtos;
 	private int[] comprasRealizadas;
 	private double[] gastos;
 
@@ -20,15 +19,20 @@ public class Client implements Serializable {
      */
     public Client() {
 		comprou = false;
-		produtos = new HashMap<>(PRODUCT_PER_CLIENT);
 		comprasRealizadas = new int[MESES];
 		gastos = new double[MESES];
+		
+		produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
+		for (int i = 0; i < MESES; i++)
+			produtos.add( new TreeMap<>() );
     }
 
 	/**
 	 * Construtor por parâmetros
 	 */
-	public Client(Map<String, ProductUnit> produtos, boolean comprou, int[] comprasRealizadas, double[] gastos) {
+	public Client(List<Map<String, ProductUnit>> produtos, 
+	              boolean comprou, int[] comprasRealizadas, double[] gastos) {
+
 		setProdutos(produtos);
 		setComprou(comprou);
 		setComprasRealizadas(comprasRealizadas);
@@ -51,12 +55,17 @@ public class Client implements Serializable {
 	 * a quantidade total e o total quantidade de cada mes desse produto)
 	 * @return mapeamento
 	 */
-	public HashMap<String, ProductUnit> getProdutos() {
-		HashMap<String, ProductUnit> lista = new HashMap<>(PRODUCT_PER_CLIENT);
+	private List<Map<String, ProductUnit>> getProdutos() {
+		List<Map<String, ProductUnit>> produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
 
-		produtos.forEach((k,v) -> { lista.put(k, v.clone()); });
+		for(int i = 0; i < MESES; i++) {
+			Map<String, ProductUnit> mes  = new TreeMap<>();
 
-		return lista;
+			this.produtos.get(i).forEach( (k,v) -> { mes.put(k, v.clone()); } );
+			produtos.add(mes);
+		}
+
+		return produtos;
 	}
 
 	/**
@@ -122,8 +131,7 @@ public class Client implements Serializable {
  	 * @return número de compras
  	 * @throws InvalidMonthException mês inválido
  	 */
-	public int getCompras (int mes) throws InvalidMonthException{
-		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
+	public int getCompras (int mes) {
 		return comprasRealizadas[mes];
 	}
 
@@ -155,10 +163,15 @@ public class Client implements Serializable {
  	 * Define os produtos comprados pelo cliente
  	 * @param produtos
  	 */
-	private void setProdutos(Map<String, ProductUnit> produtos) {
-		this.produtos = new HashMap<>(PRODUCT_PER_CLIENT);
+	private void setProdutos(List<Map<String, ProductUnit>> produtos) {
+		this.produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
 
-		produtos.forEach((k,v) -> { this.produtos.put(k, v.clone()); });
+		for(int i = 0; i < MESES; i++) {
+			Map<String, ProductUnit> mes  = new TreeMap<>();
+
+			produtos.get(i).forEach( (k,v) -> { mes.put(k, v.clone()); } );
+			this.produtos.add(mes);
+		}
 	}
 
 	/**
@@ -175,13 +188,13 @@ public class Client implements Serializable {
 		gastos[mes] += faturado;
 		comprasRealizadas[mes]++;
 
-		ProductUnit pu = produtos.get(produto);
+		ProductUnit pu = produtos.get(mes).get(produto);
 
 		if (pu != null)
 			pu.add(unidades, faturado);
 		else {
 			pu = new ProductUnit(unidades, faturado);
-			produtos.put(produto, pu);	
+			produtos.get(mes).put(produto, pu);
 		}
 	}
 
