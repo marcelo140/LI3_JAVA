@@ -79,7 +79,7 @@ public class Product implements Serializable {
  	 * Devolve um catálogo com informação mensal de cada cliente que comprou o produto
  	 * @return catálogo
  	 */
-	private CatalogMap<String, ClientUnit> getClientes() {
+	public CatalogMap<String, ClientUnit> getClientes() {
 		CatalogMap<String, ClientUnit> catalog = new CatalogMap<>(MESES);
 		
 		for (int i = 0; i < MESES; i++) {
@@ -131,12 +131,8 @@ public class Product implements Serializable {
 	 * Devolve o número de vendas do mês dado entre 0 e 11.
 	 * @param mes cujo o número de vendas será retornado.
 	 * @return o número de venas de cada mês
-	 * @throws InvalidMonthException caso o mês dado não seja válido
 	 */
-	public int getVendas(int mes) throws InvalidMonthException {
-		if (mes < 0 || mes > 11)
-			throw new InvalidMonthException("Mês inválido");
-
+	public int getVendas(int mes) {
 		return vendas[mes];
 	}
 
@@ -144,12 +140,8 @@ public class Product implements Serializable {
 	 * Devolve o total faturado do mês dado entre 0 e 11
 	 * @param mes Mês cujo o total faturado deve ser retornado
 	 * @return o total faturado de mês dado
-	 * @throws InvalidMonthException caso o mes dado não seja válido
 	 */
-	public double getFaturado(int mes) throws InvalidMonthException {
-		if (mes < 0 || mes > 11)
-		   		throw new InvalidMonthException("Mês inválido");
-
+	public double getFaturado(int mes) {
 		return faturado[mes];
 	}
 

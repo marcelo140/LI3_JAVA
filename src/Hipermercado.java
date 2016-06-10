@@ -94,30 +94,62 @@ public class Hipermercado {
 	}
 
 	public Par<int[], Par<int[], double[]>> getClientData(String cliente) {
-		Client[] f = new Client[filiais.length];
+		Client[] clients = new Client[filiais.length];
+		List<List<Map<String, ProductUnit>>> produtos = 
+		            new ArrayList<List<Map<String,ProductUnit>>>(3);
 
 		int[] comprasRealizadas = new int[MESES];
 		int[] produtosComprados = new int[MESES];
 		double[] faturado = new double[MESES];
 
 		for(int i = 0; i < filiais.length; i++) {
-			f[i] = filiais.get(cliente);
+			clients[i] = filiais[i].getCliente(cliente);
+			produtos.add(clients[i].getProdutos());
+		}
 
-		for(int j = 0; j < MESES; j++)
-			Set<String> produtos = new HashSet(128);
+		for(int j = 0; j < MESES; j++) {
+			Set<String> p = new HashSet(256);
 	
 			for (int i = 0; i < filiais.length; i++) {
-				c[i].getProdutos.get(j).forEach((k,v) -> { produtos.add(k); });
-				comprasRealizadas[j] += f[i].getCompras(j);
-				faturado[j] += f[i].getGastos(j);
+				produtos.get(i).get(j).forEach((k,v) -> { p.add(k); });
+				comprasRealizadas[j] += clients[i].getCompras(j);
+				faturado[j] += clients[i].getGastos(j);
 			}
 
-			comprasRealizadas[j] += produtos.size();
+			produtosComprados[j] = p.size();
 		}
 		
 		return new Par(comprasRealizadas, new Par(produtosComprados, faturado));
 	}
 
+	public Par<int[], Par<int[], double[]>> getProductData(String produto) {
+		Product[] products =  new Product[filiais.length];
+		List<CatalogMap<String, ClientUnit>> clientes =
+		              new ArrayList<CatalogMap<String, ClientUnit>>(3);
+
+		int[] vezesComprado = new int[MESES];
+		int[] clientesCompraram = new int[MESES];
+		double[] faturado = new double[MESES];
+
+		for(int i = 0; i < filiais.length; i++) {
+			products[i] = filiais[i].getProduct(produto);
+			clientes.add(products[i].getClientes());
+		}
+
+		for(int j = 0; j < MESES; j++) {
+			Set<String> c = new HashSet(256);
+
+			for (int i = 0; i < filiais.length; i++) {
+				clientes.get(j).forEach((k,v) -> { c.add(k); });
+				vezesComprado[j] += products[i].getVendas(j);
+				faturado[j] += products[i].getFaturado(j);
+			}
+
+			clientesCompraram[j] = c.size();
+		}
+
+		return new Par(vezesComprado, new Par(clientesCompraram, faturado));
+	}
 
 	public void clear() {
 		produtos = new CatalogSet<>();

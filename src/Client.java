@@ -118,10 +118,8 @@ public class Client implements Serializable {
  	 * Obtém os gastos num dado mês
  	 * @param mes mês em que ocorreram os gastos
  	 * @return gastos durante o mês
- 	 * @throws InvalidMonthException mês inválido
  	 */
-	public double getGastos(int mes) throws InvalidMonthException{
-		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
+	public double getGastos(int mes) {
 		return gastos[mes];
 	}
 
