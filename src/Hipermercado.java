@@ -28,7 +28,7 @@ public class Hipermercado {
 	}
 
 	public Hipermercado(CatalogSet<String> produtos, CatalogSet<String> clientes,
-	                    Faturacao fat, VendasFilial[] filais, String produtosF,
+	                    Faturacao fat, VendasFilial[] filiais, String produtosF,
 	                    String clientesF, String vendasF) {
 
 		this.produtos = produtos.clone();
@@ -83,6 +83,28 @@ public class Hipermercado {
 		return fat.getFaturacaoTotal();
 	}
 
+	public Set<ParStringInt> getProdutos(String cliente) {
+		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
+
+		for(int i = 0; i < filiais.length; i++) {
+			List<Map<String, ProductUnit>> tmp = filiais[i].getCliente(cliente).getProdutos();
+
+			for(int mes = 0; mes < MESES; mes++) {
+				ProductUnit pu;
+				tmp.get(mes).forEach( (k,v) -> { if ( (pu = tree.get(k)) == null )
+				                                	tree.put(k, v.clone());
+				                                 else
+				                                	pu.add(v);
+				                               });
+			}
+		}
+	
+		Set<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
+		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
+
+		return res;	
+	}
+
 	public int[] clientesPorMes() {
 		List<Set<String>> lista = new ArrayList<Set<String>>(MESES);
 
@@ -104,30 +126,62 @@ public class Hipermercado {
 	}
 
 	public Par<int[], Par<int[], double[]>> getClientData(String cliente) {
-		Client[] f = new Client[filiais.length];
+		Client[] clients = new Client[filiais.length];
+		List<List<Map<String, ProductUnit>>> produtos = 
+		            new ArrayList<List<Map<String,ProductUnit>>>(3);
 
 		int[] comprasRealizadas = new int[MESES];
 		int[] produtosComprados = new int[MESES];
 		double[] faturado = new double[MESES];
 
 		for(int i = 0; i < filiais.length; i++) {
-			f[i] = filiais.get(cliente);
+			clients[i] = filiais[i].getCliente(cliente);
+			produtos.add(clients[i].getProdutos());
+		}
 
-		for(int j = 0; j < MESES; j++)
-			Set<String> produtos = new HashSet(128);
-
+		for(int j = 0; j < MESES; j++) {
+			Set<String> p = new HashSet(256);
+	
 			for (int i = 0; i < filiais.length; i++) {
-				c[i].getProdutos.get(j).forEach((k,v) -> { produtos.add(k); });
-				comprasRealizadas[j] += f[i].getCompras(j);
-				faturado[j] += f[i].getGastos(j);
+				produtos.get(i).get(j).forEach((k,v) -> { p.add(k); });
+				comprasRealizadas[j] += clients[i].getCompras(j);
+				faturado[j] += clients[i].getGastos(j);
 			}
 
-			comprasRealizadas[j] += produtos.size();
+			produtosComprados[j] = p.size();
 		}
 
 		return new Par(comprasRealizadas, new Par(produtosComprados, faturado));
 	}
 
+	public Par<int[], Par<int[], double[]>> getProductData(String produto) {
+		Product[] products =  new Product[filiais.length];
+		List<CatalogMap<String, ClientUnit>> clientes =
+		              new ArrayList<CatalogMap<String, ClientUnit>>(3);
+
+		int[] vezesComprado = new int[MESES];
+		int[] clientesCompraram = new int[MESES];
+		double[] faturado = new double[MESES];
+
+		for(int i = 0; i < filiais.length; i++) {
+			products[i] = filiais[i].getProduct(produto);
+			clientes.add(products[i].getClientes());
+		}
+
+		for(int j = 0; j < MESES; j++) {
+			Set<String> c = new HashSet(256);
+
+			for (int i = 0; i < filiais.length; i++) {
+				clientes.get(j).forEach((k,v) -> { c.add(k); });
+				vezesComprado[j] += products[i].getVendas(j);
+				faturado[j] += products[i].getFaturado(j);
+			}
+
+			clientesCompraram[j] = c.size();
+		}
+
+		return new Par(vezesComprado, new Par(clientesCompraram, faturado));
+	}
 
 	public void clear() {
 		produtos = new CatalogSet<>();

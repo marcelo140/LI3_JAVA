@@ -68,6 +68,15 @@ public class ProductUnit implements Serializable {
 	}
 
 	/**
+ 	 * Adiciona os dados de um outro ProductUnit
+ 	 * @param pu ProductUnit a ser adicionado
+ 	 */
+	public void add(ProductUnit pu) {
+		quantidade += pu.getQuantidade();
+		faturado += pu.getFaturado();
+	}
+
+	/**
 	 * Retorna uma copia desta instancia de ProductUnit.
 	 * @return um clone desta instancia de ProductUnit
 	 */
