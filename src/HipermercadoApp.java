@@ -51,7 +51,7 @@ public class HipermercadoApp {
 
 	private static void carregaMenu() {
 
-		queries = new Menu({" 1 • Lista de códigos nunca comprados e total",
+	    String[] opcs = {" 1 • Lista de códigos nunca comprados e total",
 							" 2 • Total de vendas e total de os clientes que as fizeram, por mês",
 							" 3 • Total de compras, produtos comprados e total gasto por mês de um cliente",
 							" 4 • Quantas vezes, e por quantos clientes o produto foi comprado e total faturado, mês a mês",
@@ -60,7 +60,9 @@ public class HipermercadoApp {
 							" 7 • Para cada filial, a lista dos três maiores compradores em termos de dinheiro",
 							" 8 • N clientes com produtos diferentes",
 							" 9 • N clientes que mais compraram produto dado", "",
-							" 0 • Sair"});
+							" 0 • Sair"};
+	    
+		queries = new Menu(opcs);
 	}
 
 	private static void executaMenu() {
@@ -69,6 +71,6 @@ public class HipermercadoApp {
 			switch(queries.getOpcao()) {
 					/* queries */
 			}
-		} while(menuPrincipal.getOpcao() != 0);
+		} while(queries.getOpcao() != 0);
 	}
 }
