@@ -84,6 +84,10 @@ public class Navegador {
         if (nextPage <= 0) nextPage = 1;
         else if (nextPage >= paginas) nextPage = paginas-1;
 
-        show(nextPage);
+        try {
+            show(nextPage);
+        } catch (InvalidPageException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
