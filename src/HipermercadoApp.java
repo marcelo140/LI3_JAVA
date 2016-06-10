@@ -51,17 +51,16 @@ public class HipermercadoApp {
 
 	private static void carregaMenu() {
 
-	    String[] opcs = {" 1 • Lista de códigos nunca comprados e total",
-							" 2 • Total de vendas e total de os clientes que as fizeram, por mês",
-							" 3 • Total de compras, produtos comprados e total gasto por mês de um cliente",
-							" 4 • Quantas vezes, e por quantos clientes o produto foi comprado e total faturado, mês a mês",
-							" 5 • Produtos comprados do cliente",
-							" 6 • N produtos mais vendidos em todo o ano",
-							" 7 • Para cada filial, a lista dos três maiores compradores em termos de dinheiro",
-							" 8 • N clientes com produtos diferentes",
-							" 9 • N clientes que mais compraram produto dado", "",
-							" 0 • Sair"};
-	    
+	    String[] opcs = {" Lista de códigos nunca comprados e total",
+		                 " Total de vendas e total de os clientes que as fizeram, por mês",
+		                 " Total de compras, produtos comprados e total gasto por mês de um cliente",
+		                 " Quantas vezes, e por quantos clientes o produto foi comprado e total faturado, mês a mês",
+		                 " Produtos comprados do cliente",
+		                 " N produtos mais vendidos em todo o ano",
+		                 " Para cada filial, a lista dos três maiores compradores em termos de dinheiro",
+		                 " N clientes com produtos diferentes",
+		                 " N clientes que mais compraram produto dado"};
+
 		queries = new Menu(opcs);
 	}
 
