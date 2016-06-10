@@ -1,7 +1,7 @@
 
 /**
  * Classe implementa um menu.
- * 
+ *
  */
 import java.util.List;
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.InputMismatchException;
 public class Menu {
     private List<String> opcoes;
     private int op;
-    
+
     /**
      * Constructor for objects of class Menu
      */
     public Menu(String[] opcoes) {
         this.opcoes = new ArrayList<String>();
-        for (String op : opcoes) 
+        for (String op : opcoes)
             this.opcoes.add(op);
         this.op = 0;
     }
@@ -31,28 +31,29 @@ public class Menu {
             this.op = lerOpcao();
         } while (this.op == -1);
     }
-    
+
     /** Apresentar o menu */
     private void showMenu() {
-        System.out.println("\n *** Menu *** ");
+        System.out.println("\n       ======== Menu ======== ");
         int numOpcoes = opcoes.size();
-        
+
         for (int i=0; i< numOpcoes; i++) {
+            System.out.print("  ");
             System.out.print(i+1);
-            System.out.print(" - ");
+            System.out.print(" • ");
             System.out.println(this.opcoes.get(i));
         }
-        
+
         if (!opcoes.get(numOpcoes-1).equals("Fechar sessão"))
-            System.out.println("0 - Sair");
+            System.out.println("\n  0 • Sair");
     }
-    
+
     /** Ler uma opção válida */
     private int lerOpcao() {
-        int op; 
+        int op;
         Scanner is = new Scanner(System.in);
-        
-        System.out.print("Opção: ");
+
+        System.out.print("  >> ");
         try {
             op = is.nextInt();
         }
@@ -66,7 +67,7 @@ public class Menu {
 
         return op;
     }
-    
+
     /**
      * Método para obter a última opção lida
      */
