@@ -7,7 +7,7 @@ public class HipermercadoApp {
 	private static final String vendas1mFilename = "../data/Vendas_1M.txt";
 
 	public static void main(String[] args) {
-		Hipermercado hm = new Hipermercado();
+		Hipermercado hm = new Hipermercado(3);
 		long inicio, fim;
 	
 		try {	
@@ -35,13 +35,14 @@ public class HipermercadoApp {
 			System.out.println(e.getMessage());
 			return;
 		}
-
+/**
 		System.out.println("Todos os produtos: " + hm.getProdutos());
 		System.out.println("Produtos comprados: " + hm.getProdutosComprados());
 		System.out.println("Produtos não comprados: " + hm.getListaNaoComprados().toString() + "\n");
 
 		System.out.println("Faturação total: " + hm.getFaturacaoTotal());
 		System.out.println("Venda a zero: " + hm.getVendasZero());
+**/
 	}
 
 }

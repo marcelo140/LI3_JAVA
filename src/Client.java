@@ -1,15 +1,16 @@
 import java.util.*;
-/**
- * Classe que representa Client.
- * Contém o total quantidade de todos os meses, bem como
- * a quantidade total e faturado de cada mes para cada produto
- */
-public class Client {
+import java.io.Serializable;
 
+/**
+ * Classe que representa um cliente.
+ */
+
+public class Client implements Serializable {
 	private final int MESES = 12;
-	private HashMap<String, ProductUnit> produtos;
+	private final int PRODUCT_PER_CLIENT = 16;
+
 	private boolean comprou;
-	//private double gastosTotal ???
+	private HashMap<String, ProductUnit> produtos;
 	private int[] comprasRealizadas;
 	private double[] gastos;
 
@@ -18,28 +19,27 @@ public class Client {
      * Construtor padrão
      */
     public Client() {
-		produtos = new HashMap<>();
 		comprou = false;
+		produtos = new HashMap<>(PRODUCT_PER_CLIENT);
 		comprasRealizadas = new int[MESES];
 		gastos = new double[MESES];
     }
 
 	/**
-	 * Construtor por parametros
+	 * Construtor por parâmetros
 	 */
 	public Client(Map<String, ProductUnit> produtos, boolean comprou, int[] comprasRealizadas, double[] gastos) {
-		this.produtos = new HashMap<String, ProductUnit>(produtos);
-		this.comprou = comprou;
-		this.comprasRealizadas = comprasRealizadas;
-		this.gastos= gastos;
-
+		setProdutos(produtos);
+		setComprou(comprou);
+		setComprasRealizadas(comprasRealizadas);
+		setGastos(gastos);
 	}
 
 	/**
 	 * Construtor por cópia
 	 */
 	public Client(Client c) {
-		produtos = new HashMap(c.getProdutos());
+		produtos = c.getProdutos();
 		comprou = c.comprou();
 		comprasRealizadas = c.getComprasRealizadas();
 		gastos = c.getGastos();
@@ -49,17 +49,24 @@ public class Client {
 	/**
 	 * Retorna uma mapeamento de Produto com ProductUnit (que contém
 	 * a quantidade total e o total quantidade de cada mes desse produto)
+	 * @return mapeamento
 	 */
-	public Map<String, ProductUnit> getProdutos() {
-		return new HashMap<String, ProductUnit> (produtos);
+	public HashMap<String, ProductUnit> getProdutos() {
+		HashMap<String, ProductUnit> lista = new HashMap<>(PRODUCT_PER_CLIENT);
+
+		produtos.forEach((k,v) -> { lista.put(k, v.clone()); });
+
+		return lista;
 	}
 
 	/**
 	 * Retorna true se e só se o cliente comprou algo
+	 * @return true se o cliente comprou
 	 */
 	public boolean comprou() {
 		return comprou;
 	}
+
 
 	/**
 	 * Retorna true se e só se o cliente comprou algo no mês dado.
@@ -76,55 +83,121 @@ public class Client {
 
 	/**
 	 * Retorna o total de compras realizadas cada mês deste cliente
+	 * @return compras realizadas mês a mês
 	 */
 	public int[] getComprasRealizadas() {
-		return comprasRealizadas;
+		return comprasRealizadas.clone();
 	}
 
 	/**
 	 * Retorna o total de gastos em cada mês deste cliente
+	 * @return gastos mês a mês
 	 */
 	public double[] getGastos() {
 		return gastos;
 	}
 
-
+	/**
+ 	 * Retorna o número de produtos comprados
+ 	 * @return número de produtos comprados
+ 	 */
 	public int getNumeroProdutos(){
 		return produtos.size();
 	}
-
+	
+	/**
+ 	 * Obtém os gastos num dado mês
+ 	 * @param mes mês em que ocorreram os gastos
+ 	 * @return gastos durante o mês
+ 	 * @throws InvalidMonthException mês inválido
+ 	 */
 	public double getGastos(int mes) throws InvalidMonthException{
 		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
 		return gastos[mes];
 	}
 
+	/**
+ 	 * Obtém o número de compras num dado mês
+ 	 * @param mes mês em que ocorreram as transações
+ 	 * @return número de compras
+ 	 * @throws InvalidMonthException mês inválido
+ 	 */
 	public int getCompras (int mes) throws InvalidMonthException{
 		if (mes<0 || mes>= MESES) throw new InvalidMonthException ("Mês inválido.");
 		return comprasRealizadas[mes];
 	}
 
 	/**
-	 * Adiciona uma nova venda a este Cliente
-	 * @param venda Venda a adicionar
+ 	 * Define se o cliente comprou
+ 	 * @param comprou
+ 	 */
+	private void setComprou(boolean comprou) {
+		this.comprou = comprou;
+	}
+
+	/**
+ 	 * Define os gastos do cliente, mês a mês
+ 	 * @param gastos
+ 	 */
+	private void setGastos(double[] gastos) {
+		this.gastos = gastos.clone();
+	}
+
+	/**
+ 	 * Define as compras realizadas pelo cliente, mês a mês
+ 	 * @param comprasRealizadas
+ 	 */
+	private void setComprasRealizadas(int[] comprasRealizadas) {
+		this.comprasRealizadas = comprasRealizadas.clone();
+	}
+
+	/**
+ 	 * Define os produtos comprados pelo cliente
+ 	 * @param produtos
+ 	 */
+	private void setProdutos(Map<String, ProductUnit> produtos) {
+		this.produtos = new HashMap<>(PRODUCT_PER_CLIENT);
+
+		produtos.forEach((k,v) -> { this.produtos.put(k, v.clone()); });
+	}
+
+	/**
+	 * Adiciona os dados de uma venda a este Cliente
+	 * @param v venda a adicionar
 	 */
 	public void add(Venda v) {
 		String produto = v.getProduto();
 		int mes = v.getMes();
-		ProductUnit pu;
+		int unidades = v.getUnidades();
+		double faturado = unidades * v.getPreco();
 
-		this.comprasRealizadas[mes] += v.getUnidades();
+		comprou = true;
+		gastos[mes] += faturado;
+		comprasRealizadas[mes]++;
 
-		pu = produtos.get(produto);
-		if (pu == null) pu = new ProductUnit();
-		pu.add(v);
-		produtos.put(produto, pu);
+		ProductUnit pu = produtos.get(produto);
 
+		if (pu != null)
+			pu.add(unidades, faturado);
+		else {
+			pu = new ProductUnit(unidades, faturado);
+			produtos.put(produto, pu);	
+		}
 	}
 
+	/**
+ 	 * Retorna um cópia deste Client
+ 	 * @return cópia
+ 	 */
 	public Client clone(){
 		return new Client(this);
 	}
 
+	/**
+ 	 * Compara este cliente com o objeto dado. Returna true casa o objeto seja um Client
+ 	 * que represente a mesma informação que este cliente.
+ 	 * @return true se representarem a mesma informação
+ 	 */
 	public boolean equals(Object o) {
 		if (o == this)
 			return true;
@@ -139,6 +212,10 @@ public class Client {
 			   c.getGastos().equals(gastos);
 	}
 
+	/**
+ 	 * Retorna um string que descreve este cliente
+ 	 * @return String que descreve o cliente
+ 	 */
 	public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Produtos comprados pelo cliente: ").append(produtos).append("\n");
@@ -148,15 +225,13 @@ public class Client {
         return sb.toString();
     }
 
+	/**
+ 	 * Retorna uma hash para este Cliente
+ 	 * @return hash
+ 	 */
 	public int hashCode() {
-	    ArrayList<Object> lista = new ArrayList<>();
-
-	    lista.add(produtos);
-	    lista.add(comprou);
-	    lista.add(comprasRealizadas);
-	    lista.add(gastos);
-
-	    return lista.hashCode();
+		return Arrays.hashCode( new Object[] {produtos, comprou, comprasRealizadas,
+		                                      gastos });
     }
 
 }

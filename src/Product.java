@@ -1,46 +1,48 @@
 import java.util.*;
+import java.io.Serializable;
+
 /**
  * Class that describes a product
  */
 
-public class Product {
+public class Product implements Serializable {
 
 	private final int MESES = 12;
 
-	private int unidadesVendidas;
-	private int[] vendas;
-	private double[] faturado;
 	private CatalogMap<String, ClientUnit> clientes;
+	private double[] faturado;
+	private int[] vendas;
+	private int unidadesVendidas;
 
 	/**
-	 * Construtor padrão
+	 * Cria um nova instância de Product
 	 */
 	public Product() {
 		unidadesVendidas = 0;
 		vendas = new int[MESES];
 		faturado = new double[MESES];
-		clientes = new CatalogMap<>();
+		clientes = new CatalogMap<>(MESES);
 	}
 
     /**
-	 * Constroi um novo Product com os parametros passados.
-	 * @param unidadesVendidas Unidades Vendidas do produto
-	 * @param vendas Numero de vendas de cada mês
-	 * @param faturado Total faturado de cada mês
-	 * @param clientes Lista com HashMap de Clientes para ClientUnit.
+	 * Constrói um novo Product com os parâmetros dados.
+	 * @param unidadesVendidas unidades Vendidas do produto
+	 * @param vendas número de vendas em cada mês
+	 * @param faturado total faturado em cada mês
+	 * @param clientes catálogo de clientes que compraram o produto
      */
     public Product(int unidadesVendidas, int[] vendas,
-					double[] faturado, CatalogMap<String, ClientUnit> clientes) {
+	               double[] faturado, CatalogMap<String, ClientUnit> clientes) {
 
-		this.unidadesVendidas = unidadesVendidas;
-		this.vendas = vendas;
-		this.faturado = faturado;
-		this.clientes = clientes;
+		setUnidadesVendidas(unidadesVendidas);
+		setVendas(vendas);
+		setFaturado(faturado);
+		setClientes(clientes);	
 	}
 
     /**
-	 * Constroi um novo Product que será igual ao produto dado.
-     * @param p product to copy
+	 * Constrói um novo Product que será igual ao produto dado.
+     * @param p produto a ser copiado
      */
     public Product(Product p) {
 		unidadesVendidas = p.getUnidadesVendidas();
@@ -62,7 +64,67 @@ public class Product {
 	 * @return o número de venas de cada mês
 	 */
 	public int[] getVendas() {
-		return vendas;
+		return vendas.clone();
+	}
+
+	/**
+	 * Devolve o total faturado num array com todos os meses.
+	 * @return o total faturado num array com todos os meses
+	 */
+	public double[] getFaturado() {
+		return faturado.clone();
+	}
+
+	/**
+ 	 * Devolve um catálogo com informação mensal de cada cliente que comprou o produto
+ 	 * @return catálogo
+ 	 */
+	private CatalogMap<String, ClientUnit> getClientes() {
+		CatalogMap<String, ClientUnit> catalog = new CatalogMap<>(MESES);
+		
+		for (int i = 0; i < MESES; i++) {
+			final int mes = i;
+			clientes.forEach((k,v) -> { catalog.put(mes, k, v.clone()); });
+		}
+
+		return catalog;
+	}
+
+	/**
+ 	 * Define o total faturado
+ 	 * @param faturado
+ 	 */
+	private void setFaturado(double[] faturado) {
+		this.faturado = faturado.clone();
+	}
+
+	/**
+ 	 * Define as unidades vendidas
+ 	 * @param unidadesVendidas número de unidades vendidas
+ 	 */
+	private void setUnidadesVendidas(int unidadesVendidas) {
+		this.unidadesVendidas = unidadesVendidas;
+	}
+
+	/**
+ 	 * Define o número de transações em que este produto foi vendido, mês a mês
+ 	 * @param vendas número de transações mensais
+ 	 */
+	private void setVendas(int[] vendas) {
+		this.vendas = vendas.clone();
+	}
+
+	/**
+ 	 * Define o catálogo com informação mensal de cada cliente que comprou o produto
+ 	 * @param clientes catálogo a ser a copiado
+ 	 */
+	private void setClientes(CatalogMap<String, ClientUnit> clientes) {
+		this.clientes = new CatalogMap<>(MESES);
+
+		for (int i = 0; i < MESES; i++) {
+			final int mes = i;
+			clientes.forEach((k,v) -> { this.clientes.put(mes, k, v.clone()); });
+		}
 	}
 
 	/**
@@ -73,17 +135,9 @@ public class Product {
 	 */
 	public int getVendas(int mes) throws InvalidMonthException {
 		if (mes < 0 || mes > 11)
-			throw new InvalidMonthException("Mês inválido.");
+			throw new InvalidMonthException("Mês inválido");
 
 		return vendas[mes];
-	}
-
-	/**
-	 * Devolve o total faturado num array com todos os meses.
-	 * @return o total faturado num array com todos os meses
-	 */
-	public double[] getFaturado() {
-		return faturado;
 	}
 
 	/**
@@ -94,7 +148,7 @@ public class Product {
 	 */
 	public double getFaturado(int mes) throws InvalidMonthException {
 		if (mes < 0 || mes > 11)
-		   		throw new InvalidMonthException("Mês inválido.");
+		   		throw new InvalidMonthException("Mês inválido");
 
 		return faturado[mes];
 	}
@@ -107,31 +161,32 @@ public class Product {
 	 */
 	public int getNumeroClientes(int mes) throws InvalidMonthException {
 		if (mes < 0 || mes > 11)
-			throw new InvalidMonthException("Mês inválido.");
+			throw new InvalidMonthException("Mês inválido");
+
 		return clientes.get(mes).size();
 	}
 
 	/**
-	 * Devolve um CatalogMap que mapeia, para cada mês,
-	 * um cliente ao seu correspondente ClientUnit.
-	 * @return um CatalogMap que mapeia, para cada mês,
-	 * um cliente ao seu correspondente ClientUnit
-	 */
-	 private CatalogMap<String, ClientUnit> getClientes() {
-	     return new CatalogMap<>(clientes);
-	 }
-
-	/**
-	 * Adiciona uma nova venda a este Product
+	 * Adiciona uma nova venda
 	 * @param venda Venda a adicionar
 	 */
 	public void add(Venda v) {
-		ClientUnit clu = new ClientUnit(v.getUnidades(), v.getPreco() * v.getUnidades());
+		int unidades = v.getUnidades();
+		int mes = v.getMes();
+		double faturado = unidades * v.getPreco();
+		ClientUnit clu = clientes.get(v.getMes(), v.getCliente());
 
-		unidadesVendidas += v.getUnidades();
-		vendas[v.getMes()]++;
-		faturado[v.getMes()] += v.getPreco() * v.getUnidades();
-		clientes.put(v.getMes(), v.getCliente(), clu);
+		if (clu != null)
+			clu.add(unidades, faturado);
+		else {
+			clu = new ClientUnit(unidades, faturado);
+			clientes.put(mes, v.getCliente(), clu);
+		}
+
+		unidadesVendidas += unidades;
+		vendas[mes]++;
+		this.faturado[mes] += faturado;
+
 	}
 
 	/**
@@ -142,37 +197,39 @@ public class Product {
 	 * representar o mesmo produto que este objeto
      */
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-		if ( obj == null || obj.getClass() != this.getClass()) return false;
+        if (this == obj) 
+			return true;
+
+		if ( obj == null || obj.getClass() != this.getClass()) 
+			return false;
 
 		Product p = (Product) obj;
-		return (p.getUnidadesVendidas() == this.getUnidadesVendidas() &&
-				p.getVendas() == this.getVendas() &&
-				p.getFaturado() == this.getFaturado() &&
-				p.clientes.equals(clientes));
+		return p.getUnidadesVendidas() == this.getUnidadesVendidas() &&
+			   p.getVendas() == this.getVendas() &&
+			   p.getFaturado() == this.getFaturado() &&
+			   p.clientes.equals(clientes);
     }
 
     /**
      * Cria uma cópia oca deste produto, o que significa que não terá nenhum
 	 * cliente associado.
-     * @return uma cópia oca deste produto
+     * @return cópia do produto
      */
     public Product clone() {
         return new Product(this);
     }
 
     /**
-     * Returns a string representation of this product.
-     * @return a string representation of this product
+     * Retorna uma string que descreve este produto
+     * @return string que descreve o produto
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Produto: \n");
 		sb.append("Unidades Vendidas: ").append(unidadesVendidas).append("\n");
 
 		sb.append("Vendas: \n");
-		for(int i = 0; i < 12; i++)
+		for(int i = 0; i < MESES; i++)
 			sb.append("\tMês " + (i+1) + ": ").append(vendas[i]).append("\n");
 
 		sb.append("Faturado: \n");
@@ -187,16 +244,9 @@ public class Product {
 
     /**
 	 * Retorna uma hash para este Product.
-	 * @return uma hash para este Product
+	 * @return hash
 	 */
     public int hashCode() {
-    	ArrayList<Object> lista = new ArrayList<>();
-
-		lista.add(unidadesVendidas);
-		lista.add(vendas);
-		lista.add(faturado);
-		lista.add(clientes);
-
-        return lista.hashCode();
+		return Arrays.hashCode(new Object[] {unidadesVendidas, vendas, faturado, clientes});
     }
 }

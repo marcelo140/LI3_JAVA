@@ -70,8 +70,10 @@ public class Faturacao implements Serializable {
     private CatalogMap<String, Marked> getProdutos() {
 		CatalogMap<String, Marked> catalog = new CatalogMap<>(LETRAS);
 
-		for(int i = 0; i < LETRAS; i++)
-			produtos.get(i).forEach( (k,v) -> { catalog.put(k.charAt(0) - 'A', k, v.clone()); } );
+		for(int i = 0; i < LETRAS; i++) {
+			final int index = i;
+			produtos.get(i).forEach( (k,v) -> { catalog.put(index, k, v.clone()); } );
+		}
 
         return catalog;
     }

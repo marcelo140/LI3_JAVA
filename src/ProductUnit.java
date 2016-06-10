@@ -1,9 +1,10 @@
-import java.util.*;
+import java.util.Arrays;
+import java.io.Serializable;
+
 /**
- * Cada produto terá a quantidade vendida e o total faturado.
- *
+ * Descreve as transações sobre este produto por um dado cliente
  */
-public class ProductUnit {
+public class ProductUnit implements Serializable {
 	private int quantidade;
 	private double faturado;
 
@@ -16,7 +17,7 @@ public class ProductUnit {
     }
 
 	/**
-	 * Construtor por parametros
+	 * Construtor por parâmetros
 	 */
 	public ProductUnit(int quantidade, double faturado) {
 		this.quantidade = quantidade;
@@ -33,7 +34,7 @@ public class ProductUnit {
 
 	/**
 	 * Retorna a quantidade total vendida
-	 * @return Quantidade total vendida
+	 * @return quantidade total vendida
 	 */
 	public int getQuantidade() {
 		return quantidade;
@@ -41,7 +42,7 @@ public class ProductUnit {
 
 	/**
 	 * Retorna o total faturado
-	 * @return Total faturado
+	 * @return total faturado
 	 */
 	public double getFaturado() {
 		return faturado;
@@ -49,12 +50,21 @@ public class ProductUnit {
 
 	/**
 	 * Adiciona uma venda ao ProductUnit
-	 * @param v Venda a adicionar
+	 * @param v venda a adicionar
 	 */
 	public void add(Venda v) {
-
 		faturado += v.getUnidades() * v.getPreco();
 		quantidade += v.getUnidades();
+	}
+
+	/**
+ 	 * Adiciona os dados novas à informação atual do cliente
+ 	 * @param unidades unidades compradas
+ 	 * @param faturado montante gasto
+ 	 */
+	public void add(int unidades, double faturado) {
+		this.quantidade += unidades;
+		this.faturado += faturado;
 	}
 
 	/**
@@ -72,7 +82,6 @@ public class ProductUnit {
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 
-		str.append("ProductUnit:\n");
 		str.append("Quantidade: ").append(quantidade).append("\n");
 		str.append("Faturado: ").append(faturado).append("\n");
 
@@ -82,16 +91,18 @@ public class ProductUnit {
 	/**
 	 * Compara um dado objeto com esta instancia de ProductUnit.
 	 * @param o Objeto a ser comparado com este ProductUnit
-	 * @return True caso o objeto dado seja igual a este,
-	 * false caso contrário
+	 * @return true caso o objeto dado seja igual a este
 	 */
 	public boolean equals(Object o) {
-		if (o == this) return true;
-		if ( o == null || o.getClass() != this.getClass() ) return false;
+		if (o == this) 
+			return true;
+
+		if ( o == null || o.getClass() != this.getClass() )
+			 return false;
 
 		ProductUnit pu = (ProductUnit) o;
-		return (pu.getQuantidade() == this.getQuantidade() &&
-				pu.getFaturado() == this.getFaturado());
+		return pu.getQuantidade() == this.getQuantidade() &&
+			   pu.getFaturado() == this.getFaturado();
 	}
 
 	/**
@@ -99,11 +110,6 @@ public class ProductUnit {
 	 * @return hash único para esta instancia
 	 */
 	public int hashCode() {
-		ArrayList<Object> lista = new ArrayList<>();
-
-		lista.add(faturado);
-		lista.add(quantidade);
-
-		return lista.hashCode();
+		return Arrays.hashCode( new Object[] {quantidade, faturado} );
 	}
 }

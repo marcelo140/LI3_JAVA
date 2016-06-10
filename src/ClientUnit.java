@@ -1,16 +1,18 @@
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.Serializable;
+
 /**
- * Cada cliente terá a quantidade vendida e o total gasto.
- *
+ * Descreve as transações de um cliente sobre um produto específico
  */
-public class ClientUnit {
+
+public class ClientUnit implements Serializable {
     private final int MESES = 12;
 
 	private int quantidade;
 	private double faturado;
 
     /**
-     * Construtor padrão
+     * Constrói uma nova instância de ClientUnit
      */
     public ClientUnit() {
 		quantidade = 0;
@@ -18,7 +20,9 @@ public class ClientUnit {
     }
 
 	/**
-	 * Construtor por parametros
+	 * Construtói uma nova instância de ClientUnit com os dados fornecidos
+	 * @param quantidade quantidade do produto que foi comprada
+	 * @param faturado montante gasto a comprar o produto
 	 */
 	public ClientUnit(int quantidade, double faturado) {
 		this.quantidade = quantidade;
@@ -26,11 +30,12 @@ public class ClientUnit {
 	}
 
 	/**
-	 * Construtor por cópia
+	 * Cria uma nova instância de ClientUnit a partir de uma já existente
+	 * @param clu ClientUnit a ser copiado
 	 */
-	public ClientUnit(ClientUnit p) {
-		quantidade = p.getQuantidade();
-		faturado = p.getFaturado();
+	public ClientUnit(ClientUnit clu) {
+		quantidade = clu.getQuantidade();
+		faturado = clu.getFaturado();
 	}
 
 	/**
@@ -42,7 +47,7 @@ public class ClientUnit {
 	}
 
 	/**
-	 * Retorna o total gasto pelo cliente
+	 * Retorna o montante gasto pelo cliente neste produto
 	 * @return Total gasto pelo cliente
 	 */
 	public double getFaturado() {
@@ -54,14 +59,23 @@ public class ClientUnit {
 	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
-
 		faturado += v.getUnidades() * v.getPreco();
 		quantidade += v.getUnidades();
 	}
 
 	/**
-	 * Retorna uma copia desta instancia de ClientUnit.
-	 * @return um clone desta instancia de ClientUnit
+ 	 * Adiciona os dados novos à informação atual do cliente
+ 	 * @param unidades unidades compradas
+ 	 * @param faturado montante gasto
+ 	 */
+	public void add(int unidades, double faturado) {
+		this.quantidade += unidades;
+		this.faturado += faturado;
+	}
+
+	/**
+	 * Retorna uma cópia desta instância de ClientUnit.
+	 * @return cópia
 	 */
 	public ClientUnit clone() {
 		return new ClientUnit(this);
@@ -69,12 +83,11 @@ public class ClientUnit {
 
 	/**
 	 * Cria uma string de acordo com as variáveis deste objeto
-	 * @return String que representa esta instancia de ClientUnit
+	 * @return String que descreve esta instância de ClientUnit
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 
-		str.append("ClientUnit:\n");
 		str.append("Quantidade:" + quantidade + "\n");
 		str.append("Faturado:" + faturado + "\n");
 
@@ -82,30 +95,27 @@ public class ClientUnit {
 	}
 
 	/**
-	 * Compara um dado objeto com esta instancia de ClientUnit.
-	 * @param o Objeto a ser comparado com este ClientUnit
-	 * @return True caso o objeto dado seja igual a este,
-	 * false caso contrário
+	 * Compara um dado objeto com esta instância de ClientUnit.
+	 * @param o Objeto a ser comparado
+	 * @return true caso o objeto dado seja igual a este
 	 */
 	public boolean equals(Object o) {
-		if (o == this) return true;
-		if ( o == null || o.getClass() != this.getClass() ) return false;
+		if (o == this) 
+			return true;
+
+		if ( o == null || o.getClass() != this.getClass() ) 
+			return false;
 
 		ClientUnit pu = (ClientUnit) o;
-		return (pu.getQuantidade() == this.getQuantidade() &&
-				pu.getFaturado() == this.getFaturado());
+		return pu.getQuantidade() == getQuantidade() &&
+			   pu.getFaturado() == getFaturado();
 	}
 
 	/**
-	 * Devolve um hash único para esta instancia de ClientUnit
-	 * @return hash único para esta instancia
+	 * Devolve um hash único para esta instância de ClientUnit
+	 * @return hash único para esta instância
 	 */
 	public int hashCode() {
-		ArrayList<Object> lista = new ArrayList<>();
-
-		lista.add(quantidade);
-		lista.add(faturado);
-
-		return lista.hashCode();
+		return Arrays.hashCode(new Object[] { quantidade, faturado });
 	}
 }

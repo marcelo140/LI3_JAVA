@@ -2,23 +2,29 @@ import java.io.*;
 import java.util.List;
 
 public class Hipermercado {
-	private static final int filiais = 3;
 
-	CatalogSet<String> produtos;
-	CatalogSet<String> clientes;
-	Faturacao fat;
+	private CatalogSet<String> produtos;
+	private CatalogSet<String> clientes;
+	private Faturacao fat;
+	private VendasFilial[] filiais;
 
-	public Hipermercado() {
+	public Hipermercado(int nFiliais) {
 		produtos = new CatalogSet<>(26);
 		clientes = new CatalogSet<>(26);
-		fat = new Faturacao(filiais);
+		fat = new Faturacao(nFiliais);
+
+		filiais = new VendasFilial[nFiliais];
+		for(int i = 0; i < nFiliais; i++)
+			filiais[i] = new VendasFilial();
 	}
 
 	public Hipermercado(CatalogSet<String> produtos, CatalogSet<String> clientes,
-					    Faturacao fat) {
+					    Faturacao fat, VendasFilial[] filais) {
+
 		this.produtos = produtos.clone();
 		this.clientes = clientes.clone();
 		this.fat = fat.clone();
+		this.filiais = filiais.clone();	
 	}
 
 	public int getProdutos() {
@@ -44,7 +50,10 @@ public class Hipermercado {
 	public void clear() {
 		produtos = new CatalogSet<>();
 		clientes = new CatalogSet<>();
-		fat = new Faturacao(filiais);
+		fat = new Faturacao(filiais.length);
+		
+		for (int i = 0; i < filiais.length; i++)
+			filiais[i] = new VendasFilial();
 	}
 
 	public int carregarVendas(String fich) throws IOException {
@@ -60,11 +69,13 @@ public class Hipermercado {
 				if (v.isValid(produtos, clientes)) {
 					valid++;
 					fat.addSale(v);
+					filiais[v.getFilial()].add(v);
 				}
 			}
 		}
-		catch (VendaParseException e) {
-			System.out.println("String could not be parsed");
+
+		catch (VendaParseException | InvalidMonthException e) {
+			System.out.println("fuk this");
 		}
 
 		return valid;
@@ -79,6 +90,9 @@ public class Hipermercado {
 		while( (produto = inStream.readLine()) != null ) {
 			produtos.add(produto.charAt(0) - 'A', produto);
 			fat.addProduto(produto);
+
+			for (int i = 0; i < filiais.length; i++)
+				filiais[i].addProduto(produto);
 		}
 	}
 
@@ -88,8 +102,12 @@ public class Hipermercado {
 
 		inStream = new BufferedReader(new FileReader(fich));
 
-		while( (cliente = inStream.readLine()) != null )
+		while( (cliente = inStream.readLine()) != null ) {
 			clientes.add(cliente.charAt(0) - 'A', cliente);
+			
+			for (int i = 0; i < filiais.length; i++)
+				filiais[i].addCliente(cliente);
+		}
 	}
 
 	public void guardarDados(String path) throws IOException {
