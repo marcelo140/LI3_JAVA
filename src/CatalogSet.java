@@ -69,8 +69,8 @@ public class CatalogSet<E> {
 	public void add(int index, E element) {
 		TreeSet<E> tree = cat.get(index);
 
-		tree.add(element);
-		size++;
+		if (tree.add(element))
+			size++;
 	}
 
 	/**
