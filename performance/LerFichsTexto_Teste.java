@@ -132,7 +132,7 @@ public class LerFichsTexto_Teste{
 
         promocao = !dados[3].trim().equals("N");
 
-        return new Venda(dados[0], preco, unidades, promocao, dados[4], mes, filial);
+        return new Venda(dados[0], preco, unidades, dados[4], mes, filial);
     }
 
     public static ArrayList<Venda> parseAllLinhas(ArrayList<String> linhas) {
