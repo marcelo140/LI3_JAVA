@@ -28,7 +28,7 @@ public class Hipermercado {
 	}
 
 	public Hipermercado(CatalogSet<String> produtos, CatalogSet<String> clientes,
-	                    Faturacao fat, VendasFilial[] filais, String produtosF,
+	                    Faturacao fat, VendasFilial[] filiais, String produtosF,
 	                    String clientesF, String vendasF) {
 
 		this.produtos = produtos.clone();
@@ -81,6 +81,28 @@ public class Hipermercado {
 
 	public double getFaturacaoTotal() {
 		return fat.getFaturacaoTotal();
+	}
+
+	public Set<ParStringInt> getProdutos(String cliente) {
+		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
+
+		for(int i = 0; i < filiais.length; i++) {
+			List<Map<String, ProductUnit>> tmp = filiais[i].getCliente(cliente).getProdutos();
+
+			for(int mes = 0; mes < MESES; mes++) {
+				ProductUnit pu;
+				tmp.get(mes).forEach( (k,v) -> { if ( (pu = tree.get(k)) == null )
+				                                	tree.put(k, v.clone());
+				                                 else
+				                                	pu.add(v);
+				                               });
+			}
+		}
+	
+		Set<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
+		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
+
+		return res;	
 	}
 
 	public int[] clientesPorMes() {
