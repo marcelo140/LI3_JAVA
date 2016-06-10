@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Classe que implementa Vendas por filial. Contém um conjunto de clientes,
@@ -10,8 +10,6 @@ public class VendasFilial {
     private final int MESES = 12;
 	private final int LETRAS = 26;
 
-    private int numClientes;
-    private int[] numClientesMes;
     private CatalogMap<String, Client> clientes;
 	private CatalogMap<String, Product> produtos;
 
@@ -19,76 +17,115 @@ public class VendasFilial {
      * Construtor padrão
      */
     public VendasFilial() {
-        numClientes = 0;
-        numClientesMes = new int[MESES];
 		clientes = new CatalogMap<String, Client>(LETRAS);
 		produtos = new CatalogMap<String, Product>(LETRAS);
     }
 
 	/**
-	 * Construtor por parametros
+	 * Construtor por parâmetros
 	 */
-	public VendasFilial(int numClientes, int[] numClientesMes,
-                        CatalogMap<String, Client> clientes,
+	public VendasFilial(CatalogMap<String, Client> clientes,
                         CatalogMap<String, Product> produtos) {
 
+		setClientes(clientes);
+		setProdutos(produtos);
 	}
 
 	/**
 	 * Construtor por cópia
-	 * NÃO FUNCIONA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	 */
 	public VendasFilial(VendasFilial v) {
-
-        numClientes = v.getNumClientes();
-        numClientesMes = v.getNumClientesMes();
 		clientes = v.getClientes();
 		produtos = v.getProdutos();
 	}
 
     /**
-     * Retorna o número de clientes que compraram nesta filial.
-     * @return o número de clientes que compraram nesta filial
-     */
-    public int getNumClientes() {
-         return numClientes;
-    }
-
-    /**
-      * Retorna um array com o número de clientes que compraram em cada mês.
-      * @return um array com o número de clientes que compraram em cada mês
-      */
-    public int[] getNumClientesMes() {
-        return numClientesMes;
-    }
-
-    /**
-     * Retorna o número de clientes que compraram no mês dado.
-     * @param mes mês
-     * @return o número de clientes que compraram no mês dado
-     */
-    public int getNumClientesMes(int mes) throws InvalidMonthException {
-        if (mes < 0 || mes > 11)
-            throw new InvalidMonthException("Mês inválido.");
-
-       return numClientesMes[mes];
-   }
-
-    /**
 	 * Retorna um CatalogMap que mapeia para cada Cliente, a quantidade que
 	 * comprou e, para cada produto, a quantidade comprada e o total gasto.
+	 * @return catálogo de clientes
 	 */
 	private CatalogMap<String, Client> getClientes() {
-		return new CatalogMap<>(clientes);
+		CatalogMap<String, Client> catalog = new CatalogMap<>(LETRAS);
+
+		for (int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			clientes.get(i).forEach( (k,v) -> { catalog.put(letra, k, v.clone()); });
+		}
+
+		return catalog;
 	}
 
 	/**
 	 * Retorna um CatalogMap que mapeia para cada Produto, a quantidade
 	 * total vendida e total faturado, e, para cada cliente, o tipo de
 	 * promoção a que este o comprou.
+	 * @return catálogo de produtos
 	 */
 	private CatalogMap<String, Product> getProdutos() {
-		return new CatalogMap<>(produtos);
+		CatalogMap<String, Product> catalog = new CatalogMap<>(LETRAS);
+
+		for (int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			produtos.get(i).forEach( (k,v) -> { catalog.put(letra, k, v.clone()); });
+		}
+
+		return catalog;
+	}
+
+	/**
+ 	 * Define o catálogo de produtos
+ 	 * @param produtos catálogo a ser copiado
+ 	 */
+	private void setProdutos(CatalogMap<String, Product> produtos) {
+		this.produtos = new CatalogMap<>(LETRAS);
+
+		for (int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			produtos.get(i).forEach( (k,v) -> { this.produtos.put(letra, k, v.clone()); });
+		}
+	}
+
+	/**
+ 	 * Define o catálogo de clientes
+ 	 * @param clientes catálogo a ser copiado
+ 	 */
+	private void setClientes(CatalogMap<String, Client> clientes) {
+		this.clientes = new CatalogMap<>(LETRAS);
+
+		for (int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			clientes.get(i).forEach( (k,v) -> { this.clientes.put(letra, k, v.clone()); });
+		}
+	}
+
+	/**
+ 	 * Obtém o conjunto de todos os clientes que compraram nesta filial
+ 	 * @return conjunto
+ 	 */
+	public CatalogSet<String> getClientesCompraram() {
+		CatalogSet<String> res = new CatalogSet<>(LETRAS);
+
+		for(int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			clientes.get(i).forEach( (k,v) -> { if (v.comprou()) res.add(letra, k); } );
+		}
+
+		return res;
+	}
+
+	/**
+ 	 * Obtém o conjunto de todos os clientes que não compraram nesta filial
+ 	 * @return conjunto
+ 	 */
+	public CatalogSet<String> getClientesNaoCompraram() {
+		CatalogSet<String> res = new CatalogSet<>(LETRAS);
+
+		for(int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			clientes.get(i).forEach( (k,v) -> { if (!v.comprou()) res.add(letra, k); } );
+		}
+
+		return res;
 	}
 
     /**
@@ -111,12 +148,40 @@ public class VendasFilial {
         return new Product(produtos.get(produto));
     }
 
+	/**
+ 	 * Adiciona um novo produto ao catálogo
+ 	 * @param produto produto a ser adicionado
+ 	 */
 	public void addProduto(String produto) {
 		produtos.put(produto.charAt(0) - 'A', produto, new Product());
 	}
 
+	/**
+ 	 * Adiciona um novo cliente ao catálogo
+ 	 * @param cliente cliente a ser adicionado
+ 	 */
 	public void addCliente(String cliente) {
 		clientes.put(cliente.charAt(0) - 'A', cliente, new Client());
+	}
+
+	/**
+ 	 * Devolve a lista de clientes que comprou em cada mês
+ 	 * @return lista de clientes
+ 	 */
+	public List<Set<String>> getClientesCompraramMes() {
+		List<Set<String>> lista = new ArrayList<>(MESES);
+
+		for(int i = 0; i < MESES; i++)
+			lista.add( new TreeSet<String>() );
+	
+		for(int i = 0; i < LETRAS; i++) {
+			clientes.get(i).forEach( (k,v) -> { for (int j = 0; j < MESES; j++)
+			                                        	if (v.getCompras(j) > 0)
+			                                        		lista.get(j).add(k);
+			                                  });
+		}	
+
+		return lista;
 	}
 
 	/**
@@ -124,21 +189,13 @@ public class VendasFilial {
 	 * @param venda Venda a adicionar
 	 */
 	public void add(Venda v) throws InvalidMonthException {
-		Client c = clientes.get(v.getCliente().charAt(0) - 'A', v.getCliente());
-
-        if (!c.comprou())
-            numClientes++;
-
-		if (!(c.comprou(v.getMes())))
-	    	numClientesMes[v.getMes()]++;
-        
-		c.add(v);
+		clientes.get(v.getCliente().charAt(0) - 'A', v.getCliente()).add(v);
         produtos.get(v.getProduto().charAt(0) - 'A', v.getProduto()).add(v);
     }
 
     /**
-     * Cria um clone oco desta instância de VendasFilial.
-     * @return um clone oco desta instância de VendasFilial
+     * Cria um clone desta instância de VendasFilial.
+     * @return um clone desta instância de VendasFilial
      */
     public VendasFilial clone() {
         return new VendasFilial(this);
@@ -151,15 +208,15 @@ public class VendasFilial {
      * @return true se e só se o objeto dado não for null e seja igual a este
      */
      public boolean equals(Object o) {
-         if (this == o) return true;
+         if (this == o) 
+			return true;
 
-         if ( o == null || o.getClass() != this.getClass()) return false;
+         if ( o == null || o.getClass() != this.getClass()) 
+			return false;
 
          VendasFilial vf = (VendasFilial) o;
-         return (vf.getNumClientes() == this.getNumClientes() &&
-                 vf.getNumClientesMes() == this.getNumClientesMes() &&
-                 vf.clientes.equals(clientes) &&
-                 vf.produtos.equals(produtos));
+         return vf.clientes.equals(clientes) &&
+                vf.produtos.equals(produtos);
      }
 
      /**
@@ -167,13 +224,6 @@ public class VendasFilial {
       * @return hash desta instância de VendasFilial
       */
       public int hashCode() {
-          ArrayList<Object> lista = new ArrayList<>();
-
-          lista.add(numClientes);
-          lista.add(numClientesMes);
-          lista.add(clientes);
-          lista.add(produtos);
-
-          return lista.hashCode();
+			return Arrays.hashCode( new Object[] { clientes, produtos });
       }
 }
