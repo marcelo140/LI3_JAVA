@@ -74,6 +74,15 @@ public class ClientUnit implements Serializable {
 	}
 
 	/**
+ 	 * Adiciona os dados de um outro ClientUnit
+ 	 * @param clu ClientUnit que será adicionado
+ 	 */
+	public void add(ClientUnit clu) {
+		quantidade += clu.getQuantidade();
+		faturado += clu.getFaturado();
+	}
+
+	/**
 	 * Retorna uma cópia desta instância de ClientUnit.
 	 * @return cópia
 	 */

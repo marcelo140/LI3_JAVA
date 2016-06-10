@@ -83,26 +83,61 @@ public class Hipermercado {
 		return fat.getFaturacaoTotal();
 	}
 
-	public Set<ParStringInt> getProdutos(String cliente) {
+	private Map<String, ProductUnit> getAllProdutos(String cliente) {
 		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
 		for(int i = 0; i < filiais.length; i++) {
 			List<Map<String, ProductUnit>> tmp = filiais[i].getCliente(cliente).getProdutos();
 
 			for(int mes = 0; mes < MESES; mes++) {
-				ProductUnit pu;
-				tmp.get(mes).forEach( (k,v) -> { if ( (pu = tree.get(k)) == null )
+				tmp.get(mes).forEach( (k,v) -> { ProductUnit pu;
+				                                 if ( (pu = tree.get(k)) == null )
 				                                	tree.put(k, v.clone());
 				                                 else
 				                                	pu.add(v);
 				                               });
 			}
 		}
-	
+
+		return tree;
+	}
+
+	private Map<String, ClientUnit> getAllClientes(String produto) {
+		Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
+
+		for(int i = 0; i < filiais.length; i++) {
+			CatalogMap<String, ClientUnit> tmp = filiais[i].getProduct(produto)
+			                                               .getClientes();
+
+			for(int mes = 0; mes < MESES; mes++) {
+				tmp.get(mes).forEach( (k,v) -> { ClientUnit clu;
+				                                 if ( (clu = tree.get(k)) == null)
+				                                 	tree.put(k, v.clone());
+				                                 else
+				                                 	clu.add(v);
+				                               });
+			}
+		}
+
+		return tree;
+	}
+
+	public Set<ParStringInt> getProdutos(String cliente) {
+		Map<String, ProductUnit> tree = getAllProdutos(cliente);
+
 		Set<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
 		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
 
 		return res;	
+	}
+
+	public Set<ParStringDouble> getClientes(String produto) {
+		Map<String, ClientUnit> tree = getAllClientes(produto);
+
+		Set<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
+		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
+
+		return res;
 	}
 
 	public int[] clientesPorMes() {
