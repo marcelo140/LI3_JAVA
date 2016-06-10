@@ -144,12 +144,8 @@ public class Faturacao implements Serializable {
  	 * Obtém número de compras efetuadas num dado mês 
  	 * @param mes mês em que as compras foram efetuadas
  	 * @return número de compras
- 	 * @throws InvalidMonthException mês inválido
  	 */
-    public int getNumCompras(int mes) throws InvalidMonthException {
-        if (mes < 0 || mes > 11) 
-			throw new InvalidMonthException ("Mês inválido");
-
+    public int getNumCompras(int mes) {
         return numeroCompras[mes];
     }
    
@@ -157,12 +153,8 @@ public class Faturacao implements Serializable {
  	 * Obtém montante faturado num dado mês
  	 * @param mes mês em que o montante foi faturado
  	 * @return montante faturado
- 	 * @throws InvalidMonthException mês inválido
  	 */	 
-    public double getFaturacaoMes(int mes) throws InvalidMonthException{
-        if (mes < 0 || mes > 11) 
-			throw new InvalidMonthException ("Mês inválido");
-
+    public double getFaturacaoMes(int mes) {
         double soma = 0;
         for(int i = 0; i < filiais; i++)
             soma += fat[mes][i];

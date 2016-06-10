@@ -44,6 +44,13 @@ public class Hipermercado {
 		return produtos.size();
 	}
 
+	public int getNumeroCompras(int mes) throws InvalidMonthException {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido");
+
+		return fat.getNumCompras(mes);
+	}
+
 	public int getProdutosComprados() {
 		return fat.getProdutosComprados();
 	}
@@ -53,6 +60,25 @@ public class Hipermercado {
 
 		for (int i = 0; i < filiais.length; i++) {
 			CatalogSet<String> filial = filiais[i].getClientesCompraram();
+
+			for (int j = 0; j < LETRAS; j++) {
+				final int letra = j;
+				filial.get(j).forEach( e -> { clientes.add(letra, e); });
+			}
+		}
+
+		return clientes.size();
+	}
+
+	public int getClientesCompraramMes(int mes) throws InvalidMonthException {
+
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido");
+
+		CatalogSet<String> clientes = new CatalogSet<>(LETRAS);
+
+		for (int i = 0; i < filiais.length; i++) {
+			CatalogSet<String> filial = filiais[i].getClientesCompraramMes(mes);
 
 			for (int j = 0; j < LETRAS; j++) {
 				final int letra = j;
@@ -81,6 +107,13 @@ public class Hipermercado {
 
 	public double getFaturacaoTotal() {
 		return fat.getFaturacaoTotal();
+	}
+
+	public double getFaturacaoMes(int mes) throws InvalidMonthException {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido");
+
+		return fat.getFaturacaoMes(mes);
 	}
 
 	private Map<String, ProductUnit> getAllProdutos(String cliente) {
@@ -160,7 +193,7 @@ public class Hipermercado {
 		return res;
 	}
 
-	public Par<int[], Par<int[], double[]>> getClientData(String cliente) {
+	public ArraysIntIntDouble getClientData(String cliente) {
 		Client[] clients = new Client[filiais.length];
 		List<List<Map<String, ProductUnit>>> produtos = 
 		            new ArrayList<List<Map<String,ProductUnit>>>(3);
@@ -186,10 +219,10 @@ public class Hipermercado {
 			produtosComprados[j] = p.size();
 		}
 
-		return new Par(comprasRealizadas, new Par(produtosComprados, faturado));
+		return new ArraysIntIntDouble(comprasRealizadas, produtosComprados, faturado);
 	}
 
-	public Par<int[], Par<int[], double[]>> getProductData(String produto) {
+	public ArraysIntIntDouble getProductData(String produto) {
 		Product[] products =  new Product[filiais.length];
 		List<CatalogMap<String, ClientUnit>> clientes =
 		              new ArrayList<CatalogMap<String, ClientUnit>>(3);
@@ -215,7 +248,7 @@ public class Hipermercado {
 			clientesCompraram[j] = c.size();
 		}
 
-		return new Par(vezesComprado, new Par(clientesCompraram, faturado));
+		return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
 	}
 
 	public void clear() {

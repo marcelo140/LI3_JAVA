@@ -81,12 +81,8 @@ public class Client implements Serializable {
 	 * Retorna true se e só se o cliente comprou algo no mês dado.
 	 * @param mes mês para o qual vai verificar se comprou
 	 * @return true se e só se o cliente comprou algo no mês dado
-	 * @throws InvalidMonthException caso o mês dado não seja válido
 	 */
-	public boolean comprou(int mes) throws InvalidMonthException {
-		if (mes < 0 || mes > 11)
-			throw new InvalidMonthException("Mês inválido!");
-
+	public boolean comprou(int mes) {
 		return comprasRealizadas[mes] == 0;
 	}
 
