@@ -6,9 +6,10 @@ public class HipermercadoApp {
 	private static final String clientesFilename = "../data/Clientes.txt";
 	private static final String vendas1mFilename = "../data/Vendas_1M.txt";
 	private static Menu queries;
-
+	private static Hipermercado hm;
+	
 	public static void main(String[] args) {
-		Hipermercado hm = new Hipermercado();
+		hm = new Hipermercado();
 		long inicio, fim;
 
 		carregaMenu();
@@ -68,6 +69,8 @@ public class HipermercadoApp {
 		do {
 			queries.executa();
 			switch(queries.getOpcao()) {
+				case 1 : hm.query1();
+				         break;
 					/* queries */
 			}
 		} while(queries.getOpcao() != 0);

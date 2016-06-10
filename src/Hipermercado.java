@@ -1,8 +1,9 @@
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 public class Hipermercado {
 	private static final int filiais = 3;
+	private static final int NUML = 20;
 
 	CatalogSet<String> produtos;
 	CatalogSet<String> clientes;
@@ -109,4 +110,15 @@ public class Hipermercado {
 		ois.close();
 		return hm;
 	}
+
+	/* ================ QUERIES ===================== */
+
+	 public void query1() {
+		 ArrayList<String> lista = new ArrayList<> (fat.getListaNaoComprados());
+		 Navegador nav;
+
+		 lista.sort((s1, s2) -> s1.compareTo(s2));
+		 nav = new Navegador(NUML, lista);
+		 nav.show();
+	 }
 }
