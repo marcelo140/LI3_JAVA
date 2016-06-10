@@ -40,6 +40,10 @@ public class Hipermercado {
 		return fat.getListaNaoComprados();
 	}
 
+	public int getClientes() {
+		return clientes.size();
+	}
+
 	public int getVendasZero() {
 		return fat.getVendasZero();
 	}
@@ -139,4 +143,17 @@ public class Hipermercado {
 		 nav = new Navegador(NUML, lista);
 		 nav.show();
 	 }
+
+	/* ================ ESTATÍSTICAS ===================== */
+
+	public void estatisticas(){
+		System.out.println("Todos os produtos:      " + getProdutos());
+		System.out.println("Produtos comprados:     " + getProdutosComprados());
+		System.out.println("Produtos não comprados: " + getListaNaoComprados().toString() + "\n");
+
+		System.out.println("Todos os clientes: " + getClientes() + "\n");
+
+		System.out.println("Faturação total: " + getFaturacaoTotal());
+		System.out.println("Vendas a zero:   " + getVendasZero());
+	}
 }
