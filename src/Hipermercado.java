@@ -1,7 +1,9 @@
 import java.io.*;
-import java.util.List;
+import java.util.*;
 
 public class Hipermercado {
+	private final int LETRAS = 26;
+	private final int MESES = 12;
 
 	private CatalogSet<String> produtos;
 	private CatalogSet<String> clientes;
@@ -9,8 +11,8 @@ public class Hipermercado {
 	private VendasFilial[] filiais;
 
 	public Hipermercado(int nFiliais) {
-		produtos = new CatalogSet<>(26);
-		clientes = new CatalogSet<>(26);
+		produtos = new CatalogSet<>(LETRAS);
+		clientes = new CatalogSet<>(LETRAS);
 		fat = new Faturacao(nFiliais);
 
 		filiais = new VendasFilial[nFiliais];
@@ -35,6 +37,25 @@ public class Hipermercado {
 		return fat.getProdutosComprados();
 	}
 
+	public int getClientesCompraram() {
+		CatalogSet<String> clientes = new CatalogSet<>(LETRAS);
+
+		for (int i = 0; i < filiais.length; i++) {
+			CatalogSet<String> filial = filiais[i].getClientesCompraram();
+
+			for (int j = 0; j < LETRAS; j++) {
+				final int letra = j;
+				filial.get(j).forEach( e -> { clientes.add(letra, e); });
+			}
+		}
+
+		return clientes.size();
+	}
+
+	public int getClientesNaoCompraram() {
+		return clientes.size() - getClientesCompraram();
+	}
+
 	public List<String> getListaNaoComprados() {
 		return fat.getListaNaoComprados();
 	}
@@ -45,6 +66,26 @@ public class Hipermercado {
 
 	public double getFaturacaoTotal() {
 		return fat.getFaturacaoTotal();
+	}
+
+	public int[] clientesPorMes() {
+		List<Set<String>> lista = new ArrayList<Set<String>>(MESES);
+
+		for (int i = 0; i < MESES; i++)
+			lista.add( new TreeSet() );
+
+		for(int i = 0; i < filiais.length; i++) {
+			List<Set<String>> tmp = filiais[i].getClientesCompraramMes();
+
+			for(int j = 0; j < MESES; j++)
+				lista.get(j).addAll( tmp.get(j) );
+		}
+
+		int[] res = new int[MESES];
+		for(int i = 0; i < MESES; i++)
+			res[i] = lista.get(i).size();
+
+		return res;
 	}
 
 	public void clear() {
