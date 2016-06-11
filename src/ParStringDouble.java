@@ -8,6 +8,8 @@ public class ParStringDouble implements Serializable{
 
     /**
      * Cria uma nova instância de ParStringDouble com a String e o double dados.
+     * @param str primeiro elemento do par
+     * @param d segundo elemento do par
      */
     public ParStringDouble(String str, double d) {
         this.str = str;

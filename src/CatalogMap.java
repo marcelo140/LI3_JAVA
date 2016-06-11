@@ -8,7 +8,7 @@ public class CatalogMap<K,V> implements Serializable {
 
     /**
  	 * Constrói um catálogo vazio com a capacidade dada
-     * @param tamanho
+     * @param size número de índices do catálogo do catálogo
      */
     public CatalogMap(int size) {
         this.size = 0;
@@ -31,6 +31,7 @@ public class CatalogMap<K,V> implements Serializable {
     /**
      * Devolve um map de um dado índice do catálogo
      * @param index Índice
+     * @return mapeamento dos elementos do índice dado
      * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
      */
     public Map<K,V> get(int index) throws IndexOutOfBoundsException {

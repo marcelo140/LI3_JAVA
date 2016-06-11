@@ -33,7 +33,7 @@ public class Faturacao implements Serializable {
    
 	/**
  	 * Cria uma nova instância de Faturacao com o número de filiais dado
- 	 * @param filiais Número de filias
+ 	 * @param nFiliais Número de filias
  	 */
     public Faturacao(int nFiliais){
 		produtos = new CatalogMap<>(LETRAS);

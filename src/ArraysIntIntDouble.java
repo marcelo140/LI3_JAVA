@@ -8,6 +8,9 @@ public class ArraysIntIntDouble implements Serializable {
 
 	/**
  	 * Cria uma nova instância de ArraysIntIntDouble com os objetos dados.
+ 	 * @param fst primeiro array do triplo
+ 	 * @param snd segundo array do triplo
+ 	 * @param trd terceiro array do triplo
  	 */
 	public ArraysIntIntDouble(int[] fst, int[] snd, double[] trd) {
 		this.fst = fst.clone();
@@ -27,6 +30,7 @@ public class ArraysIntIntDouble implements Serializable {
 
 	/**
  	 * Obtém uma cópia do primeiro objeto do triplo
+ 	 * @return primeiro array
  	 */
 	public int[] first() {
 		return fst.clone();
@@ -34,6 +38,7 @@ public class ArraysIntIntDouble implements Serializable {
 
 	/**
  	 * Obtém uma cópia do segundo objeto do triplo
+ 	 * @return segundo array
  	 */
 	public int[] second() {
 		return snd.clone();
@@ -41,12 +46,16 @@ public class ArraysIntIntDouble implements Serializable {
 
 	/**
  	 * Obtém uma cópia do terceiro objeto do triplo
+ 	 * @return terceiro array
  	 */
 	public double[] third() {
 		return trd.clone();
 	}
 
-
+	/**
+ 	 * Converte arrays numa lista de strings
+ 	 * @return lista de strings
+ 	 */
 	public List<String> toListString() {
 		List<String> ret = new ArrayList<String>();
 
@@ -69,6 +78,7 @@ public class ArraysIntIntDouble implements Serializable {
 	/**
  	 * Compara este par com o objeto dado. Returna true casa o objeto seja um ArrayIntIntDouble
  	 * que represente a mesma informação que este triplo.
+ 	 * @param o objeto com o qual a instância vai ser comparada
  	 * @return true se representarem a mesma informação
  	 */
 	public boolean equals(Object o) {

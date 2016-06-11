@@ -16,13 +16,12 @@ public class Venda implements Serializable {
 
 	/**
  	 * Construtor por argumentos
-         * @param produto
-         * @param preco
-         * @param unidades
-         * @param promocao
-         * @param cliente
-         * @param mes
-         * @param filial
+         * @param produto produto comprado
+         * @param preco preço unitário
+         * @param unidades unidades compradas
+         * @param cliente cliente que comprou
+         * @param mes mês em que ocorreu a compra
+         * @param filial filial em que ocorreu a compra
  	 */
 	public Venda(String produto, double preco, int unidades, /** boolean promocao,**/
                  String cliente, int mes, int filial)

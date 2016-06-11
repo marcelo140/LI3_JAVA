@@ -49,7 +49,7 @@ public class Navegador {
 
     /**
      * Apresenta a página pedida
-     * @pagina pagina a apresentar
+     * @param page página a apresentar
      * @throws InvalidPageException caso a página não exista
      */
     public void show(int page) throws InvalidPageException {

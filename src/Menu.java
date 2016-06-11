@@ -13,6 +13,7 @@ public class Menu {
 
     /**
      * Constructor for objects of class Menu
+     * @param opcoes lista de opçoes do menu
      */
     public Menu(String[] opcoes) {
         this.opcoes = new ArrayList<String>();
@@ -65,6 +66,7 @@ public class Menu {
 
     /**
      * Método para obter a última opção lida
+     * @return opcao
      */
     public int getOpcao() {
         return this.op;

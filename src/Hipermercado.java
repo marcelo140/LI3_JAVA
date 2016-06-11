@@ -56,7 +56,7 @@ public class Hipermercado implements Serializable {
  	 * Obtém número de transações efetuadas no mês dado
  	 * @param mes mes a ser pesquisado
  	 * @return número de transações
- 	 * @throws InvalidMonthException
+ 	 * @throws InvalidMonthException mês inválido
  	 */
     public int getNumeroCompras(int mes) throws InvalidMonthException {
         if (mes < 0 || mes > 11)
@@ -96,7 +96,7 @@ public class Hipermercado implements Serializable {
  	 * Obtém número de clientes distintos que compraram num dado mês
  	 * @param mes mes a ser pesquisado
  	 * @return número de clientes que compraram no mês dado
- 	 * @throws InvalidMonthException
+ 	 * @throws InvalidMonthException mês inválido
  	 */
     public int getClientesCompraramMes(int mes) throws InvalidMonthException {
         if (mes < 0 || mes > 11)
@@ -152,7 +152,7 @@ public class Hipermercado implements Serializable {
  	 * Obtém o montante faturado num dado mês
  	 * @param mes mes a ser pesquisado
  	 * @return montante faturado no mês dado
- 	 * @throws InvalidMonthException
+ 	 * @throws InvalidMonthException mês invaĺido
  	 */
     public double getFaturacaoMes(int mes) throws InvalidMonthException {
         return fat.getFaturacaoMes(mes);
@@ -163,8 +163,8 @@ public class Hipermercado implements Serializable {
  	 * @param mes mês a ser pesquisado
  	 * @param filial filial a ser pesquisada
  	 * @return montante faturado
- 	 * @throws InvalidMonthException
- 	 * @throws InvalidBranchException
+ 	 * @throws InvalidMonthException mês inválido
+ 	 * @throws InvalidBranchException filial inválida
  	 */
     public double getFaturacao(int mes, int filial) throws InvalidMonthException, 
 	                                                       InvalidBranchException {
@@ -266,7 +266,7 @@ public class Hipermercado implements Serializable {
  	 * e o total gasto
  	 * @param cliente cliente a ser pesquisado
  	 * @return dados do cliente
- 	 * @throws ClienteNaoExisteException
+ 	 * @throws ClienteNaoExisteException cliente não existe
  	 */
     public ArraysIntIntDouble getClientData(String cliente) 
 				throws ClienteNaoExisteException{
@@ -308,7 +308,7 @@ public class Hipermercado implements Serializable {
  	 * que foi comprado e total faturado
  	 * @param produto produto a ser pesquisado
  	 * @return dados do produto
- 	 * @throws ProdutoNaoExisteException
+ 	 * @throws ProdutoNaoExisteException produto não existe
  	 */
     public ArraysIntIntDouble getProductData(String produto) throws ProdutoNaoExisteException {
         Product[] products =  new Product[filiais.length];
@@ -383,7 +383,7 @@ public class Hipermercado implements Serializable {
  	 * pela quantidade comprada
  	 * @param cliente cliente a ser pesquisado
  	 * @return lista de produtos e respetiva quantidade comprada
- 	 * @throws ClienteNaoExisteException
+ 	 * @throws ClienteNaoExisteException cliente não existe
  	 */
 	public Set<ParStringInt> getProdutos(String cliente) throws ClienteNaoExisteException {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
@@ -399,7 +399,7 @@ public class Hipermercado implements Serializable {
  	 * pelos respetivos gastos
  	 * @param produto produto a ser pesquisado
  	 * @return lista de clientes e respetivos gastos
- 	 * @throws ProdutoNaoExisteException
+ 	 * @throws ProdutoNaoExisteException produto não existe
  	 */
 	public Set<ParStringDouble> getClientes(String produto) throws ProdutoNaoExisteException {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
@@ -446,10 +446,11 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Carrega vendas a partir do ficheiro dado
  	 * @param fich ficheiro com os dados ads vendas
- 	 * @throws IOException
- 	 * @throws NullPointerException
- 	 * @throws NumberFormatException
- 	 * @throws InvalidMonthException
+ 	 * @return número de linhas válidas
+ 	 * @throws IOException erro de IO
+ 	 * @throws NullPointerException apontador nulo
+ 	 * @throws NumberFormatException formato não corresponde a número
+ 	 * @throws InvalidMonthException mês inválido
  	 */
     public int carregarVendas(String fich)
 	     throws IOException, NullPointerException, NumberFormatException,
@@ -476,7 +477,7 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Carrega produtos a partir do ficheiro dado
  	 * @param fich ficheiro com os dados dos produtos
- 	 * @throws IOException
+ 	 * @throws IOException erro de IO
  	 */
     public void carregarProdutos(String fich) throws IOException {
         BufferedReader inStream = null;
@@ -495,7 +496,7 @@ public class Hipermercado implements Serializable {
 	/**
 	 * Carrega clientes a partir do ficheiro dado
 	 * @param fich ficheiro com dados dos clientes
-	 * @throws IOException
+	 * @throws IOException erro de IO
 	 */
     public void carregarClientes(String fich) throws IOException {
         BufferedReader inStream = null;
@@ -514,7 +515,7 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Guarda os dados do hipermercado num ficheiro
  	 * @param path caminho para o ficheiro
- 	 * @throws IOException
+ 	 * @throws IOException erro de IO
  	 */
     public void guardarDados(String path) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
@@ -528,8 +529,9 @@ public class Hipermercado implements Serializable {
 	/**
 	 * Carrega para memória dados de um Hipermercado a partir do ficheiro dado
 	 * @param path caminho para o ficheiro a ser carregado
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @return hipermercado com os dados do ficheiro
+	 * @throws IOException erro de IO
+	 * @throws ClassNotFoundException classe não encontrada
 	 */
     public static Hipermercado carregarDados(String path) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));

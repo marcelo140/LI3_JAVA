@@ -214,7 +214,7 @@ public class VendasFilial implements Serializable {
 
 	/**
 	 * Adiciona uma venda a esta estrutura
-	 * @param venda Venda a adicionar
+	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) throws InvalidMonthException {
 		clientes.get(v.getCliente().charAt(0) - 'A', v.getCliente()).add(v);

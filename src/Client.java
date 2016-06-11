@@ -25,6 +25,10 @@ public class Client implements Serializable {
 
 	/**
 	 * Construtor por parâmetros
+	 * @param produtos produtos comprados pelo cliente
+	 * @param comprou true se o cliente comprou
+	 * @param comprasRealizadas número de compras realizadas, mês a mês
+	 * @param gastos gastos do cliente, mês a mês
 	 */
 	public Client(CatalogMap<String, ProductUnit> produtos, 
 	              boolean comprou, int[] comprasRealizadas, double[] gastos) {
@@ -37,6 +41,7 @@ public class Client implements Serializable {
 
 	/**
 	 * Construtor por cópia
+	 * @param c cliente a ser copiado
 	 */
 	public Client(Client c) {
 		produtos = c.getProdutos();

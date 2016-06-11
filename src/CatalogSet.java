@@ -7,7 +7,7 @@ public class CatalogSet<E> implements Serializable {
 
 	/**
  	 * Constrói um catálogo com o tamanho especificado
- 	 * @param length
+ 	 * @param length número de indíces do catálogo
  	 */
 	public CatalogSet(int length) {
 		size = 0;
@@ -41,14 +41,15 @@ public class CatalogSet<E> implements Serializable {
 
 	/**
 	 * Devolve o set de um dado índice do catálogo
-	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
 	 * @param index Índice
+	 * @return set do índice pedido
+	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
 	 */
-	public TreeSet<E> get(int index) throws IndexOutOfBoundsException {
+	public Set<E> get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index >= cat.size()) 
 			throw new IndexOutOfBoundsException(); 
 
-		return new TreeSet<E>(cat.get(index));
+		return new cat.get(index);
 	}
 
 	/**

@@ -164,7 +164,7 @@ public class Product implements Serializable {
 
 	/**
 	 * Adiciona uma nova venda
-	 * @param venda Venda a adicionar
+	 * @param v Venda a adicionar
 	 */
 	public void add(Venda v) {
 		int unidades = v.getUnidades();
@@ -208,7 +208,7 @@ public class Product implements Serializable {
 
     /**
      * Adiciona os dados do produto recebido
-     * @param produto produto a adicionar
+     * @param p produto a adicionar
      */
     public void merge(Product p) {
         this.unidadesVendidas += p.getUnidadesVendidas();
