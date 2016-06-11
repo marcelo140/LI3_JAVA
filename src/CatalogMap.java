@@ -1,7 +1,8 @@
 import java.lang.*;
 import java.util.*;
+import java.io.Serializable;
 
-public class CatalogMap<K,V> implements Map<K,V> {
+public class CatalogMap<K,V> implements Map<K,V>, Serializable {
     private List<Map<K,V>> cat;
     private int size;
 

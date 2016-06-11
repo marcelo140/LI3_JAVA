@@ -13,6 +13,8 @@ public class HipermercadoApp {
     private static Hipermercado hm;
     private static String produtosF, clientesF, vendasF;
 
+	private HipermercadoApp() {}
+
     public static void main(String[] args) {
 
         carregaMenu();

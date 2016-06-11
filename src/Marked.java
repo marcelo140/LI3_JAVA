@@ -1,4 +1,6 @@
-public class Marked {
+import java.io.Serializable;
+
+public class Marked implements Serializable {
 	private boolean mark;
 
 	public Marked(boolean mark) {
