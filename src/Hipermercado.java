@@ -281,6 +281,7 @@ public class Hipermercado {
 			}
 		}
 
+
 		return catalogo;
 	}
 
