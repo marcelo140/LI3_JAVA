@@ -7,6 +7,7 @@ public class Navegador {
     private int pagina;
     private String ultimoCmd;
     private List<String> linhas;
+    private String header;
 
     /**
      * Construtor por parametros
@@ -18,6 +19,20 @@ public class Navegador {
         this.linhas = new ArrayList<String>(linhas);
         paginas = linhas.size() / linhasPorPagina + ((linhas.size() % linhasPorPagina == 0) ? 0 : 1);
         ultimoCmd = new String();
+        header = null;
+    }
+
+    /**
+     * Construtor por parametros com header
+     * @param linhasPorPagina linhas a apresentar em cada página
+     * @param linhas linhas a apresentar
+     */
+    public Navegador(int linhasPorPagina, String header, List<String> linhas) {
+        this.linhasPorPagina = linhasPorPagina;
+        this.linhas = new ArrayList<String>(linhas);
+        paginas = linhas.size() / linhasPorPagina + ((linhas.size() % linhasPorPagina == 0) ? 0 : 1);
+        ultimoCmd = new String();
+        this.header = header;
     }
 
     /**
@@ -48,6 +63,9 @@ public class Navegador {
         ed = (ed >= linhas.size()) ? linhas.size() -1 : ed;
 
         System.out.printf("================== %d / %d ==================\n", pagina+1, paginas);
+
+        if (header != null)
+            System.out.prinln(header + "\n");
 
         for (String str : linhas.subList(st, ed))
             System.out.printf("\t%s\n", str);
