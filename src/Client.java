@@ -126,7 +126,6 @@ public class Client implements Serializable {
  	 * Obtém o número de compras num dado mês
  	 * @param mes mês em que ocorreram as transações
  	 * @return número de compras
- 	 * @throws InvalidMonthException mês inválido
  	 */
 	public int getCompras (int mes) {
 		return comprasRealizadas[mes];

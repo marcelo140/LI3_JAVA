@@ -36,7 +36,7 @@ public class Product implements Serializable {
         setUnidadesVendidas(unidadesVendidas);
         setVendas(vendas);
         setFaturado(faturado);
-        setClientes(clientes);  
+        setClientes(clientes);
     }
 
     /**
@@ -81,7 +81,7 @@ public class Product implements Serializable {
     public CatalogMap<String, ClientUnit> getClientes() {
 
         CatalogMap<String, ClientUnit> catalog = new CatalogMap<>(MESES);
-        
+
         for (int i = 0; i < MESES; i++) {
             final int mes = i;
             clientes.get(i).forEach((k,v) -> { catalog.put(mes, k, v.clone()); });
@@ -140,75 +140,153 @@ public class Product implements Serializable {
         return vendas[mes];
     }
 
-    /**
-     * Devolve o total faturado do mês dado entre 0 e 11
-     * @param mes Mês cujo o total faturado deve ser retornado
-     * @return o total faturado de mês dado
-     * @throws InvalidMonthException
-     */
-    public double getFaturado(int mes) throws InvalidMonthException {
-        if (mes < 0 || mes > 11)
-            throw new InvalidMonthException("");
+	/**
+	 * Devolve o número total de unidades vendidas.
+	 * @return o número total de unidades vendidas
+	 */
+	public int getUnidadesVendidas() {
+		return unidadesVendidas;
+	}
 
-        return faturado[mes];
-    }
+	/**
+	 * Devolve o número de vendas de cada mês.
+	 * @return o número de venas de cada mês
+	 */
+	public int[] getVendas() {
+		return vendas.clone();
+	}
 
-    /**
-     * Devolve o número de clientes de um dado mês entre 0 e 11
-     * @param mes mês cujo o número de clientes será retornado
-     * @return o número de clientes de um dado mês
-     * @throws InvalidMonthException caso o mês dado não seja válido
-     */
-    public int getNumeroClientes(int mes) throws InvalidMonthException {
-        if (mes < 0 || mes > 11)
-            throw new InvalidMonthException("Mês inválido");
+	/**
+	 * Devolve o total faturado num array com todos os meses.
+	 * @return o total faturado num array com todos os meses
+	 */
+	public double[] getFaturado() {
+		return faturado.clone();
+	}
 
-        return clientes.get(mes).size();
-    }
+	/**
+ 	 * Devolve um catálogo com informação mensal de cada cliente que comprou o produto
+ 	 * @return catálogo
+ 	 */
+	public CatalogMap<String, ClientUnit> getClientes() {
 
-    /**
-     * Retorna o número total de clientes que compraram o produto
-     * @return número de clientes
-     */
-    public int getNumeroClientes() {
-        return clientes.size();
-    }
+		CatalogMap<String, ClientUnit> catalog = new CatalogMap<>(MESES);
 
-    /**
-     * Adiciona uma nova venda
-     * @param venda Venda a adicionar
-     */
-    public void add(Venda v) {
-        int unidades = v.getUnidades();
-        int mes = v.getMes();
-        double faturado = unidades * v.getPreco();
-        ClientUnit clu = clientes.get(mes, v.getCliente());
+		for (int i = 0; i < MESES; i++) {
+			final int mes = i;
+			clientes.get(i).forEach((k,v) -> { catalog.put(mes, k, v.clone()); });
+		}
 
-        if (clu != null)
-            clu.add(unidades, faturado);
-        else {
-            clu = new ClientUnit(unidades, faturado);
-            clientes.put(mes, v.getCliente(), clu);
-        }
+		return catalog;
+	}
 
-        unidadesVendidas += unidades;
-        vendas[mes]++;
-        this.faturado[mes] += faturado;
+	/**
+ 	 * Define o total faturado
+ 	 * @param faturado
+ 	 */
+	private void setFaturado(double[] faturado) {
+		this.faturado = faturado.clone();
+	}
 
-    }
+	/**
+ 	 * Define as unidades vendidas
+ 	 * @param unidadesVendidas número de unidades vendidas
+ 	 */
+	private void setUnidadesVendidas(int unidadesVendidas) {
+		this.unidadesVendidas = unidadesVendidas;
+	}
 
-    /**
-     * Compara este produto ao objeto dado. Retorna true se e só se o argumento
-     * não for null e o produto representar o mesmo produto que este objeto.
+	/**
+ 	 * Define o número de transações em que este produto foi vendido, mês a mês
+ 	 * @param vendas número de transações mensais
+ 	 */
+	private void setVendas(int[] vendas) {
+		this.vendas = vendas.clone();
+	}
+
+	/**
+ 	 * Define o catálogo com informação mensal de cada cliente que comprou o produto
+ 	 * @param clientes catálogo a ser a copiado
+ 	 */
+	private void setClientes(CatalogMap<String, ClientUnit> clientes) {
+		this.clientes = new CatalogMap<>(MESES);
+
+		for (int i = 0; i < MESES; i++) {
+			final int mes = i;
+			clientes.get(i).forEach((k,v) -> { this.clientes.put(mes, k, v.clone()); });
+		}
+	}
+
+	/**
+	 * Devolve o número de vendas do mês dado entre 0 e 11.
+	 * @param mes cujo o número de vendas será retornado.
+	 * @return o número de venas de cada mês
+	 */
+	public int getVendas(int mes) {
+		return vendas[mes];
+	}
+
+	/**
+	 * Devolve o total faturado do mês dado entre 0 e 11
+	 * @param mes Mês cujo o total faturado deve ser retornado
+	 * @return o total faturado de mês dado
+	 */
+	public double getFaturado(int mes) {
+		return faturado[mes];
+	}
+
+	/**
+	 * Devolve o número de clientes de um dado mês entre 0 e 11
+	 * @param mes mês cujo o número de clientes será retornado
+	 * @return o número de clientes de um dado mês
+	 */
+	public int getNumeroClientes(int mes) {
+		return clientes.get(mes).size();
+	}
+
+	/**
+ 	 * Retorna o número total de clientes que compraram o produto
+ 	 * @return número de clientes
+ 	 */
+	public int getNumeroClientes() {
+		return clientes.size();
+	}
+
+	/**
+	 * Adiciona uma nova venda
+	 * @param venda Venda a adicionar
+	 */
+	public void add(Venda v) {
+		int unidades = v.getUnidades();
+		int mes = v.getMes();
+		double faturado = unidades * v.getPreco();
+		ClientUnit clu = clientes.get(mes, v.getCliente());
+
+		if (clu != null)
+			clu.add(unidades, faturado);
+		else {
+			clu = new ClientUnit(unidades, faturado);
+			clientes.put(mes, v.getCliente(), clu);
+		}
+
+		unidadesVendidas += unidades;
+		vendas[mes]++;
+		this.faturado[mes] += faturado;
+
+	}
+
+	/**
+	 * Compara este produto ao objeto dado. Retorna true se e só se o argumento
+	 * não for null e o produto representar o mesmo produto que este objeto.
      * @param obj Objeto cuja igualdade será testada
      * @return true se e só se o objeto dado não for null e o produto
      * representar o mesmo produto que este objeto
      */
     public boolean equals(Object obj) {
-        if (this == obj) 
+        if (this == obj)
             return true;
 
-        if ( obj == null || obj.getClass() != this.getClass()) 
+        if ( obj == null || obj.getClass() != this.getClass())
             return false;
 
         Product p = (Product) obj;
@@ -236,7 +314,7 @@ public class Product implements Serializable {
                                                         this.clientes.put(mes, k, v.clone());
                                                     else
                                                         clu.add(v);
-                                                    });                  
+                                                    });
             }
         } catch (InvalidMonthException e) {
             System.out.println("Ocorreu um erro ao tentar fazer merge de Products");
