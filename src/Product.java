@@ -131,12 +131,8 @@ public class Product implements Serializable {
      * Devolve o número de vendas do mês dado entre 0 e 11.
      * @param mes cujo o número de vendas será retornado.
      * @return o número de venas de cada mês
-     * @throws InvalidMonthException
      */
-    public int getVendas(int mes) throws InvalidMonthException {
-        if (mes < 0 || mes > 11)
-            throw new InvalidMonthException("");
-
+    public int getVendas(int mes) {
         return vendas[mes];
     }
 
@@ -217,22 +213,18 @@ public class Product implements Serializable {
     public void merge(Product p) {
         this.unidadesVendidas += p.getUnidadesVendidas();
 
-        try {
-            for (int i = 0; i < MESES; i++) {
-                this.vendas[i] += p.getVendas(i);
-                this.faturado[i] += p.getFaturado(i);
+        for (int i = 0; i < MESES; i++) {
+            this.vendas[i] += p.getVendas(i);
+            this.faturado[i] += p.getFaturado(i);
 
-                final int mes = i;
-                p.clientes.get(i).forEach((k,v) -> { ClientUnit clu = this.clientes.get(mes, k);
-                                                    if (clu == null)
-                                                        this.clientes.put(mes, k, v.clone());
-                                                    else
-                                                        clu.add(v);
-                                                    });
+            final int mes = i;
+            p.clientes.get(i).forEach((k,v) -> { ClientUnit clu = this.clientes.get(mes, k);
+                                                 if (clu == null)
+                                                   this.clientes.put(mes, k, v.clone());
+                                                 else
+                                                   clu.add(v);
+                                                 });
             }
-        } catch (InvalidMonthException e) {
-            System.out.println("Ocorreu um erro ao tentar fazer merge de Products");
-        }
     }
 
     /**

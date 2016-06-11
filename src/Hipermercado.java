@@ -214,20 +214,16 @@ public class Hipermercado implements Serializable {
             clientes.add(products[i].getClientes());
         }
 
-        try {
-            for(int j = 0; j < MESES; j++) {
-                Set<String> c = new HashSet(256);
+        for(int j = 0; j < MESES; j++) {
+            Set<String> c = new HashSet(256);
 
-                for (int i = 0; i < filiais.length; i++) {
-                    clientes.get(j).forEach((k,v) -> { c.add(k); });
-                    vezesComprado[j] += products[i].getVendas(j);
-                    faturado[j] += products[i].getFaturado(j);
-                }
-
-                clientesCompraram[j] = c.size();
+            for (int i = 0; i < filiais.length; i++) {
+                clientes.get(i).get(j).forEach((k,v) -> { c.add(k); });
+                vezesComprado[j] += products[i].getVendas(j);
+                faturado[j] += products[i].getFaturado(j);
             }
-        } catch (InvalidMonthException e) {
-            System.out.println("Fatal error.");
+
+            clientesCompraram[j] = c.size();
         }
 
         return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
