@@ -1,8 +1,8 @@
-public class Hipermercado implements Serializable {
-
 import java.io.*;
 import java.util.*;
-import org.omg.CORBA.StringHolder;
+
+public class Hipermercado implements Serializable {
+
     private final int LETRAS = 26;
     private final int MESES = 12;
     private static final int NUML = 20;
@@ -113,7 +113,7 @@ import org.omg.CORBA.StringHolder;
         return fat.getFaturacaoMes(mes);
     }
 
-    public double getFaturacao(int mes, int filial) throws InvalidMonthException {
+    public double getFaturacao(int mes, int filial) throws InvalidMonthException, InvalidBranchException {
         return fat.getFaturacao(mes, filial);
     }
 

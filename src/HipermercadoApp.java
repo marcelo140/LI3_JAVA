@@ -66,7 +66,7 @@ public class HipermercadoApp {
 				         break;
                 case 4 : executaMenuQueries();
                         break;
-                case 5 : hm.estatisticas();
+                case 5 : estatisticas();
                         break;
             }
         } while (principal.getOpcao() != 0);
@@ -352,9 +352,9 @@ public class HipermercadoApp {
 
 	/* ================ ESTATÍSTICAS ===================== */
 
-    public void estatisticas(){
+    public static void estatisticas(){
         int prods, prodnc;
-        int[] f = new int[filiais.length];
+        int[] f = new int[hm.getNumFiliais()];
 
         System.out.println("Ficheiro de Produtos: " + hm.getFichProdutos());
         System.out.println("Ficheiro de Clientes: " + hm.getFichClientes());
@@ -372,9 +372,13 @@ public class HipermercadoApp {
         System.out.println("Faturação total: " + hm.getFaturacaoTotal());
         System.out.println("Vendas a zero:   " + hm.getVendasZero() + "\n");
 
-        for (int i = 0; i < 12 ; i++)
-            System.out.printf("Mês %2d: %d compras\n", i+1, hm.getNumeroCompras(i));
-        System.out.print("\n");
+		try {
+        	for (int i = 0; i < 12 ; i++)
+            	System.out.printf("Mês %2d: %d compras\n", i+1, hm.getNumeroCompras(i));
+        	System.out.print("\n");
+		} catch (InvalidMonthException e) {
+			return;
+		}
 
 		System.out.printf("FATURAÇÃO:\nMÊS\t");
 		for (int i = 0; i < hm.getNumFiliais(); i++)
@@ -393,7 +397,7 @@ public class HipermercadoApp {
 		System.out.print("\n");
 
 		for (int i = 0; i < 12; i++)
-		    System.out.printf("Mês %2d: %d clientes\n", i+1, hm.getNumClientes(i));
+			System.out.printf("Mês %2d: %d clientes\n", i+1, hm.getNumClientes(i));
 		System.out.print("\n");
 	}
 
