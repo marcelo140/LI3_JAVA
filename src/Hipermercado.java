@@ -13,6 +13,13 @@ public class Hipermercado implements Serializable {
     private Faturacao fat;
     private VendasFilial[] filiais;
 
+	/**
+ 	 * Constrói um hipermercado
+ 	 * @param nFiliais número de filiais
+ 	 * @param produtosF ficheiro de produtos lido
+ 	 * @param clientesF ficheiro de clientes lido
+ 	 * @param vendasF ficheiro de vendas lido
+ 	 */
     public Hipermercado(int nFiliais, String produtosF, String clientesF,
                         String vendasF) {
 
@@ -29,10 +36,28 @@ public class Hipermercado implements Serializable {
         this.vendasF = vendasF;
     }
 
+	/**
+ 	 * Obtém o número de produtos presentes no catálogo
+ 	 * @return número de produtos
+ 	 */
     public int getProdutos() {
         return produtos.size();
     }
 
+	/**
+ 	 * Obtém o número de clientes presentes no catálogo
+ 	 * @return número de clientes
+ 	 */
+    public int getClientes() {
+        return clientes.size();
+    }
+
+	/**
+ 	 * Obtém número de transações efetuadas no mês dado
+ 	 * @param mes mes a ser pesquisado
+ 	 * @return número de transações
+ 	 * @throws InvalidMonthException
+ 	 */
     public int getNumeroCompras(int mes) throws InvalidMonthException {
         if (mes < 0 || mes > 11)
             throw new InvalidMonthException("Mês inválido");
@@ -40,10 +65,18 @@ public class Hipermercado implements Serializable {
         return fat.getNumCompras(mes);
     }
 
+	/**
+ 	 * Obtém o número de produtos distintos que foram comprados
+ 	 * @return número de produtos comprados
+ 	 */
     public int getProdutosComprados() {
         return fat.getProdutosComprados();
     }
 
+	/**
+ 	 * Obtém o número de clientes distintos que compraram
+ 	 * @return número de clientes que compraram
+ 	 */
     public int getClientesCompraram() {
         CatalogSet<String> clientes = new CatalogSet<>(LETRAS);
 
@@ -59,8 +92,13 @@ public class Hipermercado implements Serializable {
         return clientes.size();
     }
 
+	/**
+ 	 * Obtém número de clientes distintos que compraram num dado mês
+ 	 * @param mes mes a ser pesquisado
+ 	 * @return número de clientes que compraram no mês dado
+ 	 * @throws InvalidMonthException
+ 	 */
     public int getClientesCompraramMes(int mes) throws InvalidMonthException {
-
         if (mes < 0 || mes > 11)
             throw new InvalidMonthException("Mês inválido");
 
@@ -78,45 +116,62 @@ public class Hipermercado implements Serializable {
         return clientes.size();
     }
 
-    public int getNumClientes(int mes) {
-        int sum = 0;
-
-        for (int i = 0; i < filiais.length; i++) {
-            CatalogSet<String> c = filiais[i].getClientesCompraramMes(mes);
-            sum += c.size();
-        }
-
-        return sum;
-    }
-
+	/**
+ 	 * Obtém o número de clientes que não compraram
+ 	 * @return número de clientes que não compraram
+ 	 */
     public int getClientesNaoCompraram() {
         return clientes.size() - getClientesCompraram();
     }
 
+	/**
+ 	 * Calcula lista de produtos não comprados
+ 	 * @return lista produtos não comprados
+ 	 */
     public List<String> getListaNaoComprados() {
         return fat.getListaNaoComprados();
     }
 
-    public int getClientes() {
-        return clientes.size();
-    }
-
+	/**
+ 	 * Obter número de transações em que não foi movido dinheiro
+ 	 * @return número de transações em que não foi movido dinheiro
+ 	 */
     public int getVendasZero() {
         return fat.getVendasZero();
     }
 
+	/**
+ 	 * Obtém o total faturado
+ 	 * @return total faturado
+ 	 */
     public double getFaturacaoTotal() {
         return fat.getFaturacaoTotal();
     }
 
+	/**
+ 	 * Obtém o montante faturado num dado mês
+ 	 * @param mes mes a ser pesquisado
+ 	 * @return montante faturado no mês dado
+ 	 * @throws InvalidMonthException
+ 	 */
     public double getFaturacaoMes(int mes) throws InvalidMonthException {
         return fat.getFaturacaoMes(mes);
     }
 
+	/**
+ 	 * Obtém o montante faturado durante o mês dado, na filial dada
+ 	 * @param mes mês a ser pesquisado
+ 	 * @param filial filial a ser pesquisada
+ 	 * @return montante faturado
+ 	 */
     public double getFaturacao(int mes, int filial) throws InvalidMonthException, InvalidBranchException {
         return fat.getFaturacao(mes, filial);
     }
 
+	/**
+ 	 * Calcula lista de todos os clientes e respetivos dados
+ 	 * @return lista de clientes e respetivos dados
+ 	 */
     private CatalogMap<String, Client> getAllClientes() {
         CatalogMap<String, Client> catalogo = filiais[0].getClientes();
 
@@ -137,6 +192,11 @@ public class Hipermercado implements Serializable {
         return catalogo;
     }
 
+	/**
+ 	 * Obtém dados de todos os produtos comprados por um cliente
+ 	 * @param cliente cliente a ser pesquisado
+ 	 * @return lista de produtos e respetivos dados
+ 	 */
     private Map<String, ProductUnit> getAllProdutos(String cliente) {
         Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
@@ -157,6 +217,11 @@ public class Hipermercado implements Serializable {
         return tree;
     }
 
+	/**
+ 	 * Obtém dados de todos os clientes que compraram o produto
+ 	 * @param produto produto a ser pesquisado
+ 	 * @return lista de clientes e respetivos dados
+ 	 */
     private Map<String, ClientUnit> getAllClientes(String produto) {
         Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
 
@@ -177,6 +242,13 @@ public class Hipermercado implements Serializable {
         return tree;
     }
 
+	/**
+ 	 * Obtém dados sobre o cliente dado, nomeadamente o número
+ 	 * de produtos distintos comprados, o número de compras realizadas
+ 	 * e o total gasto
+ 	 * @param cliente cliente a ser pesquisado
+ 	 * @return dados do cliente
+ 	 */
     public ArraysIntIntDouble getClientData(String cliente) {
         Client[] clients = new Client[filiais.length];
         List<CatalogMap<String, ProductUnit>> produtos = new ArrayList<>(3);
@@ -205,6 +277,13 @@ public class Hipermercado implements Serializable {
         return new ArraysIntIntDouble(comprasRealizadas, produtosComprados, faturado);
     }
 
+	/**
+ 	 * Obtém dados sobre o produto dado, nomeadamente o número
+ 	 * de clientes distintos que o compraram, o número de vezes
+ 	 * que foi comprado e total faturado
+ 	 * @param produto produto a ser pesquisado
+ 	 * @return dados do produto
+ 	 */
     public ArraysIntIntDouble getProductData(String produto) {
         Product[] products =  new Product[filiais.length];
         List<CatalogMap<String, ClientUnit>> clientes =
@@ -234,6 +313,11 @@ public class Hipermercado implements Serializable {
         return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
     }
 
+	/**
+ 	 * Calcula uma lista de produtos, ordenados decrescentemente pelo número de
+ 	 * clientes que o comprou
+ 	 * @return lista de produtos e respetivo número de clientes que o compraram
+ 	 */
     public Set<TriploStringIntInt> getTopProdutos() {
 		long inicio = System.nanoTime();
         CatalogMap<String, Product> catalog = VendasFilial.mergeProdutos(filiais);
@@ -249,6 +333,11 @@ public class Hipermercado implements Serializable {
         return res;
     }
 
+	/**
+ 	 * Calcula uma lista de clientes, ordenada decrescentemente pelo número de
+ 	 * produtos distintos que cada um comprou
+ 	 * @return lista de clientes e respetivo número de produtos comprados
+ 	 */
     public Set<ParStringInt> getTopClientes() {
         CatalogMap<String, Client> catalog = getAllClientes();
         TreeSet<ParStringInt> res = new TreeSet<>(new ComparatorParStringIntByInt());
@@ -260,6 +349,61 @@ public class Hipermercado implements Serializable {
         return res;
     }
 
+
+	/**
+ 	 * Calcula todos os produtos comprados por um dado cliente, ordenados decrescentemente
+ 	 * pela quantidade comprada
+ 	 * @param cliente cliente a ser pesquisado
+ 	 * @return lista de produtos e respetiva quantidade comprada
+ 	 */
+	public Set<ParStringInt> getProdutos(String cliente) {
+		Map<String, ProductUnit> tree = getAllProdutos(cliente);
+
+		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
+		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
+
+		return res;
+	}
+
+	/**
+ 	 * Calcula todos os clientes que compraram um dado produto, ordenados decrescentemente
+ 	 * pelos respetivos gastos
+ 	 * @param produto produto a ser pesquisado
+ 	 * @return lista de clientes e respetivos gastos
+ 	 */
+	public Set<ParStringDouble> getClientes(String produto) {
+		Map<String, ClientUnit> tree = getAllClientes(produto);
+
+		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
+		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
+
+		return res;
+	}
+
+	/**
+ 	 * Calcula o número de clientes distintos que comprou em cada mês
+ 	 * @return número de clientes que compraram, mês a mês
+ 	 */
+	public int[] clientesPorMes() {
+		CatalogSet<String> lista = new CatalogSet<>(MESES);
+
+		for(int i = 0; i < filiais.length; i++) {
+			CatalogSet<String> tmp = filiais[i].getClientesCompraramMes();
+
+			for(int j = 0; j < MESES; j++)
+				lista.get(j).addAll( tmp.get(j) );
+		}
+
+		int[] res = new int[MESES];
+		for(int i = 0; i < MESES; i++)
+			res[i] = lista.get(i).size();
+
+		return res;
+	}
+
+	/**
+ 	 * Remove todos os dados guardados
+ 	 */
     public void clear() {
         produtos.clear();
         clientes.clear();
@@ -269,6 +413,10 @@ public class Hipermercado implements Serializable {
             filiais[i].clear();
     }
 
+	/**
+ 	 * Carrega vendas a partir do ficheiro dado
+ 	 * @param fich ficheiro com os dados ads vendas
+ 	 */
     public int carregarVendas(String fich)
 	     throws IOException, NullPointerException, NumberFormatException,
 				InvalidMonthException {
@@ -291,41 +439,10 @@ public class Hipermercado implements Serializable {
         return valid;
     }
 
-	public Set<ParStringInt> getProdutos(String cliente) {
-		Map<String, ProductUnit> tree = getAllProdutos(cliente);
-
-		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
-		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
-
-		return res;
-	}
-
-	public Set<ParStringDouble> getClientes(String produto) {
-		Map<String, ClientUnit> tree = getAllClientes(produto);
-
-		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
-		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
-
-		return res;
-	}
-
-	public int[] clientesPorMes() {
-		CatalogSet<String> lista = new CatalogSet<>(MESES);
-
-		for(int i = 0; i < filiais.length; i++) {
-			CatalogSet<String> tmp = filiais[i].getClientesCompraramMes();
-
-			for(int j = 0; j < MESES; j++)
-				lista.get(j).addAll( tmp.get(j) );
-		}
-
-		int[] res = new int[MESES];
-		for(int i = 0; i < MESES; i++)
-			res[i] = lista.get(i).size();
-
-		return res;
-	}
-
+	/**
+ 	 * Carrega produtos a partir do ficheiro dado
+ 	 * @param fich ficheiro com os dados dos produtos
+ 	 */
     public void carregarProdutos(String fich) throws IOException {
         BufferedReader inStream = null;
         String produto = null;
@@ -340,6 +457,10 @@ public class Hipermercado implements Serializable {
         }
     }
 
+	/**
+	 * Carrega clientes a partir do ficheiro dado
+	 * @param fich ficheiro com dados dos clientes
+	 */
     public void carregarClientes(String fich) throws IOException {
         BufferedReader inStream = null;
         String cliente = null;
@@ -354,6 +475,10 @@ public class Hipermercado implements Serializable {
         }
     }
 
+	/**
+ 	 * Guarda os dados do hipermercado num ficheiro
+ 	 * @param path caminho para o ficheiro
+ 	 */
     public void guardarDados(String path) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
 
@@ -363,6 +488,10 @@ public class Hipermercado implements Serializable {
         oos.close();
     }
 
+	/**
+	 * Carrega para memória dados de um Hipermercado a partir do ficheiro dado
+	 * @param path caminho para o ficheiro a ser carregado
+	 */
     public static Hipermercado carregarDados(String path) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
 
@@ -372,15 +501,18 @@ public class Hipermercado implements Serializable {
         return hm;
     }
 
+	/**
+ 	 * Calcula uma lista com os três clientes que mais compraram de cada filial
+ 	 * @return lista dos top 3 clientes para cada filial
+ 	 */
 	public List<ParStringDouble> getTop3Clientes() {
 		List<ParStringDouble> res = new ArrayList<>(3*filiais.length);
 
 		for(int f = 0; f < filiais.length; f++) {
 			Iterator<ParStringDouble> it = filiais[f].getClientesByFaturado().iterator();
 
-			for(int i = 0; i < 3 && it.hasNext(); i++) {
+			for(int i = 0; i < 3 && it.hasNext(); i++)
 				res.add(it.next());
-			}
 		}
 
 		return res;

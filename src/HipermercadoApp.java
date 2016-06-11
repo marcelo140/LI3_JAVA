@@ -397,7 +397,7 @@ public class HipermercadoApp {
 		System.out.print("\n");
 
 		for (int i = 0; i < 12; i++)
-			System.out.printf("Mês %2d: %d clientes\n", i+1, hm.getNumClientes(i));
+			System.out.printf("Mês %2d: %d clientes\n", i+1, hm.getClientesCompraramMes(i));
 		System.out.print("\n");
 	}
 

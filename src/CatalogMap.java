@@ -7,7 +7,7 @@ public class CatalogMap<K,V> implements Serializable {
     private int size;
 
     /**
-     * Constructs an empty catalog with the specified capacity.
+ 	 * Constrói um catálogo vazio com a capacidade dada
      * @param tamanho
      */
     public CatalogMap(int size) {
@@ -20,7 +20,7 @@ public class CatalogMap<K,V> implements Serializable {
     }
 
     /**
-     * Constructs an empty catalog with capacity ten.
+ 	 * Constrói um catálogo vazio com capacidade 10
      */
     public CatalogMap() {
         size = 0;
@@ -71,33 +71,36 @@ public class CatalogMap<K,V> implements Serializable {
     }
 
     /**
-     * Returns the number of indexes of this catalog
-     * @return the number of indexes in this catalog
+ 	 * Retorna o número de índices do catálogo
+     * @return número de índices do catálogo
      */
     public int length() {
         return cat.size();
     }
 
     /**
-     * Returns the number of elements in this catalog
-     * @return the number of elements in this catalog
+     * Retorna o número de elementos no catálogo
+     * @return número de elementos no catálogo
      */
     public int size() {
         return size;
     }
 
     /**
-     * Returns the number of elements on the specified index of the catalog.
-     * @param index - specified index which size is to be returned
-     * @return the number of elements on the specified index
+ 	 * Retorna o número de elementos no índice especificado
+     * @param index - índice especificado
+     * @return número de elementos no índice especificado
      */
-    public int sizeOfIndex(int index) {
+    public int sizeOfIndex(int index) throws IndexOutOfBoundsException {
+		if (index < 0 || index >= cat.size())
+			throw new IndexOutOfBoundsException();
+
         return cat.get(index).size();
     }
 
     /**
-     * Returns true if this set contains no elements.
-     * @return true if this set contains no elements
+     * Verifica se o catálogo está, ou não, vazio
+     * @return true se o catálogo estiver vazio
      */
     public boolean isEmpty() {
         return (size == 0);

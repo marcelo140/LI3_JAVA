@@ -6,7 +6,7 @@ public class CatalogSet<E> implements Serializable {
 	int size;
 
 	/**
- 	 * Constructs an empty catalog with the specified capacity.
+ 	 * Constrói um catálogo com o tamanho especificado
  	 * @param length
  	 */
 	public CatalogSet(int length) {
@@ -18,7 +18,7 @@ public class CatalogSet<E> implements Serializable {
 	}
 
 	/**
- 	 * Constructs an empty catalog with capacity ten.
+ 	 * Constrói um catálogo com capacidade 10
  	 */
 	public CatalogSet() {
 		size = 0;
@@ -52,9 +52,9 @@ public class CatalogSet<E> implements Serializable {
 	}
 
 	/**
- 	 * Inserts the specified element at the specified position in catalog.
- 	 * @param index - index at which the specified element is to be inserted
- 	 * @param element - element to be inserted
+ *	 * Insere o elemento na posição dada do catálogo
+ 	 * @param index posição em que o elemento será inserido
+ 	 * @param element elemento a ser inserido
 	 * @throws IndexOutOfBoundsException se o índice não está dentro do catálogo
  	 */
 	public void add(int index, E element) throws IndexOutOfBoundsException {
@@ -68,26 +68,26 @@ public class CatalogSet<E> implements Serializable {
 	}
 
 	/**
- 	 * Returns the number of indexes of this catalog
- 	 * @return the number of indexes in this catalog
+ 	 * Retorna o número de índices do catálogo
+ 	 * @return número de índices do catálogo
  	 */
 	public int indexes() {
 		return cat.size();
 	}
 
 	/**
- 	 * Returns the number of elements in this catalog
- 	 * @return the number of elements in this catalog
+ 	 * Retorna o número de elementos no catálogo
+ 	 * @return número de elementos do catálogo
  	 */
  	public int size() {
 		return size;
 	}
 
 	/**
- 	 * Returns the number of elements on the specified index of the catalog.
- 	 * @param index - specified index which size is to be returned
- 	 * @return the number of elements on the specified index
-	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
+ 	 * Retorna o número de elementos no índice dado do catálogo
+ 	 * @param index - índice cujo tamanho vai ser retornado
+ 	 * @return número de elementos no índice
+	 * @throws IndexOutOfBoundsException se o índice não está dentro do catálogo
  	 */
 	public int sizeOfIndex(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index >= cat.size()) 
@@ -97,8 +97,8 @@ public class CatalogSet<E> implements Serializable {
 	}
 
 	/**
- 	 * Returns true if this set contains no elements.
- 	 * @return true if this set contains no elements
+ 	 * Retorna true se o catálogo estiver vazio
+ 	 * @return true se o catálogo não tiver elementos
  	 */
 	public boolean isEmpty() {
 		return (size == 0);
@@ -136,7 +136,7 @@ public class CatalogSet<E> implements Serializable {
 	/**
  	 * Verifica se o elemento E existe no catálogo
  	 * @param element Elemento a encontrar
- 	 * return true se o elemento existe
+ 	 * @return true se o elemento existe
  	 */
 	public boolean contains(E element) {
 		boolean r = false;
