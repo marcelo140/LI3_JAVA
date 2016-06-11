@@ -137,12 +137,14 @@ public class Hipermercado implements Serializable {
         return catalogo;
     }
 
-    private Map<String, ProductUnit> getAllProdutos(String cliente) {
+    private Map<String, ProductUnit> getAllProdutos(String cliente) throws ClienteNaoExisteException {
         Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
         for(int i = 0; i < filiais.length; i++) {
-            CatalogMap<String, ProductUnit> tmp = filiais[i].getCliente(cliente)
-                                                            .getProdutos();
+            Client c = filiais[i].getCliente(cliente);
+            if (c == null)
+                throw new ClienteNaoExisteException("Cliente não existe");
+            CatalogMap<String, ProductUnit> tmp = c.getProdutos();
             System.out.println(i + "oi" + tmp.size());
             for(int mes = 0; mes < MESES; mes++) {
                 tmp.get(mes).forEach( (k,v) -> { ProductUnit pu;
@@ -157,12 +159,14 @@ public class Hipermercado implements Serializable {
         return tree;
     }
 
-    private Map<String, ClientUnit> getAllClientes(String produto) {
+    private Map<String, ClientUnit> getAllClientes(String produto) throws ProdutoNaoExisteException {
         Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
 
         for(int i = 0; i < filiais.length; i++) {
-            CatalogMap<String, ClientUnit> tmp = filiais[i].getProduct(produto)
-                                                           .getClientes();
+            Product p = filiais[i].getProduct(produto);
+            if (p == null)
+                throw new ProdutoNaoExisteException("Produto não existe");
+            CatalogMap<String, ClientUnit> tmp = p.getClientes();
 
             for(int mes = 0; mes < MESES; mes++) {
                 tmp.get(mes).forEach( (k,v) -> { ClientUnit clu;
@@ -177,7 +181,7 @@ public class Hipermercado implements Serializable {
         return tree;
     }
 
-    public ArraysIntIntDouble getClientData(String cliente) {
+    public ArraysIntIntDouble getClientData(String cliente) throws ClienteNaoExisteException{
         Client[] clients = new Client[filiais.length];
         List<CatalogMap<String, ProductUnit>> produtos = new ArrayList<>(3);
 
@@ -187,6 +191,8 @@ public class Hipermercado implements Serializable {
 
         for(int i = 0; i < filiais.length; i++) {
             clients[i] = filiais[i].getCliente(cliente);
+            if (clients[i] == null)
+                throw new ClienteNaoExisteException("Cliente não existe");
             produtos.add(clients[i].getProdutos());
         }
 
@@ -205,7 +211,7 @@ public class Hipermercado implements Serializable {
         return new ArraysIntIntDouble(comprasRealizadas, produtosComprados, faturado);
     }
 
-    public ArraysIntIntDouble getProductData(String produto) {
+    public ArraysIntIntDouble getProductData(String produto) throws ProdutoNaoExisteException {
         Product[] products =  new Product[filiais.length];
         List<CatalogMap<String, ClientUnit>> clientes =
                       new ArrayList<CatalogMap<String, ClientUnit>>(3);
@@ -216,6 +222,8 @@ public class Hipermercado implements Serializable {
 
         for(int i = 0; i < filiais.length; i++) {
             products[i] = filiais[i].getProduct(produto);
+            if (products[i] == null)
+                throw new ProdutoNaoExisteException("Produto não existe");
             clientes.add(products[i].getClientes());
         }
 
@@ -291,7 +299,7 @@ public class Hipermercado implements Serializable {
         return valid;
     }
 
-	public Set<ParStringInt> getProdutos(String cliente) {
+	public Set<ParStringInt> getProdutos(String cliente) throws ClienteNaoExisteException {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
 
 		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
@@ -300,7 +308,7 @@ public class Hipermercado implements Serializable {
 		return res;
 	}
 
-	public Set<ParStringDouble> getClientes(String produto) {
+	public Set<ParStringDouble> getClientes(String produto) throws ProdutoNaoExisteException {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
 
 		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
