@@ -49,7 +49,7 @@ public class CatalogSet<E> implements Serializable {
 		if (index < 0 || index >= cat.size()) 
 			throw new IndexOutOfBoundsException(); 
 
-		return new cat.get(index);
+		return cat.get(index);
 	}
 
 	/**
