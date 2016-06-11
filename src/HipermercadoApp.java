@@ -6,6 +6,8 @@ public class HipermercadoApp {
     private static final String produtosFilename = "../data/Produtos.txt";
     private static final String clientesFilename = "../data/Clientes.txt";
     private static final String vendas1mFilename = "../data/Vendas_1M.txt";
+    private static final String defaultDataPath  = "../data/hipermercado.dat";
+
 
     private static Menu queries, principal;
     private static Hipermercado hm;
@@ -30,7 +32,7 @@ public class HipermercadoApp {
      */
     private static void carregaMenu() {
 
-        String[] prc = { "Carregar ficheiros", "Queries", "Estatísticas"};
+        String[] prc = { "Carregar ficheiros", "Restaurar dados", "Guardar dados" ,"Queries", "Estatísticas"};
         String[] qrs = { " Lista de códigos nunca comprados e total",
                          " Total de vendas e total de os clientes que as fizeram, por mês",
                          " Total de compras, produtos comprados e total gasto por mês de um cliente",
@@ -56,9 +58,13 @@ public class HipermercadoApp {
             switch(principal.getOpcao()) {
                 case 1 : carregaFicheiros();
                          break;
-                case 2 : executaMenuQueries();
+				case 2 : salvaDados();
+				         break;
+				case 3 : carregaDados();
+				         break;
+                case 4 : executaMenuQueries();
                         break;
-                case 3 : hm.estatisticas();
+                case 5 : hm.estatisticas();
                         break;
             }
         } while (principal.getOpcao() != 0);
@@ -92,6 +98,36 @@ public class HipermercadoApp {
             }
         } while(queries.getOpcao() != 0);
     }
+
+	private static void salvaDados() {
+		String file = Input.lerString();
+
+		if (file.isEmpty())
+			file = defaultDataPath;
+
+		try {
+			hm.guardarDados(file);
+		} catch(IOException e) {
+			System.out.println("Impossível salvar ficheiro: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Pede ao utilizador o ficheiro onde gravar os dados e grava.
+	 * Caso o utilizador não defina ficheiro, o default será ../data/hipermercado.dat
+	 */
+	private static void carregaDados() {
+		String file = Input.lerString();
+
+		if (file.isEmpty())
+			file = defaultDataPath;
+
+		try {
+			hm = Hipermercado.carregarDados(file);
+		} catch(IOException | ClassNotFoundException e) {
+			System.out.println("Impossível carregar ficheiro: " + e.getMessage());
+		}
+	}
 
 	private static void query2() {
 		int mes, vendas, clientes;
@@ -202,7 +238,7 @@ public class HipermercadoApp {
 		}
 
 		System.out.println("Calculado em: " + (double) (fim-inicio)/1.0E9);
-		
+
 		nav = new Navegador(NUML, lista);
 		nav.show();
 	}
