@@ -438,19 +438,18 @@ public class HipermercadoApp {
 	}
 
     private static void carregaFicheiros() throws IOException {
-        Scanner is = new Scanner(System.in);
 		long inicio, fim;
 
         System.out.print("Ficheiro de Clientes: ");
-        clientesF = is.nextLine();
+        clientesF = Input.lerString();
         if (clientesF.isEmpty()) clientesF = clientesFilename;
 
         System.out.print("Ficheiro de Produtos: ");
-        produtosF = is.nextLine();
+        produtosF = Input.lerString(); 
         if (produtosF.isEmpty()) produtosF = produtosFilename;
 
         System.out.print("Ficheiro de Vendas: ");
-        vendasF = is.nextLine();
+        vendasF = Input.lerString();
         if (vendasF.isEmpty()) vendasF = vendas1mFilename;
 
 

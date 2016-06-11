@@ -80,7 +80,6 @@ public class Navegador {
      * Lê a operação a efetuar
      */
     public void nextOperation() {
-        Scanner is = new Scanner(System.in);
         String op;
         int nextPage = pagina;
 
@@ -88,12 +87,12 @@ public class Navegador {
         System.out.printf("g: Saltar Página\tq: Sair\n");
         System.out.printf("\t>>");
 
-        op = is.nextLine();
+        op = Input.lerString();
 
         if (op.isEmpty()) op = ultimoCmd;
 
         while(op.isEmpty())
-            op = is.nextLine();
+            op = Input.lerString();
 
         ultimoCmd = op;
         switch(op.charAt(0)) {
