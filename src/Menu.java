@@ -5,7 +5,6 @@
  */
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.InputMismatchException;
 
 public class Menu {
@@ -51,16 +50,12 @@ public class Menu {
     /** Ler uma opção válida */
     private int lerOpcao() {
         int op;
-        Scanner is = new Scanner(System.in);
 
         System.out.print("  >> ");
-        try {
-            op = is.nextInt();
-        }
-        catch (InputMismatchException e) { // Não foi inscrito um int
-            op = -1;
-        }
-        if (op<0 || op>this.opcoes.size()) {
+        
+		op = Input.lerInt();
+        
+		if (op<0 || op>this.opcoes.size()) {
             System.out.println("Opção Inválida!!");
             op = -1;
         }
