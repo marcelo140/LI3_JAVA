@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ArraysIntIntDouble implements Serializable {
+
 	private int[] fst, snd;
 	private double[] trd;
 
@@ -81,7 +82,7 @@ public class ArraysIntIntDouble implements Serializable {
 			return false;
 
 		ArraysIntIntDouble p = (ArraysIntIntDouble) o;
-		return p.firts().equals(fst) &&
+		return p.first().equals(fst) &&
 			   p.second().equals(snd)&&
 			   p.third().equals(trd);
 	}

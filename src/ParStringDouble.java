@@ -1,4 +1,8 @@
-public class ParStringDouble {
+import java.io.Serializable;
+import java.util.Arrays;
+
+public class ParStringDouble implements Serializable{
+
 	private String str;
 	private double d;
 
@@ -58,7 +62,7 @@ public class ParStringDouble {
 			return false;
 
 		ParStringDouble p = (ParStringDouble) o;
-		return p.firts().equals(str) &&
+		return p.first().equals(str) &&
 			   p.second()== d;
 	}
 
@@ -75,15 +79,10 @@ public class ParStringDouble {
     }
 
 	/**
- 	 * Retorna uma hash para este par
- 	 * @return hash
- 	 */
+	 * Devolve um hash único para esta instancia de ParStringDouble
+	 * @return hash único para esta instancia
+	 */
 	public int hashCode() {
-        int hash = 7;
-
-        hash = 31*hash + str.hashCode();
-        hash = 31*hash + d;
-        
-
-        return hash;
+		return Arrays.hashCode( new Object[] {str,d} );
+	}
 }
