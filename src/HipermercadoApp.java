@@ -80,7 +80,7 @@ public class HipermercadoApp {
         do {
             queries.executa();
             switch(queries.getOpcao()) {
-                case 1 : hm.query1();
+                case 1 : query1();
                          break;
 				case 2 : query2();
 					  	 break;
@@ -134,6 +134,22 @@ public class HipermercadoApp {
 			System.out.println("Impossível carregar ficheiro " + file);
 		}
 	}
+
+	public static void query1() {
+        long inicio, fim;
+
+        inicio = System.nanoTime();
+        ArrayList<String> lista = new ArrayList<> (hm.getListaNaoComprados());
+        lista.sort((s1, s2) -> s1.compareTo(s2));
+        fim = System.nanoTime();
+
+        System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+        System.out.print("Pressa <Enter> para continuar...");
+        Input.lerString();
+
+        Navegador nav = new Navegador(NUML, lista);
+        nav.show();
+    }
 
 	private static void query2() {
 		int mes, vendas, clientes;
