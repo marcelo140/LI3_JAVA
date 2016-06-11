@@ -1,16 +1,8 @@
- /**
- *
- */
-
 import java.lang.*;
 import java.util.*;
-import java.util.Set;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.ArrayList;
 
 public class CatalogMap<K,V> implements Map<K,V> {
-    private List<TreeMap<K,V>> cat;
+    private List<Map<K,V>> cat;
     private int size;
 
     /**
@@ -19,23 +11,24 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public CatalogMap(int size) {
         this.size = 0;
-        cat = new ArrayList<TreeMap<K,V>>(size);
+        cat = new ArrayList<Map<K,V>>(size);
 
         for (int i = 0 ; i < size; i++)
-            cat.add(new TreeMap<K,V>());
+            cat.add(new HashMap<K,V>());
 
     }
 
     /**
-     * Constroi um catalogMap oco com base no dado
-     * @param cm CatalogMap molde para este novo CatalogMap
+     * Constructs an empty catalog with the specified capacity.
+     * @param tamanho
      */
-    public CatalogMap(CatalogMap<K,V> cm) {
-        size = 0;
-        cat = new ArrayList<TreeMap<K,V>>(cm.length());
+    public CatalogMap(int size, int tam) {
+        this.size = 0;
+        cat = new ArrayList<Map<K,V>>(size);
 
-        for (int i = 0 ; i < cm.length() ; i++)
-            cat.add(new TreeMap<K,V> (cm.get(i)));
+        for (int i = 0 ; i < size; i++)
+            cat.add(new HashMap<K,V>(tam));
+
     }
 
     /**
@@ -43,8 +36,8 @@ public class CatalogMap<K,V> implements Map<K,V> {
      */
     public CatalogMap() {
         size = 0;
-        cat = new ArrayList<TreeMap<K,V>>();
-        cat.add(new TreeMap<K,V>());
+        cat = new ArrayList<Map<K,V>>();
+        cat.add(new HashMap<K,V>());
     }
 
     /**
@@ -56,7 +49,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         if (index < 0 || index >= cat.size())
             throw new IndexOutOfBoundsException();
 
-        return new TreeMap<K,V> (cat.get(index));
+        return cat.get(index);
     }
 
     /**
@@ -82,8 +75,10 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * @param value Valor que será associado à chave dada.
      */
     public void put(int index, K key, V value) {
-        TreeMap<K,V> map = cat.get(index);
+        Map<K,V> map = cat.get(index);
+
         map.put(key, value);
+
         size++;
     }
 
@@ -133,7 +128,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Remove todos os mapeamentos deste mapa
      */
     public void clear() {
-        for (TreeMap<K,V> tm : cat)
+        for (Map<K,V> tm : cat)
             tm.clear();
     }
 
@@ -175,7 +170,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Set<Map.Entry<K,V>> set = new TreeSet<>();
         Set<Map.Entry<K,V>> aux;
 
-        for (TreeMap<K,V> tm : cat) {
+        for (Map<K,V> tm : cat) {
             aux = tm.entrySet();
 
             for (Map.Entry<K,V> m : aux)
@@ -200,7 +195,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
             return false;
 
         for (int i = 0; i < length(); i++)
-            if (this.get(i) != cat.get(i)) return false;
+            if (!this.get(i).equals(cat.get(i))) return false;
 
         return true;
      }
@@ -226,7 +221,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Set<K> ret = new TreeSet<>();
         Set<K> aux;
 
-        for (TreeMap<K,V> tm : cat) {
+        for (Map<K,V> tm : cat) {
             aux = tm.keySet();
 
             for (K m : aux)
@@ -289,7 +284,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
 
         K k = (K) key;
 
-        for (TreeMap<K,V> tm : cat)
+        for (Map<K,V> tm : cat)
             if ((ret = tm.get(k)) != null) return ret;
 
         return ret;
@@ -336,7 +331,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         K chave = (K) key;
         Object r = null;
 
-        for (TreeMap<K,V> tm : cat)
+        for (Map<K,V> tm : cat)
             r = tm.remove(chave);
 
         return (V) r;
@@ -350,7 +345,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
         Collection<V> cols = new TreeSet<>();
         Collection<V> aux;
 
-        for(TreeMap<K,V> tm : cat) {
+        for(Map<K,V> tm : cat) {
             aux = tm.values();
 
             for (V val : aux)

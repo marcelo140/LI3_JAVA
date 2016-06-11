@@ -325,6 +325,37 @@ public class Hipermercado {
         return res;
     }
 
+	public double getFaturacaoTotal() {
+		return fat.getFaturacaoTotal();
+	}
+
+	public double getFaturacaoMes(int mes) throws InvalidMonthException {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException("Mês inválido");
+
+		return fat.getFaturacaoMes(mes);
+	}
+
+//	private CatalogMap<String, Product> getAllProdutos() {
+//		CatalogMap<String, Product> catalogo = filiais[0].getProdutos();
+//
+//		for(int i = 1; i < filiais.length; i++) {
+//			CatalogMap<String, Product> tmp = filiais[i].getProdutos();
+//
+//			for(int letra = 0; letra < LETRAS; letra++) {
+//				final int index = letra;
+//				tmp.get(letra).forEach((k,v) -> { Product p = catalogo.get(index, k);
+//				                                  if (p == null)
+//				                                  	catalogo.put(index, k, v.clone());
+//				                                  else
+//				                                  	p.merge(v);
+//				                                });
+//			}
+//		}
+//
+//		return catalogo;
+//	}
+
     public void clear() {
         produtos = new CatalogSet<>();
         clientes = new CatalogSet<>();
@@ -359,10 +390,107 @@ public class Hipermercado {
         return valid;
     }
 
+
+	private Map<String, ProductUnit> getAllProdutos(String cliente) {
+		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
+
+		for(int i = 0; i < filiais.length; i++) {
+			CatalogMap<String, ProductUnit> tmp = filiais[i].getCliente(cliente)
+			                                                .getProdutos();
+			System.out.println(i + "oi" + tmp.size());
+			for(int mes = 0; mes < MESES; mes++) {
+				tmp.get(mes).forEach( (k,v) -> { ProductUnit pu;
+				                                 if ( (pu = tree.get(k)) == null )
+				                                	tree.put(k, v.clone());
+				                                 else
+				                                	pu.add(v);
+				                               });
+			}
+		}
+
+		return tree;
+	}
+
+	private Map<String, ClientUnit> getAllClientes(String produto) {
+		Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
+
+		for(int i = 0; i < filiais.length; i++) {
+			CatalogMap<String, ClientUnit> tmp = filiais[i].getProduct(produto)
+			                                               .getClientes();
+
+			for(int mes = 0; mes < MESES; mes++) {
+				tmp.get(mes).forEach( (k,v) -> { ClientUnit clu;
+				                                 if ( (clu = tree.get(k)) == null)
+				                                 	tree.put(k, v.clone());
+				                                 else
+				                                 	clu.add(v);
+				                               });
+			}
+		}
+
+		return tree;
+	}
+
+	public TreeSet<ParStringInt> getProdutos(String cliente) {
+		Map<String, ProductUnit> tree = getAllProdutos(cliente);
+
+		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
+		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
+
+		return res;
+	}
+
+	public TreeSet<ParStringDouble> getClientes(String produto) {
+		Map<String, ClientUnit> tree = getAllClientes(produto);
+
+		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
+		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
+
+		return res;
+	}
+
+	public int[] clientesPorMes() {
+		CatalogSet<String> lista = new CatalogSet<>(MESES);
+
+		for(int i = 0; i < filiais.length; i++) {
+			CatalogSet<String> tmp = filiais[i].getClientesCompraramMes();
+
+			for(int j = 0; j < MESES; j++)
+				lista.get(j).addAll( tmp.get(j) );
+		}
+
+		int[] res = new int[MESES];
+		for(int i = 0; i < MESES; i++)
+			res[i] = lista.get(i).size();
+
+		return res;
+	}
+
+	public ArraysIntIntDouble getClientData(String cliente) {
+		Client[] clients = new Client[filiais.length];
+		List<CatalogMap<String, ProductUnit>> produtos = new ArrayList<>(3);
+
+		int[] comprasRealizadas = new int[MESES];
+		int[] produtosComprados = new int[MESES];
+		double[] faturado = new double[MESES];
+
+		for(int i = 0; i < filiais.length; i++) {
+			clients[i] = filiais[i].getCliente(cliente);
+			produtos.add(clients[i].getProdutos());
+		}
+
+		for(int j = 0; j < MESES; j++) {
+			Set<String> p = new HashSet<>(256);
+
+			for (int i = 0; i < filiais.length; i++) {
+				produtos.get(i).get(j).forEach((k,v) -> { p.add(k); });
+				comprasRealizadas[j] += clients[i].getCompras(j);
+				faturado[j] += clients[i].getGastos(j);
+			}
+			
     public void carregarProdutos(String fich) throws IOException {
         BufferedReader inStream = null;
         String produto = null;
-
         inStream = new BufferedReader(new FileReader(fich));
 
         while( (produto = inStream.readLine()) != null ) {

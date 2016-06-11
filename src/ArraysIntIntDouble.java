@@ -3,10 +3,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ArraysIntIntDouble implements Serializable {
+	public static final long serialVersionUID = 18L;
+
 	private int[] fst, snd;
 	private double[] trd;
 
-	
+
 	/**
  	 * Cria uma nova instância de ArraysIntIntDouble com os objetos dados.
  	 */
@@ -81,8 +83,9 @@ public class ArraysIntIntDouble implements Serializable {
 			return false;
 
 		ArraysIntIntDouble p = (ArraysIntIntDouble) o;
-		return true;/*p.firts().equals(str) &&
-			   p.second().equals(d); */
+		return p.firts().equals(fst) &&
+			   p.second().equals(snd)&&
+			   p.third().equals(trd);
 	}
 
 	/**
@@ -91,10 +94,10 @@ public class ArraysIntIntDouble implements Serializable {
  	 */
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Int: ").append(fst).append("\n");
-        sb.append("Int:").append(snd).append("\n");
-        sb.append("Double ").append(trd).append("\n");
-       
+        sb.append("First :").append(fst).append("\n");
+        sb.append("Second:").append(snd).append("\n");
+        sb.append("Third ").append(trd).append("\n");
+
         return sb.toString();
     }
 
@@ -108,7 +111,7 @@ public class ArraysIntIntDouble implements Serializable {
         hash = 31*hash + fst.hashCode();
         hash = 31*hash + snd.hashCode();
         hash = 31*hash + trd.hashCode();
-        
+
 
         return hash;
 	}
