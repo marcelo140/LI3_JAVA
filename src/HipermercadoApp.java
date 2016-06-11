@@ -80,6 +80,8 @@ public class HipermercadoApp {
 						 break;
 				case 5 : query5();
 						 break;
+				case 7 : hm.query7();
+				         break;
 				case 6 : query6();
 						 break;
 				case 8 : query8();
@@ -123,7 +125,7 @@ public class HipermercadoApp {
 		System.out.print("Cliente a pesquisar: ");
 		String cliente = Input.lerString();
 
-		inicio = System.nanoTime();	
+		inicio = System.nanoTime();
 		ArraysIntIntDouble data = hm.getClientData(cliente);
 		fim = System.nanoTime();
 
@@ -145,7 +147,7 @@ public class HipermercadoApp {
 
 		inicio = System.nanoTime();
 		TreeSet<ParStringInt> produtos = hm.getProdutos(cliente);
-	
+
 		Iterator<ParStringInt> it = produtos.iterator();
 		while (it.hasNext()) {
 			ParStringInt p = it.next();
@@ -166,7 +168,7 @@ public class HipermercadoApp {
 		System.out.print("Número de produtos: ");
 		int n = Input.lerInt();
 
-		inicio = System.nanoTime();		
+		inicio = System.nanoTime();
 		TreeSet<TriploStringIntInt> produtos = hm.getTopProdutos();
 
 		Iterator<TriploStringIntInt> it = produtos.iterator();
@@ -216,7 +218,7 @@ public class HipermercadoApp {
 
 		inicio = System.nanoTime();
 		TreeSet<ParStringDouble> clientes = hm.getClientes(produto);
-			
+
 		Iterator<ParStringDouble> it = clientes.iterator();
 		for(int i = 0; i < n && it.hasNext(); i++) {
 			ParStringDouble p = it.next();
@@ -231,7 +233,7 @@ public class HipermercadoApp {
     private static void carregaFicheiros() throws IOException {
         Scanner is = new Scanner(System.in);
 		long inicio, fim;
-        
+
         System.out.print("Ficheiro de Clientes: ");
         clientesF = is.nextLine();
         if (clientesF.isEmpty()) clientesF = clientesFilename;
