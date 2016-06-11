@@ -186,7 +186,7 @@ public class Hipermercado implements Serializable {
         }
 
         for(int j = 0; j < MESES; j++) {
-            Set<String> p = new HashSet(256);
+            Set<String> p = new HashSet<>(256);
 
             for (int i = 0; i < filiais.length; i++) {
                 produtos.get(i).get(j).forEach((k,v) -> { p.add(k); });
@@ -215,7 +215,7 @@ public class Hipermercado implements Serializable {
         }
 
         for(int j = 0; j < MESES; j++) {
-            Set<String> c = new HashSet(256);
+            Set<String> c = new HashSet<>(256);
 
             for (int i = 0; i < filiais.length; i++) {
                 clientes.get(i).get(j).forEach((k,v) -> { c.add(k); });
