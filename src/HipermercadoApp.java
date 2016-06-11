@@ -84,6 +84,8 @@ public class HipermercadoApp {
 					  	 break;
 				case 3 : query3();
 						 break;
+				case 4 : query4();
+						 break;
 				case 5 : query5();
 						 break;
 				case 7 : query7();
@@ -173,6 +175,25 @@ public class HipermercadoApp {
 		Input.lerString();
 
 		Navegador nav = new Navegador(20, "MÊS\tCOMPRAS\tPRODUTOS\tGASTO", data.toListString());
+		nav.show();
+	}
+
+	private static void query4() {
+		long inicio, fim;
+
+		System.out.print("Produto a pesquisar: ");
+		String produto = Input.lerString();
+
+		inicio = System.nanoTime();
+		ArraysIntIntDouble data = hm.getProductData(produto);
+		fim = System.nanoTime();
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
+		System.out.println("Pressa <Enter> para continuar...");
+
+		Input.lerString();
+
+		Navegador nav = new Navegador(20, "MÊS\tCOMPRAS\tCLIENTES\tGASTO", data.toListString());
 		nav.show();
 	}
 
