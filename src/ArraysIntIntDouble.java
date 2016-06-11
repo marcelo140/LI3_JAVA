@@ -3,14 +3,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ArraysIntIntDouble implements Serializable {
-<<<<<<< HEAD
-=======
-	public static final long serialVersionUID = 18L;
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
-
 	private int[] fst, snd;
 	private double[] trd;
-
 
 	/**
  	 * Cria uma nova instância de ArraysIntIntDouble com os objetos dados.
@@ -20,7 +14,6 @@ public class ArraysIntIntDouble implements Serializable {
 		this.snd = snd.clone();
 		this.trd = trd.clone();
 	}
-
 
 	/**
  	 * Cria uma nova instância de ArraysIntIntDouble a partir do objeto dado

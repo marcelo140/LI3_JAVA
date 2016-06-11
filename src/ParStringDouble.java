@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -6,14 +5,6 @@ public class ParStringDouble implements Serializable{
 
 	private String str;
 	private double d;
-=======
-import java.util.*;
-
-public class ParStringDouble {
-    private String str;
-    private double d;
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
-
 
     /**
      * Cria uma nova instância de ParStringDouble com a String e o double dados.
@@ -22,7 +13,6 @@ public class ParStringDouble {
         this.str = str;
         this.d = d;
     }
-
 
     /**
      * Cria uma nova instância de ParStringDouble a partir do par dado
@@ -69,17 +59,10 @@ public class ParStringDouble {
         if (o == null || o.getClass() != this.getClass())
             return false;
 
-<<<<<<< HEAD
-		ParStringDouble p = (ParStringDouble) o;
-		return p.first().equals(str) &&
-			   p.second()== d;
-	}
-=======
         ParStringDouble p = (ParStringDouble) o;
         return p.first().equals(str) &&
                p.second() == d;
     }
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
 
     /**
      * Retorna um string que descreve este par
@@ -93,7 +76,6 @@ public class ParStringDouble {
         return sb.toString();
     }
 
-<<<<<<< HEAD
 	/**
 	 * Devolve um hash único para esta instancia de ParStringDouble
 	 * @return hash único para esta instancia
@@ -101,20 +83,6 @@ public class ParStringDouble {
 	public int hashCode() {
 		return Arrays.hashCode( new Object[] {str,d} );
 	}
-}
-=======
-    /**
-     * Retorna uma hash para este par
-     * @return hash
-     */
-    public int hashCode() {
-        ArrayList<Object> lista = new ArrayList<>();
-        
-        lista.add(str);
-        lista.add(d);        
 
-        return lista.hashCode();
-    }
-    
 }
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
+    

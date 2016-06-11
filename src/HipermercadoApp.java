@@ -287,12 +287,18 @@ public class HipermercadoApp {
         fim = System.nanoTime();
         System.out.println("Clientes carregados em " + ((double) (fim-inicio) / 1000000000) + " segundos");
 
+		try {
         System.out.println("A carregar vendas...");
         inicio = System.nanoTime();
         int vendas = hm.carregarVendas(vendasF);
         fim = System.nanoTime();
         System.out.println("Vendas válidas: " + vendas);
         System.out.println("Vendas carregadas em " + ((double) (fim-inicio) / 1000000000) + " segundos");
+		} catch (NullPointerException | IOException | NumberFormatException |
+		         InvalidMonthException e) {
 
+			System.out.println("Não foi possível carregar vendas");
+			return;
+		}
     }
 }

@@ -135,7 +135,7 @@ public class Product implements Serializable {
 	 */
 	public int getVendas(int mes) {
 		if (mes < 0 || mes > 11)
-			throw new InvalidMonthException();
+			throw new InvalidMonthException("");
 
 		return vendas[mes];
 	}

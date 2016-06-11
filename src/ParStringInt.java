@@ -5,7 +5,6 @@ public class ParStringInt implements Serializable{
 	private String str;
 	private int integer;
 
-
 	/**
  	 * Cria uma nova instância de ParStringInt com a String e o integer dados.
  	 */
@@ -62,11 +61,7 @@ public class ParStringInt implements Serializable{
 
 		ParStringInt p = (ParStringInt) o;
 		return p.first().equals(str) &&
-<<<<<<< HEAD
-			   p.second()== integer;
-=======
 			   p.second() == integer;
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
 	}
 
 	/**
@@ -94,8 +89,4 @@ public class ParStringInt implements Serializable{
 
         return hash;
     }
-<<<<<<< HEAD
 }
-=======
-    }
->>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
