@@ -14,6 +14,7 @@ public class Hipermercado {
 
     public Hipermercado(int nFiliais, String produtosF, String clientesF,
                         String vendasF) {
+
         produtos = new CatalogSet<>(LETRAS);
         clientes = new CatalogSet<>(LETRAS);
         fat = new Faturacao(nFiliais);
@@ -22,19 +23,6 @@ public class Hipermercado {
         for(int i = 0; i < nFiliais; i++)
             filiais[i] = new VendasFilial();
 
-        this.produtosF = produtosF;
-        this.clientesF = clientesF;
-        this.vendasF = vendasF;
-    }
-
-    public Hipermercado(CatalogSet<String> produtos, CatalogSet<String> clientes,
-                        Faturacao fat, VendasFilial[] filiais, String produtosF,
-                        String clientesF, String vendasF) {
-
-        this.produtos = produtos.clone();
-        this.clientes = clientes.clone();
-        this.fat = fat.clone();
-        this.filiais = filiais.clone();
         this.produtosF = produtosF;
         this.clientesF = clientesF;
         this.vendasF = vendasF;
@@ -286,17 +274,17 @@ public class Hipermercado {
 	}
 
     public void clear() {
-        produtos = new CatalogSet<>();
-        clientes = new CatalogSet<>();
-        fat = new Faturacao(filiais.length);
+        produtos.clear();
+        clientes.clear();
+		fat.clear();
 
         for (int i = 0; i < filiais.length; i++)
-            filiais[i] = new VendasFilial();
+            filiais[i].clear();
     }
 
-    public int carregarVendas(String fich) throws IOException, NullPointerException,
-	                                              NumberFormatException,
-												  InvalidMonthException {
+    public int carregarVendas(String fich) 
+	     throws IOException, NullPointerException, NumberFormatException,
+				InvalidMonthException {
 
         BufferedReader inStream = null;
         String linha = null;
@@ -437,25 +425,6 @@ public class Hipermercado {
         nav = new Navegador(NUML, lista);
         nav.show();
     }
-
-    public void query7() {
-        ArrayList<String> produtosf1 = new ArrayList<>(filiais[0].getProdutos().keySet());
-        ArrayList<String> produtosf2 = new ArrayList<>(filiais[1].getProdutos().keySet());
-        ArrayList<String> produtosf3 = new ArrayList<>(filiais[2].getProdutos().keySet());
-        ArrayList<String> linhas = new ArrayList<>();
-        String header = new String("FILIAL 1 \t FILIAL 2 \t FILIAL 3");
-        Navegador nav;
-/*
-        produtosf1.stream().sorted((str1, str2) -> Double.compare(filiais[0].getProduct(str2).getTotalFaturado(), filiais[0].getProduct(str1).getTotalFaturado()));
-        produtosf2.stream().sorted((str1, str2) -> Double.compare(filiais[1].getProduct(str2).getTotalFaturado(), filiais[1].getProduct(str1).getTotalFaturado()));
-        produtosf3.stream().sorted((str1, str2) -> Double.compare(filiais[2].getProduct(str2).getTotalFaturado(), filiais[2].getProduct(str1).getTotalFaturado()));
-*/
-        for (int i = 0; i < 3; i++)
-            linhas.add(new String(produtosf1.get(i) + "\t" + produtosf2.get(i) + "\t" + produtosf3.get(i)));
-
-        nav = new Navegador(NUML, header, linhas);
-        nav.show();
-     }
 
     /* ================ ESTATÍSTICAS ===================== */
 

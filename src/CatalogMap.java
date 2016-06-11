@@ -128,8 +128,7 @@ public class CatalogMap<K,V> implements Map<K,V> {
      * Remove todos os mapeamentos deste mapa
      */
     public void clear() {
-        for (Map<K,V> tm : cat)
-            tm.clear();
+		cat.forEach(m -> m.clear());	
     }
 
     /**

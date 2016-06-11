@@ -241,6 +241,14 @@ public class VendasFilial {
                 vf.produtos.equals(produtos);
      }
 
+	/**
+ 	 * Remove todos os dados guardados
+ 	 */
+	public void clear() {
+		clientes.clear();
+		produtos.clear();	
+	}
+
      /**
       * Retorna hash desta instância de VendasFilial
       * @return hash desta instância de VendasFilial

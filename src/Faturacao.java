@@ -346,6 +346,21 @@ public class Faturacao implements Serializable {
     }
 
 	/**
+ 	 * Remove todos os dados guardados
+ 	 */
+	public void clear() {
+		produtos.clear();
+		produtosComprados = 0;
+		vendasZero = 0;
+		Arrays.fill(numeroCompras, 0);
+
+		for(int i = 0; i < MESES; i++) {
+			Arrays.fill(fat[i], 0.0);
+			Arrays.fill(quant[i], 0);
+		}
+	}
+
+	/**
  	 * Cria uma cópia desta instância
  	 * @return cópia
  	 */

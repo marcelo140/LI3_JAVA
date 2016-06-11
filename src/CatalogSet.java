@@ -84,6 +84,13 @@ public class CatalogSet<E> implements Serializable {
 	}
 
 	/**
+ 	 * Remove todos os dados guardados
+ 	 */
+	public void clear() {
+		cat.forEach(s -> s.clear());
+	}
+
+	/**
  	 * Returns the number of elements on the specified index of the catalog.
  	 * @param index - specified index which size is to be returned
  	 * @return the number of elements on the specified index
