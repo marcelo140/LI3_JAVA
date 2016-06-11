@@ -61,7 +61,7 @@ public class VendasFilial {
 	 * promoção a que este o comprou.
 	 * @return catálogo de produtos
 	 */
-	private CatalogMap<String, Product> getProdutos() {
+	public CatalogMap<String, Product> getProdutos() {
 		CatalogMap<String, Product> catalog = new CatalogMap<>(LETRAS);
 
 		for (int i = 0; i < LETRAS; i++) {
@@ -188,13 +188,13 @@ public class VendasFilial {
 
 		for(int i = 0; i < MESES; i++)
 			lista.add( new TreeSet<String>() );
-	
+
 		for(int i = 0; i < LETRAS; i++) {
 			clientes.get(i).forEach( (k,v) -> { for (int j = 0; j < MESES; j++)
 			                                        	if (v.getCompras(j) > 0)
 			                                        		lista.get(j).add(k);
 			                                  });
-		}	
+		}
 
 		return lista;
 	}
@@ -223,10 +223,10 @@ public class VendasFilial {
      * @return true se e só se o objeto dado não for null e seja igual a este
      */
      public boolean equals(Object o) {
-         if (this == o) 
+         if (this == o)
 			return true;
 
-         if ( o == null || o.getClass() != this.getClass()) 
+         if ( o == null || o.getClass() != this.getClass())
 			return false;
 
          VendasFilial vf = (VendasFilial) o;
