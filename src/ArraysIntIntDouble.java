@@ -81,8 +81,9 @@ public class ArraysIntIntDouble implements Serializable {
 			return false;
 
 		ArraysIntIntDouble p = (ArraysIntIntDouble) o;
-		return p.firts().equals(str) &&
-			   p.second().equals(d);
+		return p.firts().equals(fst) &&
+			   p.second().equals(snd)&&
+			   p.third().equals(trd);
 	}
 
 	/**
@@ -91,9 +92,9 @@ public class ArraysIntIntDouble implements Serializable {
  	 */
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Int: ").append(fst).append("\n");
-        sb.append("Int:").append(snd).append("\n");
-        sb.append("Double ").append(trd).append("\n");
+        sb.append("First :").append(fst).append("\n");
+        sb.append("Second:").append(snd).append("\n");
+        sb.append("Third ").append(trd).append("\n");
        
         return sb.toString();
     }
