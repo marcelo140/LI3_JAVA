@@ -234,7 +234,10 @@ public class Hipermercado {
     }
 
     public TreeSet<TriploStringIntInt> getTopProdutos() {
-        CatalogMap<String, Product> catalog = getAllProdutos();
+		long inicio = System.nanoTime();
+        CatalogMap<String, Product> catalog = VendasFilial.mergeProdutos(filiais);
+		long fim = System.nanoTime();
+		System.out.println((double)(fim-inicio)/1.0E9);
         TreeSet<TriploStringIntInt> res =
                   new TreeSet<>(new ComparatorTriploStringIntIntBySnd());
 
@@ -255,27 +258,6 @@ public class Hipermercado {
 
         return res;
     }
-
-	private CatalogMap<String, Product> getAllProdutos() {
-		CatalogMap<String, Product> catalogo = filiais[0].getProdutos();
-
-		for(int i = 1; i < filiais.length; i++) {
-			CatalogMap<String, Product> tmp = filiais[i].getProdutos();
-
-			for(int letra = 0; letra < LETRAS; letra++) {
-				final int index = letra;
-				tmp.get(letra).forEach((k,v) -> { Product p = catalogo.get(index, k);
-				                                  if (p == null)
-				                                  	catalogo.put(index, k, v.clone());
-				                                  else
-				                                  	p.merge(v);
-				                                });
-			}
-		}
-
-
-		return catalogo;
-	}
 
     public void clear() {
         produtos.clear();

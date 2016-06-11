@@ -257,7 +257,7 @@ public class VendasFilial {
 			return Arrays.hashCode( new Object[] { clientes, produtos });
       }
 
-		public static CatalogMap<String, Product> mergeProducts(VendasFilial[] filiais) {
+		public static CatalogMap<String, Product> mergeProdutos(VendasFilial[] filiais) {
 			CatalogMap<String, Product> catalogo = new CatalogMap<>(LETRAS);
 			int max = filiais.length;
 

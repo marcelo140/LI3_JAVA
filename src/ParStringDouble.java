@@ -70,8 +70,8 @@ public class ParStringDouble implements Serializable{
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("String: ").append(str).append("\n");
-        sb.append("Double:").append(d).append("\n");
+
+        sb.append("\t").append(str).append("\t").append(d);
         
         return sb.toString();
     }

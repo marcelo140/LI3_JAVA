@@ -70,8 +70,8 @@ public class ParStringInt implements Serializable{
  	 */
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("String: ").append(str).append("\n");
-        sb.append("Integer:").append(integer).append("\n");
+       
+		 sb.append("\t").append(str).append("\t").append(integer);
         
         return sb.toString();
     }
