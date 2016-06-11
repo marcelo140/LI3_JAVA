@@ -61,7 +61,7 @@ public class Navegador {
         pagina = page;
         st = pagina * linhasPorPagina;
         ed = st + linhasPorPagina;
-        ed = (ed >= linhas.size()) ? linhas.size() -1 : ed;
+        ed = (ed > linhas.size()) ? linhas.size()  : ed;
 
         System.out.printf("================== %d / %d ==================\n", pagina+1, paginas);
 
