@@ -65,11 +65,11 @@ public class Revenue
     }
 
     public void addSale(Venda v){
-    	int i;
+    	/* int i;
     	if (v.getPromocao() == true) i = 1;
     	else i = 0;
     	faturacao [v.getMes()][v.getFilial()][i] = (v.getPreco()) * (v.getUnidades());
-    	quantidade [v.getMes()][v.getFilial()][i] += v.getUnidades();  
+    	quantidade [v.getMes()][v.getFilial()][i] += v.getUnidades();   */
     }
 
 

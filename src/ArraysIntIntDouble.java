@@ -81,8 +81,8 @@ public class ArraysIntIntDouble implements Serializable {
 			return false;
 
 		ArraysIntIntDouble p = (ArraysIntIntDouble) o;
-		return p.firts().equals(str) &&
-			   p.second().equals(d);
+		return true;/*p.firts().equals(str) &&
+			   p.second().equals(d); */
 	}
 
 	/**
