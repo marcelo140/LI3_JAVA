@@ -116,6 +116,26 @@ public class Hipermercado {
 		return fat.getFaturacaoMes(mes);
 	}
 
+	private CatalogMap<String, Product> getAllProdutos() {
+		CatalogMap<String, Product> catalogo = filiais[0].getProdutos();
+
+		for(int i = 1; i < filiais.length; i++) {
+			CatalogMap<String, Product> tmp = filiais[i].getProdutos();
+
+			for(int letra = 0; letra < LETRAS; letra++) {
+				final int index = letra;
+				tmp.get(letra).forEach((k,v) -> { Product p = catalogo.get(index, k);
+				                                  if (p == null)
+				                                  	catalogo.put(index, k, v.clone());
+				                                  else
+				                                  	p.merge(v);
+				                                });
+			}
+		}
+
+		return catalogo;
+	}
+
 	private Map<String, ProductUnit> getAllProdutos(String cliente) {
 		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
@@ -251,6 +271,18 @@ public class Hipermercado {
 		return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
 	}
 
+	public TreeSet<TriploStringIntInt> getTopProdutos() {
+		CatalogMap<String, Product> catalog = getAllProdutos();
+		TreeSet<TriploStringIntInt> res = 
+		          new TreeSet<>(new ComparatorTriploStringIntIntBySnd());
+
+		for (int i = 0; i < LETRAS; i++)
+			catalog.get(i).forEach((k,v) -> res.add(
+			  new TriploStringIntInt(k, v.getUnidadesVendidas(), v.getNumeroClientes())));
+			
+		return res;	
+	}
+
 	public void clear() {
 		produtos = new CatalogSet<>();
 		clientes = new CatalogSet<>();
@@ -279,7 +311,7 @@ public class Hipermercado {
 		}
 
 		catch (VendaParseException | InvalidMonthException e) {
-			System.out.println("fuk this");
+			System.out.println("Error ao converter linha");
 		}
 
 		return valid;

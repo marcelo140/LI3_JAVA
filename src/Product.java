@@ -202,6 +202,28 @@ public class Product implements Serializable {
 			   p.clientes.equals(clientes);
     }
 
+	/**
+ 	 * Adiciona os dados do produto recebido
+ 	 * @param produto produto a adicionar
+ 	 */
+	public void merge(Product p) {
+		this.unidadesVendidas += p.getUnidadesVendidas();
+
+		for (int i = 0; i < MESES; i++) {
+			this.vendas[i] += p.getVendas(i);
+			this.faturado[i] += p.getFaturado(i);
+
+			final int mes = i;
+			p.clientes.get(i).forEach((k,v) -> { ClientUnit clu = this.vendas.get(mes, k);
+			                                     if (clu == null)
+			                                     	this.vendas.put(mes, k, v.clone());
+			                                     else
+			                                     	clu.add(v);
+			                                   });					
+		}
+		
+	}
+
     /**
      * Cria uma cópia oca deste produto, o que significa que não terá nenhum
 	 * cliente associado.
