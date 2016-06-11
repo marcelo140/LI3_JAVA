@@ -59,7 +59,7 @@ public class ParStringInt {
 
 		ParStringInt p = (ParStringInt) o;
 		return p.firts().equals(str) &&
-			   p.second().equals(d);
+			   p.second()== integer;
 	}
 
 	/**
@@ -86,4 +86,5 @@ public class ParStringInt {
         
 
         return hash;
+    }
 }

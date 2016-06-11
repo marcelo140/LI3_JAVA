@@ -59,7 +59,7 @@ public class ParStringDouble {
 
 		ParStringDouble p = (ParStringDouble) o;
 		return p.firts().equals(str) &&
-			   p.second().equals(d);
+			   p.second()== d;
 	}
 
 	/**
