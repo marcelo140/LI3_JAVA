@@ -84,7 +84,7 @@ public class Product implements Serializable {
 		
 		for (int i = 0; i < MESES; i++) {
 			final int mes = i;
-			clientes.forEach((k,v) -> { catalog.put(mes, k, v.clone()); });
+			clientes.get(i).forEach((k,v) -> { catalog.put(mes, k, v.clone()); });
 		}
 
 		return catalog;
@@ -123,7 +123,7 @@ public class Product implements Serializable {
 
 		for (int i = 0; i < MESES; i++) {
 			final int mes = i;
-			clientes.forEach((k,v) -> { this.clientes.put(mes, k, v.clone()); });
+			clientes.get(i).forEach((k,v) -> { this.clientes.put(mes, k, v.clone()); });
 		}
 	}
 
@@ -166,7 +166,7 @@ public class Product implements Serializable {
 		int unidades = v.getUnidades();
 		int mes = v.getMes();
 		double faturado = unidades * v.getPreco();
-		ClientUnit clu = clientes.get(v.getMes(), v.getCliente());
+		ClientUnit clu = clientes.get(mes, v.getCliente());
 
 		if (clu != null)
 			clu.add(unidades, faturado);

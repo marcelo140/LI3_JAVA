@@ -9,7 +9,7 @@ public class Client implements Serializable {
 	private final int MESES = 12;
 
 	private boolean comprou;
-	private List<Map<String, ProductUnit>> produtos;
+	private CatalogMap<String, ProductUnit> produtos;
 	private int[] comprasRealizadas;
 	private double[] gastos;
 
@@ -21,16 +21,13 @@ public class Client implements Serializable {
 		comprou = false;
 		comprasRealizadas = new int[MESES];
 		gastos = new double[MESES];
-		
-		produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
-		for (int i = 0; i < MESES; i++)
-			produtos.add( new TreeMap<>() );
+		produtos = new CatalogMap<>(MESES);
     }
 
 	/**
 	 * Construtor por parâmetros
 	 */
-	public Client(List<Map<String, ProductUnit>> produtos, 
+	public Client(CatalogMap<String, ProductUnit> produtos, 
 	              boolean comprou, int[] comprasRealizadas, double[] gastos) {
 
 		setProdutos(produtos);
@@ -55,17 +52,15 @@ public class Client implements Serializable {
 	 * a quantidade total e o total quantidade de cada mes desse produto)
 	 * @return mapeamento
 	 */
-	public List<Map<String, ProductUnit>> getProdutos() {
-		List<Map<String, ProductUnit>> produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
+	public CatalogMap<String, ProductUnit> getProdutos() {
+		CatalogMap<String, ProductUnit> catalog = new CatalogMap<>(MESES);
 
 		for(int i = 0; i < MESES; i++) {
-			Map<String, ProductUnit> mes  = new TreeMap<>();
-
-			this.produtos.get(i).forEach( (k,v) -> { mes.put(k, v.clone()); } );
-			produtos.add(mes);
+			final int mes = i;
+			produtos.get(i).forEach( (k,v) -> { catalog.put(mes, k, v.clone()); });
 		}
 
-		return produtos;
+		return catalog;
 	}
 
 	/**
@@ -157,14 +152,12 @@ public class Client implements Serializable {
  	 * Define os produtos comprados pelo cliente
  	 * @param produtos
  	 */
-	private void setProdutos(List<Map<String, ProductUnit>> produtos) {
-		this.produtos = new ArrayList<Map<String, ProductUnit>>(MESES);
+	private void setProdutos(CatalogMap<String, ProductUnit> produtos) {
+		this.produtos = new CatalogMap<>(MESES);
 
 		for(int i = 0; i < MESES; i++) {
-			Map<String, ProductUnit> mes  = new TreeMap<>();
-
-			produtos.get(i).forEach( (k,v) -> { mes.put(k, v.clone()); } );
-			this.produtos.add(mes);
+			final int mes = i;
+			produtos.get(i).forEach((k,v) -> { this.produtos.put(mes, k, v.clone()); });
 		}
 	}
 
@@ -177,18 +170,17 @@ public class Client implements Serializable {
 		int mes = v.getMes();
 		int unidades = v.getUnidades();
 		double faturado = unidades * v.getPreco();
+		ProductUnit pu = produtos.get(mes, produto);
 
 		comprou = true;
 		gastos[mes] += faturado;
 		comprasRealizadas[mes]++;
 
-		ProductUnit pu = produtos.get(mes).get(produto);
-
 		if (pu != null)
 			pu.add(unidades, faturado);
 		else {
 			pu = new ProductUnit(unidades, faturado);
-			produtos.get(mes).put(produto, pu);
+			produtos.put(mes, produto, pu);
 		}
 	}
 

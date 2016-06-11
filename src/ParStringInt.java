@@ -3,15 +3,15 @@ public class ParStringInt {
 	private int integer;
 
 	public ParStringInt(String str, int i) {
-		str = str;
-		integer = i;
+		this.str = str;
+		this.integer = i;
 	}
 
-	public String getString() {
+	public String first() {
 		return str;
 	}
 
-	public int getInt() {
+	public int second() {
 		return integer;
 	}
 }

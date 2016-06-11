@@ -2,9 +2,11 @@ import java.io.*;
 import java.util.*;
 
 public class HipermercadoApp {
+	private static final int NUML = 20;
     private static final String produtosFilename = "../data/Produtos.txt";
     private static final String clientesFilename = "../data/Clientes.txt";
     private static final String vendas1mFilename = "../data/Vendas_1M.txt";
+
     private static Menu queries, principal;
     private static Hipermercado hm;
     private static String produtosF, clientesF, vendasF;
@@ -76,6 +78,10 @@ public class HipermercadoApp {
 					  	 break;
 				case 3 : query3();
 						 break;
+				case 5 : query5();
+						 break;
+				case 9 : query9();
+						 break;
                     /* queries */
             }
         } while(queries.getOpcao() != 0);
@@ -108,9 +114,10 @@ public class HipermercadoApp {
 	}
 
 	private static void query3() {
+		long inicio, fim;
+
 		System.out.print("Cliente a pesquisar: ");
 		String cliente = Input.lerString();
-		long inicio, fim;
 
 		inicio = System.nanoTime();	
 		ArraysIntIntDouble data = hm.getClientData(cliente);
@@ -122,6 +129,53 @@ public class HipermercadoApp {
 		System.out.println("Pressa <Enter> para continuar...");
 
 		Input.lerString();
+	}
+
+	private static void query5() {
+		Navegador nav;
+		List<String> lista = new ArrayList<>();
+		long inicio, fim;
+
+		System.out.print("Cliente a pesquisar: ");
+		String cliente = Input.lerString();
+
+		inicio = System.nanoTime();
+		TreeSet<ParStringInt> produtos = hm.getProdutos(cliente);
+		System.out.println("mano?" + produtos.size());
+		Iterator<ParStringInt> it = produtos.iterator();
+		while (it.hasNext()) {
+			ParStringInt p = it.next();
+			lista.add("\t" + p.first() + "\t" + Integer.toString(p.second()));
+		}
+		fim = System.nanoTime();
+
+		nav = new Navegador(NUML, lista);
+		nav.show();
+	}
+
+	private static void query9() {
+		Navegador nav;
+		List<String> lista = new ArrayList<>();
+		long inicio, fim;
+
+		System.out.print("Produto a pesquisar: ");
+		String produto = Input.lerString();
+
+		System.out.print("Número de clientes: ");
+		int n = Input.lerInt();
+
+		inicio = System.nanoTime();
+		TreeSet<ParStringDouble> clientes = hm.getClientes(produto);
+			
+		Iterator<ParStringDouble> it = clientes.iterator();
+		for(int i = 0; i < n && it.hasNext(); i++) {
+			ParStringDouble p = it.next();
+			lista.add("\t" + p.first() + "\t" + Double.toString(p.second()));
+		}
+		fim = System.nanoTime();
+
+		nav = new Navegador(NUML, lista);
+		nav.show();
 	}
 
     private static void carregaFicheiros() throws IOException {
