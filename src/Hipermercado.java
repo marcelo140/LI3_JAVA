@@ -229,7 +229,7 @@ public class Hipermercado implements Serializable {
         return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
     }
 
-    public TreeSet<TriploStringIntInt> getTopProdutos() {
+    public Set<TriploStringIntInt> getTopProdutos() {
 		long inicio = System.nanoTime();
         CatalogMap<String, Product> catalog = VendasFilial.mergeProdutos(filiais);
 		long fim = System.nanoTime();
@@ -244,7 +244,7 @@ public class Hipermercado implements Serializable {
         return res;
     }
 
-    public TreeSet<ParStringInt> getTopClientes() {
+    public Set<ParStringInt> getTopClientes() {
         CatalogMap<String, Client> catalog = getAllClientes();
         TreeSet<ParStringInt> res = new TreeSet<>(new ComparatorParStringIntByInt());
 
@@ -286,7 +286,7 @@ public class Hipermercado implements Serializable {
         return valid;
     }
 
-	public TreeSet<ParStringInt> getProdutos(String cliente) {
+	public Set<ParStringInt> getProdutos(String cliente) {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
 
 		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
@@ -295,7 +295,7 @@ public class Hipermercado implements Serializable {
 		return res;
 	}
 
-	public TreeSet<ParStringDouble> getClientes(String produto) {
+	public Set<ParStringDouble> getClientes(String produto) {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
 
 		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
@@ -380,23 +380,6 @@ public class Hipermercado implements Serializable {
 
 		return res;
 	}
-
-/*
-
-	public void clear() {
-		produtos = new CatalogSet<>();
-		clientes = new CatalogSet<>();
-		fat = new Faturacao(filiais.length);
-
-		}
-
-		catch (VendaParseException | InvalidMonthException e) {
-			System.out.println("Error ao converter linha");
-		}
-
-		return valid;
-	}*/
-
 
     /* ================ ESTATÍSTICAS ===================== */
 

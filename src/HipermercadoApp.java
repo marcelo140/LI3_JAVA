@@ -143,7 +143,7 @@ public class HipermercadoApp {
         lista.sort((s1, s2) -> s1.compareTo(s2));
         fim = System.nanoTime();
 
-        System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+        System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
         System.out.print("Pressa <Enter> para continuar...");
         Input.lerString();
 
@@ -171,7 +171,7 @@ public class HipermercadoApp {
 		System.out.println("Número de vendas: " + vendas);
 		System.out.println("Número de clientes: " + clientes);
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 	}
@@ -223,7 +223,7 @@ public class HipermercadoApp {
 		String cliente = Input.lerString();
 
 		inicio = System.nanoTime();
-		TreeSet<ParStringInt> produtos = hm.getProdutos(cliente);
+		Set<ParStringInt> produtos = hm.getProdutos(cliente);
 
 		Iterator<ParStringInt> it = produtos.iterator();
 		while (it.hasNext()) {
@@ -232,7 +232,7 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 
@@ -250,7 +250,7 @@ public class HipermercadoApp {
 		int n = Input.lerInt();
 
 		inicio = System.nanoTime();
-		TreeSet<TriploStringIntInt> produtos = hm.getTopProdutos();
+		Set<TriploStringIntInt> produtos = hm.getTopProdutos();
 
 		Iterator<TriploStringIntInt> it = produtos.iterator();
 		for(int i = 0; i < n && it.hasNext(); i++) {
@@ -259,7 +259,7 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 
@@ -286,7 +286,7 @@ public class HipermercadoApp {
 				lista.add("");
 		}
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 
@@ -304,7 +304,7 @@ public class HipermercadoApp {
 		int n = Input.lerInt();
 
 		inicio = System.nanoTime();
-		TreeSet<ParStringInt> clientes = hm.getTopClientes();
+		Set<ParStringInt> clientes = hm.getTopClientes();
 
 		Iterator<ParStringInt> it = clientes.iterator();
 		for(int i = 0; i < n && it.hasNext(); i++) {
@@ -313,7 +313,7 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 
@@ -333,7 +333,7 @@ public class HipermercadoApp {
 		int n = Input.lerInt();
 
 		inicio = System.nanoTime();
-		TreeSet<ParStringDouble> clientes = hm.getClientes(produto);
+		Set<ParStringDouble> clientes = hm.getClientes(produto);
 
 		Iterator<ParStringDouble> it = clientes.iterator();
 		for(int i = 0; i < n && it.hasNext(); i++) {
@@ -342,7 +342,7 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
-		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
 		Input.lerString();
 
@@ -374,13 +374,13 @@ public class HipermercadoApp {
         inicio = System.nanoTime();
         hm.carregarProdutos(produtosF);
         fim = System.nanoTime();
-        System.out.println("Produtos carregados em " + ((double) (fim-inicio) / 1000000000) + " segundos");
+        System.out.println("Produtos carregados em " + ((double) (fim-inicio) / 1.0E9) + " segundos");
 
         System.out.println("A carregar catalogo de clientes...");
         inicio = System.nanoTime();
         hm.carregarClientes(clientesF);
         fim = System.nanoTime();
-        System.out.println("Clientes carregados em " + ((double) (fim-inicio) / 1000000000) + " segundos");
+        System.out.println("Clientes carregados em " + ((double) (fim-inicio) / 1.0E9) + " segundos");
 
 		try {
         System.out.println("A carregar vendas...");
@@ -388,7 +388,7 @@ public class HipermercadoApp {
         int vendas = hm.carregarVendas(vendasF);
         fim = System.nanoTime();
         System.out.println("Vendas válidas: " + vendas);
-        System.out.println("Vendas carregadas em " + ((double) (fim-inicio) / 1000000000) + " segundos");
+        System.out.println("Vendas carregadas em " + ((double) (fim-inicio) / 1.0E9) + " segundos");
 		} catch (NullPointerException | IOException | NumberFormatException |
 		         InvalidMonthException e) {
 

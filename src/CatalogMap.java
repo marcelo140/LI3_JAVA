@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 import java.io.Serializable;
 
-public class CatalogMap<K,V> implements Map<K,V>, Serializable {
+public class CatalogMap<K,V> implements Serializable {
     private List<Map<K,V>> cat;
     private int size;
 
@@ -16,19 +16,6 @@ public class CatalogMap<K,V> implements Map<K,V>, Serializable {
 
         for (int i = 0 ; i < size; i++)
             cat.add(new HashMap<K,V>());
-
-    }
-
-    /**
-     * Constructs an empty catalog with the specified capacity.
-     * @param tamanho
-     */
-    public CatalogMap(int size, int tam) {
-        this.size = 0;
-        cat = new ArrayList<Map<K,V>>(size);
-
-        for (int i = 0 ; i < size; i++)
-            cat.add(new HashMap<K,V>(tam));
 
     }
 
@@ -116,14 +103,6 @@ public class CatalogMap<K,V> implements Map<K,V>, Serializable {
         return (size == 0);
     }
 
-    /**
-     * Devolve um set com todos os mapeamentos deste objeto
-     * @return um Set com todos os mapeamentos deste objeto
-     */
-     public Set<Map<K,V>> getMaps() {
-         return new TreeSet<Map<K,V>>(cat);
-
-     }
 
     /**
      * Remove todos os mapeamentos deste mapa
@@ -288,32 +267,6 @@ public class CatalogMap<K,V> implements Map<K,V>, Serializable {
             if ((ret = tm.get(k)) != null) return ret;
 
         return ret;
-    }
-
-    /**
-     * Esta função não é suportada por este mapa!
-     * Associa neste mapeamento valor dado à chave dada.
-     * Se já existir um mapeamento desta chave, o valor antigo será
-     * substituido pelo valor dado.
-     * @param key chave que será associada ao valor dado
-     * @param value valor que será associado à chave dada
-     * @return o valor anteriormente associado a esta chave,
-     * ou null caso não exista um mapeamento anterior desta chave
-     * @throws UnsupportedOperationException este mapeamento não suporta
-     * esta operação, por isso é garantido que será atirada esta exceção
-     */
-    public V put(K key, V value) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("put não é suportado");
-    }
-
-    /**
-     * Atira a exceção UnsupportedOperationException
-     * @throws UnsupportedOperationException
-     */
-    public void putAll(Map<? extends K, ? extends V> m)
-                    throws UnsupportedOperationException{
-
-        throw new UnsupportedOperationException("putAll não suportado.");
     }
 
     /**
