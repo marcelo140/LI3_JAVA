@@ -5,6 +5,7 @@ import java.io.Serializable;
  * Descreve as transações sobre este produto por um dado cliente
  */
 public class ProductUnit implements Serializable {
+	public static final long serialVersionUID = 20L;
 	private int quantidade;
 	private double faturado;
 

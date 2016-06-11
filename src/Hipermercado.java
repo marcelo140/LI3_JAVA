@@ -116,25 +116,25 @@ public class Hipermercado {
 		return fat.getFaturacaoMes(mes);
 	}
 
-	private CatalogMap<String, Product> getAllProdutos() {
-		CatalogMap<String, Product> catalogo = filiais[0].getProdutos();
-
-		for(int i = 1; i < filiais.length; i++) {
-			CatalogMap<String, Product> tmp = filiais[i].getProdutos();
-
-			for(int letra = 0; letra < LETRAS; letra++) {
-				final int index = letra;
-				tmp.get(letra).forEach((k,v) -> { Product p = catalogo.get(index, k);
-				                                  if (p == null)
-				                                  	catalogo.put(index, k, v.clone());
-				                                  else
-				                                  	p.merge(v);
-				                                });
-			}
-		}
-
-		return catalogo;
-	}
+//	private CatalogMap<String, Product> getAllProdutos() {
+//		CatalogMap<String, Product> catalogo = filiais[0].getProdutos();
+//
+//		for(int i = 1; i < filiais.length; i++) {
+//			CatalogMap<String, Product> tmp = filiais[i].getProdutos();
+//
+//			for(int letra = 0; letra < LETRAS; letra++) {
+//				final int index = letra;
+//				tmp.get(letra).forEach((k,v) -> { Product p = catalogo.get(index, k);
+//				                                  if (p == null)
+//				                                  	catalogo.put(index, k, v.clone());
+//				                                  else
+//				                                  	p.merge(v);
+//				                                });
+//			}
+//		}
+//
+//		return catalogo;
+//	}
 
 	private CatalogMap<String, Client> getAllClientes() {
 		CatalogMap<String, Client> catalogo = filiais[0].getClientes();
@@ -199,7 +199,7 @@ public class Hipermercado {
 	public TreeSet<ParStringInt> getProdutos(String cliente) {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
 
-		TreeSet<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
+		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
 		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
 
 		return res;
@@ -208,20 +208,17 @@ public class Hipermercado {
 	public TreeSet<ParStringDouble> getClientes(String produto) {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
 
-		TreeSet<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
+		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
 		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
 
 		return res;
 	}
 
 	public int[] clientesPorMes() {
-		List<Set<String>> lista = new ArrayList<Set<String>>(MESES);
-
-		for (int i = 0; i < MESES; i++)
-			lista.add( new TreeSet() );
+		CatalogSet<String> lista = new CatalogSet<>(MESES);
 
 		for(int i = 0; i < filiais.length; i++) {
-			List<Set<String>> tmp = filiais[i].getClientesCompraramMes();
+			CatalogSet<String> tmp = filiais[i].getClientesCompraramMes();
 
 			for(int j = 0; j < MESES; j++)
 				lista.get(j).addAll( tmp.get(j) );
@@ -248,7 +245,7 @@ public class Hipermercado {
 		}
 
 		for(int j = 0; j < MESES; j++) {
-			Set<String> p = new HashSet(256);
+			Set<String> p = new HashSet<>(256);
 
 			for (int i = 0; i < filiais.length; i++) {
 				produtos.get(i).get(j).forEach((k,v) -> { p.add(k); });
@@ -277,7 +274,7 @@ public class Hipermercado {
 		}
 
 		for(int j = 0; j < MESES; j++) {
-			Set<String> c = new HashSet(256);
+			Set<String> c = new HashSet<>(256);
 
 			for (int i = 0; i < filiais.length; i++) {
 				clientes.get(j).forEach((k,v) -> { c.add(k); });
@@ -292,7 +289,7 @@ public class Hipermercado {
 	}
 
 	public TreeSet<TriploStringIntInt> getTopProdutos() {
-		CatalogMap<String, Product> catalog = getAllProdutos();
+		CatalogMap<String, Product> catalog = VendasFilial.mergeProducts(filiais);
 		TreeSet<TriploStringIntInt> res = 
 		          new TreeSet<>(new ComparatorTriploStringIntIntBySnd());
 

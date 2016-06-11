@@ -1,12 +1,13 @@
 import java.util.*;
+import java.io.Serializable;
+
 /**
  * Venda é a class que descreve os elementos envolvidos numa transação
  */
 
-import java.io.Serializable;
 
-public class Venda implements Serializable
-{
+public class Venda implements Serializable {
+	public static final long serialVersionUID = 16L;
     private String produto;
     private String cliente;
     private double preco;
@@ -185,5 +186,10 @@ public class Venda implements Serializable
 		sb.append("Filial: ").append(filial).append("\n");
 
 		return sb.toString();
+	}
+	
+	public int hashCode() {
+		return Arrays.hashCode( new Object[] {produto, preco, unidades, 
+													cliente, mes, filial});
 	}
 }

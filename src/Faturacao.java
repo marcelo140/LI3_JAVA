@@ -6,6 +6,7 @@ import java.io.Serializable;
  * dados como quantidades vendidas, números de vendas, produtos vendidos, etc
  */
 public class Faturacao implements Serializable {
+	public static final long serialVersionUID = 23L;
 	private static final int MESES = 12;
 	private static final int LETRAS = 26;
 
