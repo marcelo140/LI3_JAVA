@@ -184,6 +184,23 @@ public class Client implements Serializable {
 		}
 	}
 
+	public void merge(Client c) {
+		comprou = comprou || c.comprou();
+
+		for(int i = 0; i < MESES; i++) {
+			gastos[i] += c.getGastos(i);
+			comprasRealizadas[i] += c.getCompras(i);
+
+			final int mes = i;
+			c.produtos.get(i).forEach((k,v) -> { ProductUnit pu = produtos.get(mes, k);
+			                                     if (pu == null)
+			                                     	produtos.put(mes, k, v.clone());
+			                                     else
+			                                     	pu.add(v);
+			                                   });
+		}
+	}
+
 	/**
  	 * Retorna um cópia deste Client
  	 * @return cópia

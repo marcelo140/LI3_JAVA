@@ -65,7 +65,7 @@ public class Navegador {
         System.out.printf("================== %d / %d ==================\n", pagina+1, paginas);
 
         if (header != null)
-            System.out.prinln(header + "\n");
+            System.out.println(header + "\n");
 
         for (String str : linhas.subList(st, ed))
             System.out.printf("\t%s\n", str);

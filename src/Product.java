@@ -158,6 +158,10 @@ public class Product implements Serializable {
 		return clientes.get(mes).size();
 	}
 
+	public int getNumeroClientes() {
+		return clientes.size();
+	}
+
 	/**
 	 * Adiciona uma nova venda
 	 * @param venda Venda a adicionar
@@ -214,9 +218,9 @@ public class Product implements Serializable {
 			this.faturado[i] += p.getFaturado(i);
 
 			final int mes = i;
-			p.clientes.get(i).forEach((k,v) -> { ClientUnit clu = this.vendas.get(mes, k);
+			p.clientes.get(i).forEach((k,v) -> { ClientUnit clu = this.clientes.get(mes, k);
 			                                     if (clu == null)
-			                                     	this.vendas.put(mes, k, v.clone());
+			                                     	this.clientes.put(mes, k, v.clone());
 			                                     else
 			                                     	clu.add(v);
 			                                   });					

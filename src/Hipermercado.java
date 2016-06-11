@@ -136,6 +136,26 @@ public class Hipermercado {
 		return catalogo;
 	}
 
+	private CatalogMap<String, Client> getAllClientes() {
+		CatalogMap<String, Client> catalogo = filiais[0].getClientes();
+
+		for(int i = 1; i < filiais.length; i++) {
+			CatalogMap<String, Client> tmp = filiais[i].getClientes();
+
+			for(int letra = 0; letra < LETRAS; letra++) {
+				final int index = letra;
+				tmp.get(letra).forEach((k,v) -> { Client c = catalogo.get(index, k);
+				                                  if (c == null)
+				                                  	catalogo.put(index, k, v.clone());
+				                                  else
+													c.merge(v);
+												  });
+			}
+		}
+
+		return catalogo;
+	}
+
 	private Map<String, ProductUnit> getAllProdutos(String cliente) {
 		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 		
@@ -281,6 +301,17 @@ public class Hipermercado {
 			  new TriploStringIntInt(k, v.getUnidadesVendidas(), v.getNumeroClientes())));
 			
 		return res;	
+	}
+
+	public TreeSet<ParStringInt> getTopClientes() {
+		CatalogMap<String, Client> catalog = getAllClientes();
+		TreeSet<ParStringInt> res = new TreeSet<>(new ComparatorParStringIntByInt());
+
+		for (int i = 0; i < LETRAS; i++)
+			catalog.get(i).forEach((k,v) -> 
+			                     res.add(new ParStringInt(k, v.getNumeroProdutos())));
+
+		return res;
 	}
 
 	public void clear() {

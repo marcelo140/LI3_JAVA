@@ -44,7 +44,7 @@ public class VendasFilial {
 	 * comprou e, para cada produto, a quantidade comprada e o total gasto.
 	 * @return catálogo de clientes
 	 */
-	private CatalogMap<String, Client> getClientes() {
+	public CatalogMap<String, Client> getClientes() {
 		CatalogMap<String, Client> catalog = new CatalogMap<>(LETRAS);
 
 		for (int i = 0; i < LETRAS; i++) {
@@ -61,7 +61,7 @@ public class VendasFilial {
 	 * promoção a que este o comprou.
 	 * @return catálogo de produtos
 	 */
-	private CatalogMap<String, Product> getProdutos() {
+	public CatalogMap<String, Product> getProdutos() {
 		CatalogMap<String, Product> catalog = new CatalogMap<>(LETRAS);
 
 		for (int i = 0; i < LETRAS; i++) {

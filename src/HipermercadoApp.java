@@ -81,7 +81,9 @@ public class HipermercadoApp {
 				case 5 : query5();
 						 break;
 				case 6 : query6();
-						 break;	
+						 break;
+				case 8 : query8();
+						 break;
 				case 9 : query9();
 						 break;
                     /* queries */
@@ -171,6 +173,29 @@ public class HipermercadoApp {
 		for(int i = 0; i < n && it.hasNext(); i++) {
 			TriploStringIntInt t = it.next();
 			lista.add("\t"+t.first()+"\t"+t.second()+"\t"+t.third());
+		}
+		fim = System.nanoTime();
+
+		nav = new Navegador(NUML, lista);
+		nav.show();
+	}
+
+	private static void query8() {
+		Navegador nav;
+		List<String> lista = new ArrayList<>();
+
+		long inicio, fim;
+
+		System.out.print("Número de clientes: ");
+		int n = Input.lerInt();
+
+		inicio = System.nanoTime();
+		TreeSet<ParStringInt> clientes = hm.getTopClientes();
+
+		Iterator<ParStringInt> it = clientes.iterator();
+		for(int i = 0; i < n && it.hasNext(); i++) {
+			ParStringInt p = it.next();
+			lista.add("\t"+p.first()+"\t"+p.second());
 		}
 		fim = System.nanoTime();
 
