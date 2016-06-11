@@ -5,9 +5,7 @@ import java.io.Serializable;
  * Venda é a class que descreve os elementos envolvidos numa transação
  */
 
-
 public class Venda implements Serializable {
-	public static final long serialVersionUID = 16L;
     private String produto;
     private String cliente;
     private double preco;
@@ -23,7 +21,7 @@ public class Venda implements Serializable {
          * @param unidades
          * @param promocao
          * @param cliente
-         * @param mes entre 1 e 12
+         * @param mes
          * @param filial
  	 */
 	public Venda(String produto, double preco, int unidades, /** boolean promocao,**/
@@ -84,10 +82,10 @@ public class Venda implements Serializable {
 		return unidades;
 	}
 
-	/**
- 	 * Verifica se a venda foi efetuada em promoção
- 	 * @return
- 	 */
+//	/**
+// 	 * Verifica se a venda foi efetuada em promoção
+// 	 * @return
+// 	 */
 //	public boolean getPromocao() {
 //		return promocao;
 //	}
@@ -111,7 +109,9 @@ public class Venda implements Serializable {
 	/**
  	 * Converte uma String numa Venda
  	 */
-    public static Venda parse(String linha) throws VendaParseException {
+    public static Venda parse(String linha) throws NullPointerException,
+	                                               NumberFormatException {
+
 		String[] dados;
 		int unidades, mes, filial;
 		double preco;
@@ -119,18 +119,14 @@ public class Venda implements Serializable {
 
 		dados = linha.trim().split(" ");
 
-		try {
-			preco    = Double.parseDouble(dados[1].trim());
-			unidades = Integer.parseInt(dados[2].trim());
-			mes      = Integer.parseInt(dados[5].trim()) - 1;
-			filial   = Integer.parseInt(dados[6].trim()) - 1;
-		}catch(NullPointerException | NumberFormatException e) {
-			throw new VendaParseException(e.getMessage());
-		}
+		preco    = Double.parseDouble(dados[1].trim());
+		unidades = Integer.parseInt(dados[2].trim());
+		mes      = Integer.parseInt(dados[5].trim()) - 1;
+		filial   = Integer.parseInt(dados[6].trim()) - 1;
 
 //        promocao = !dados[3].trim().equals("N");
 
-        return new Venda(dados[0], preco, unidades/**, promocao**/, dados[4], mes, filial);
+        return new Venda(dados[0], preco, unidades/*, promocao*/, dados[4], mes, filial);
 	}
 
 

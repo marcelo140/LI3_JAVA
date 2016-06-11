@@ -6,7 +6,6 @@ import java.util.*;
  *
  */
 public class VendasFilial {
-
     private final static int MESES = 12;
 	private final static int LETRAS = 26;
 

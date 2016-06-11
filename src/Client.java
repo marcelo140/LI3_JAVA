@@ -6,14 +6,12 @@ import java.io.Serializable;
  */
 
 public class Client implements Serializable {
-	public static final long serialVersionUID = 24L;
 	private final int MESES = 12;
 
 	private boolean comprou;
 	private CatalogMap<String, ProductUnit> produtos;
 	private int[] comprasRealizadas;
 	private double[] gastos;
-
 
 	/**
      * Construtor padrão
@@ -194,6 +192,10 @@ public class Client implements Serializable {
 		}
 	}
 
+	/**
+ 	 * Adiciona os dados do cliente recebido
+ 	 * @param c cliente a adicionar
+ 	 */
 	public void merge(Client c) {
 		comprou = comprou || c.comprou();
 

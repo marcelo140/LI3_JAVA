@@ -6,7 +6,6 @@ import java.io.Serializable;
  */
 
 public class Product implements Serializable {
-	public static final long serialVersionUID = 15L;
 	private final int MESES = 12;
 
 	private CatalogMap<String, ClientUnit> clientes;
@@ -80,6 +79,7 @@ public class Product implements Serializable {
  	 * @return catálogo
  	 */
 	public CatalogMap<String, ClientUnit> getClientes() {
+
 		CatalogMap<String, ClientUnit> catalog = new CatalogMap<>(MESES);
 		
 		for (int i = 0; i < MESES; i++) {
@@ -131,8 +131,12 @@ public class Product implements Serializable {
 	 * Devolve o número de vendas do mês dado entre 0 e 11.
 	 * @param mes cujo o número de vendas será retornado.
 	 * @return o número de venas de cada mês
+	 * @throws InvalidMonthException
 	 */
 	public int getVendas(int mes) {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException();
+
 		return vendas[mes];
 	}
 
@@ -140,8 +144,12 @@ public class Product implements Serializable {
 	 * Devolve o total faturado do mês dado entre 0 e 11
 	 * @param mes Mês cujo o total faturado deve ser retornado
 	 * @return o total faturado de mês dado
+	 * @throws InvalidMonthException
 	 */
 	public double getFaturado(int mes) {
+		if (mes < 0 || mes > 11)
+			throw new InvalidMonthException();
+
 		return faturado[mes];
 	}
 
@@ -158,6 +166,10 @@ public class Product implements Serializable {
 		return clientes.get(mes).size();
 	}
 
+	/**
+ 	 * Retorna o número total de clientes que compraram o produto
+ 	 * @return número de clientes
+ 	 */
 	public int getNumeroClientes() {
 		return clientes.size();
 	}

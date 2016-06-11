@@ -1,6 +1,7 @@
 import java.util.*;
+import java.io.Serializable;
 
-public class CatalogSet<E> {
+public class CatalogSet<E> implements Serializable {
 	private List<Set<E>> cat;
 	int size;
 
@@ -152,4 +153,5 @@ public class CatalogSet<E> {
 
 		return sb.toString();
 	}
+
 }
