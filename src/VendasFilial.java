@@ -179,6 +179,16 @@ public class VendasFilial {
 		clientes.put(cliente.charAt(0) - 'A', cliente, new Client());
 	}
 
+	public TreeSet<ParStringDouble> getClientesByFaturado() {
+		TreeSet<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
+
+		for(int i = 0; i < LETRAS; i++)
+			clientes.get(i).forEach((k,v) -> 
+			                res.add(new ParStringDouble(k, v.getGastosTotal())));
+
+		return res;
+	}
+
 	/**
  	 * Devolve a lista de clientes que comprou em cada mês
  	 * @return lista de clientes

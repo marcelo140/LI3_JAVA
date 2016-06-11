@@ -406,7 +406,37 @@ public class Hipermercado {
         return hm;
     }
 
-    /* ================ QUERIES ===================== */
+	public List<ParStringDouble> getTop3Clientes() {
+		List<ParStringDouble> res = new ArrayList<>(3*filiais.length);
+
+		for(int f = 0; f < filiais.length; f++) {
+			Iterator<ParStringDouble> it = filiais[f].getClientesByFaturado().iterator();
+
+			for(int i = 0; i < 3 && it.hasNext(); i++) {
+				res.add(it.next());
+			}
+		}
+
+		return res;
+	}
+
+/*
+
+	public void clear() {
+		produtos = new CatalogSet<>();
+		clientes = new CatalogSet<>();
+		fat = new Faturacao(filiais.length);
+
+		}
+
+		catch (VendaParseException | InvalidMonthException e) {
+			System.out.println("Error ao converter linha");
+		}
+
+		return valid;
+	}*/
+
+	/* ================ QUERIES ===================== */
 
     public void query1() {
         ArrayList<String> lista = new ArrayList<> (fat.getListaNaoComprados());
@@ -424,11 +454,11 @@ public class Hipermercado {
         ArrayList<String> linhas = new ArrayList<>();
         String header = new String("FILIAL 1 \t FILIAL 2 \t FILIAL 3");
         Navegador nav;
-
+/*
         produtosf1.stream().sorted((str1, str2) -> Double.compare(filiais[0].getProduct(str2).getTotalFaturado(), filiais[0].getProduct(str1).getTotalFaturado()));
         produtosf2.stream().sorted((str1, str2) -> Double.compare(filiais[1].getProduct(str2).getTotalFaturado(), filiais[1].getProduct(str1).getTotalFaturado()));
         produtosf3.stream().sorted((str1, str2) -> Double.compare(filiais[2].getProduct(str2).getTotalFaturado(), filiais[2].getProduct(str1).getTotalFaturado()));
-
+*/
         for (int i = 0; i < 3; i++)
             linhas.add(new String(produtosf1.get(i) + "\t" + produtosf2.get(i) + "\t" + produtosf3.get(i)));
 
@@ -462,26 +492,24 @@ public class Hipermercado {
             System.out.printf("Mês %2d: %d compras\n", i+1, fat.getNumCompras(i));
         System.out.print("\n");
 
-
-        System.out.printf("FATURAÇÃO:\nMÊS\t");
+		System.out.printf("FATURAÇÃO:\nMÊS\t");
 		for (int i = 0; i < filiais.length; i++)
 			System.out.printf("FILIAL %d\t\t", i+1);
 		System.out.print("\n");
-        for (int i = 0; i < 12; i++) {
-        	System.out.printf("%2d", i+1);
+		for (int i = 0; i < 12; i++) {
+			System.out.printf("%2d", i+1);
 			try {
 				for (int fil = 0 ; fil < filiais.length; fil++)
 				System.out.printf("\t %f", fat.getFaturacao(i, fil));
 			} catch(InvalidMonthException | InvalidBranchException e) {
 				return;
 			}
-        	System.out.print("\n");
-        }
-        System.out.print("\n");
+			System.out.print("\n");
+		}
+		System.out.print("\n");
 
-        for (int i = 0; i < 12; i++)
-            System.out.printf("Mês %2d: %d clientes\n", i+1, getNumClientes(i));
-        System.out.print("\n");
-
-    }
+		for (int i = 0; i < 12; i++)
+		    System.out.printf("Mês %2d: %d clientes\n", i+1, getNumClientes(i));
+		System.out.print("\n");
+	}
 }

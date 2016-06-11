@@ -80,7 +80,7 @@ public class HipermercadoApp {
 						 break;
 				case 5 : query5();
 						 break;
-				case 7 : hm.query7();
+				case 7 : query7();
 				         break;
 				case 6 : query6();
 						 break;
@@ -178,6 +178,31 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
+		nav = new Navegador(NUML, lista);
+		nav.show();
+	}
+
+	private static void query7() {
+		Navegador nav;
+		List<String> lista = new ArrayList<>();
+
+		long inicio, fim;
+
+		inicio = System.nanoTime();
+		List<ParStringDouble> clientes = hm.getTop3Clientes();
+		fim = System.nanoTime();
+
+		Iterator<ParStringDouble> it = clientes.iterator();
+		for(int i = 1; it.hasNext(); i++) {
+			ParStringDouble p = it.next();
+			lista.add("\t"+p.first()+"\t"+p.second());
+
+			if (i % 3 == 0)
+				lista.add("");
+		}
+
+		System.out.println("Calculado em: " + (double) (fim-inicio)/1.0E9);
+		
 		nav = new Navegador(NUML, lista);
 		nav.show();
 	}

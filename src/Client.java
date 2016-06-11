@@ -114,6 +114,15 @@ public class Client implements Serializable {
 		return gastos[mes];
 	}
 
+	public double getGastosTotal() {
+		double soma = 0;
+
+		for(int i = 0; i < gastos.length; i++)
+			soma += gastos[i];
+
+		return soma;
+	}			
+
 	/**
  	 * Obtém o número de compras num dado mês
  	 * @param mes mês em que ocorreram as transações
