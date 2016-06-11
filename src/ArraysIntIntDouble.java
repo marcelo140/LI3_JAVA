@@ -51,7 +51,7 @@ public class ArraysIntIntDouble implements Serializable {
 		List<String> ret = new ArrayList<String>();
 
 		for (int i = 0; i < fst.length; i++) {
-			String str = new String((i+1) + fst[i] + "\t" + snd[i] + "\t" + trd[i]);
+			String str = String.format("%2d\t%d\t%d\t%.2f", (i+1), fst[i], snd[i], trd[i]);
 			ret.add(str);
 		}
 

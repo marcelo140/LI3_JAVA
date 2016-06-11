@@ -167,12 +167,13 @@ public class HipermercadoApp {
 		ArraysIntIntDouble data = hm.getClientData(cliente);
 		fim = System.nanoTime();
 
-		//imprimir merdas
-
 		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.println("Pressa <Enter> para continuar...");
 
 		Input.lerString();
+
+		Navegador nav = new Navegador(20, "MÊS\tCOMPRAS\tPRODUTOS\tGASTO", data.toListString());
+		nav.show();
 	}
 
 	private static void query5() {
