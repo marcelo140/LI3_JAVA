@@ -163,8 +163,11 @@ public class Hipermercado implements Serializable {
  	 * @param mes mês a ser pesquisado
  	 * @param filial filial a ser pesquisada
  	 * @return montante faturado
+ 	 * @throws InvalidMonthException
+ 	 * @throws InvalidBranchException
  	 */
-    public double getFaturacao(int mes, int filial) throws InvalidMonthException, InvalidBranchException {
+    public double getFaturacao(int mes, int filial) throws InvalidMonthException, 
+	                                                       InvalidBranchException {
         return fat.getFaturacao(mes, filial);
     }
 
@@ -173,6 +176,7 @@ public class Hipermercado implements Serializable {
  	 * @return lista de clientes e respetivos dados
  	 */
     private CatalogMap<String, Client> getAllClientes() {
+
         CatalogMap<String, Client> catalogo = filiais[0].getClientes();
 
         for(int i = 1; i < filiais.length; i++) {
@@ -196,13 +200,20 @@ public class Hipermercado implements Serializable {
  	 * Obtém dados de todos os produtos comprados por um cliente
  	 * @param cliente cliente a ser pesquisado
  	 * @return lista de produtos e respetivos dados
+ 	 * @throws ClienteNaoExisteException
  	 */
-    private Map<String, ProductUnit> getAllProdutos(String cliente) {
+    private Map<String, ProductUnit> getAllProdutos(String cliente) 
+	                                   @throws ProdutoNaoExisteException {
+
         Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
         for(int i = 0; i < filiais.length; i++) {
-            CatalogMap<String, ProductUnit> tmp = filiais[i].getCliente(cliente)
-                                                            .getProdutos();
+            Client c = filiais[i].getCliente(cliente);
+
+			if (c == null)
+				throw new ClienteNaoExisteException();
+
+            CatalogMap<String, ProductUnit> tmp = c.getProdutos();
             System.out.println(i + "oi" + tmp.size());
             for(int mes = 0; mes < MESES; mes++) {
                 tmp.get(mes).forEach( (k,v) -> { ProductUnit pu;
@@ -221,13 +232,20 @@ public class Hipermercado implements Serializable {
  	 * Obtém dados de todos os clientes que compraram o produto
  	 * @param produto produto a ser pesquisado
  	 * @return lista de clientes e respetivos dados
+ 	 * @throws ProdutoNaoExisteException
  	 */
-    private Map<String, ClientUnit> getAllClientes(String produto) {
+    private Map<String, ClientUnit> getAllClientes(String produto) 
+	                                 @throws ProdutoNaoExisteException {
+
         Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
 
         for(int i = 0; i < filiais.length; i++) {
-            CatalogMap<String, ClientUnit> tmp = filiais[i].getProduct(produto)
-                                                           .getClientes();
+            Product p = filiais[i].getProduct(produto);
+			
+			if (p == null)
+				throw new ProdutoNaoExisteException();
+
+            CatalogMap<String, ClientUnit> tmp = p.getClientes();
 
             for(int mes = 0; mes < MESES; mes++) {
                 tmp.get(mes).forEach( (k,v) -> { ClientUnit clu;
@@ -248,8 +266,11 @@ public class Hipermercado implements Serializable {
  	 * e o total gasto
  	 * @param cliente cliente a ser pesquisado
  	 * @return dados do cliente
+ 	 * @throws ClienteNaoExisteException
  	 */
-    public ArraysIntIntDouble getClientData(String cliente) {
+    public ArraysIntIntDouble getClientData(String cliente) 
+				throws ClienteNaoExisteException{
+
         Client[] clients = new Client[filiais.length];
         List<CatalogMap<String, ProductUnit>> produtos = new ArrayList<>(3);
 
@@ -259,6 +280,10 @@ public class Hipermercado implements Serializable {
 
         for(int i = 0; i < filiais.length; i++) {
             clients[i] = filiais[i].getCliente(cliente);
+
+            if (clients[i] == null)
+                throw new ClienteNaoExisteException("Cliente não existe");
+
             produtos.add(clients[i].getProdutos());
         }
 
@@ -283,8 +308,9 @@ public class Hipermercado implements Serializable {
  	 * que foi comprado e total faturado
  	 * @param produto produto a ser pesquisado
  	 * @return dados do produto
+ 	 * @throws ProdutoNaoExisteException
  	 */
-    public ArraysIntIntDouble getProductData(String produto) {
+    public ArraysIntIntDouble getProductData(String produto) throws ProdutoNaoExisteException {
         Product[] products =  new Product[filiais.length];
         List<CatalogMap<String, ClientUnit>> clientes =
                       new ArrayList<CatalogMap<String, ClientUnit>>(3);
@@ -295,6 +321,10 @@ public class Hipermercado implements Serializable {
 
         for(int i = 0; i < filiais.length; i++) {
             products[i] = filiais[i].getProduct(produto);
+
+            if (products[i] == null)
+                throw new ProdutoNaoExisteException("Produto não existe");
+
             clientes.add(products[i].getClientes());
         }
 
@@ -319,10 +349,8 @@ public class Hipermercado implements Serializable {
  	 * @return lista de produtos e respetivo número de clientes que o compraram
  	 */
     public Set<TriploStringIntInt> getTopProdutos() {
-		long inicio = System.nanoTime();
         CatalogMap<String, Product> catalog = VendasFilial.mergeProdutos(filiais);
-		long fim = System.nanoTime();
-		System.out.println((double)(fim-inicio)/1.0E9);
+		
         TreeSet<TriploStringIntInt> res =
                   new TreeSet<>(new ComparatorTriploStringIntIntBySnd());
 
@@ -355,8 +383,9 @@ public class Hipermercado implements Serializable {
  	 * pela quantidade comprada
  	 * @param cliente cliente a ser pesquisado
  	 * @return lista de produtos e respetiva quantidade comprada
+ 	 * @throws ClienteNaoExisteException
  	 */
-	public Set<ParStringInt> getProdutos(String cliente) {
+	public Set<ParStringInt> getProdutos(String cliente) throws ClienteNaoExisteException {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
 
 		TreeSet<ParStringInt> res = new TreeSet<>( new ComparatorParStringIntByInt() );
@@ -370,8 +399,9 @@ public class Hipermercado implements Serializable {
  	 * pelos respetivos gastos
  	 * @param produto produto a ser pesquisado
  	 * @return lista de clientes e respetivos gastos
+ 	 * @throws ProdutoNaoExisteException
  	 */
-	public Set<ParStringDouble> getClientes(String produto) {
+	public Set<ParStringDouble> getClientes(String produto) throws ProdutoNaoExisteException {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
 
 		TreeSet<ParStringDouble> res = new TreeSet<>( new ComparatorParStringDoubleByDouble() );
@@ -416,6 +446,10 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Carrega vendas a partir do ficheiro dado
  	 * @param fich ficheiro com os dados ads vendas
+ 	 * @throws IOException
+ 	 * @throws NullPointerException
+ 	 * @throws NumberFormatException
+ 	 * @throws InvalidMonthException
  	 */
     public int carregarVendas(String fich)
 	     throws IOException, NullPointerException, NumberFormatException,
@@ -442,6 +476,7 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Carrega produtos a partir do ficheiro dado
  	 * @param fich ficheiro com os dados dos produtos
+ 	 * @throws IOException
  	 */
     public void carregarProdutos(String fich) throws IOException {
         BufferedReader inStream = null;
@@ -460,6 +495,7 @@ public class Hipermercado implements Serializable {
 	/**
 	 * Carrega clientes a partir do ficheiro dado
 	 * @param fich ficheiro com dados dos clientes
+	 * @throws IOException
 	 */
     public void carregarClientes(String fich) throws IOException {
         BufferedReader inStream = null;
@@ -478,6 +514,7 @@ public class Hipermercado implements Serializable {
 	/**
  	 * Guarda os dados do hipermercado num ficheiro
  	 * @param path caminho para o ficheiro
+ 	 * @throws IOException
  	 */
     public void guardarDados(String path) throws IOException {
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
@@ -491,6 +528,8 @@ public class Hipermercado implements Serializable {
 	/**
 	 * Carrega para memória dados de um Hipermercado a partir do ficheiro dado
 	 * @param path caminho para o ficheiro a ser carregado
+	 * @throws IOException
+	 * @throws ClassNotFoundException
 	 */
     public static Hipermercado carregarDados(String path) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));

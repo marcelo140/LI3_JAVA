@@ -150,7 +150,10 @@ public class VendasFilial implements Serializable {
      * @return um Client com todas as propriedas associadas a um cliente
      */
     public Client getCliente(String cliente) {
-        return new Client(clientes.get(cliente));
+        Client c = clientes.get(cliente);
+
+        if (c == null) return null;
+        return new Client(c);
     }
 
     /**
@@ -160,7 +163,10 @@ public class VendasFilial implements Serializable {
      * @return um Product com todas as propriedas associadas a um produto
      */
     public Product getProduct(String produto) {
-        return produtos.get(produto).clone();
+        Product p = produtos.get(produto);
+
+        if (p == null) return null;
+        return p.clone();
     }
 
 	/**
@@ -183,7 +189,7 @@ public class VendasFilial implements Serializable {
 		TreeSet<ParStringDouble> res = new TreeSet<>(new ComparatorParStringDoubleByDouble() );
 
 		for(int i = 0; i < LETRAS; i++)
-			clientes.get(i).forEach((k,v) -> 
+			clientes.get(i).forEach((k,v) ->
 			                res.add(new ParStringDouble(k, v.getGastosTotal())));
 
 		return res;
@@ -247,7 +253,7 @@ public class VendasFilial implements Serializable {
  	 */
 	public void clear() {
 		clientes.clear();
-		produtos.clear();	
+		produtos.clear();
 	}
 
      /**
@@ -264,7 +270,7 @@ public class VendasFilial implements Serializable {
 
 			for (int letra = 0; letra < LETRAS; letra++) {
 				Iterator<String> keys = filiais[0].produtos.get(letra).keySet().iterator();
-			
+
 				List<Iterator<Product>> values = new ArrayList<>(max);
 				for(int i = 0; i < max; i++)
 					values.add(filiais[i].produtos.get(letra).values().iterator());
@@ -272,11 +278,11 @@ public class VendasFilial implements Serializable {
 				while (keys.hasNext()) {
 					String k = keys.next();
 					Product p = new Product(values.get(0).next());
-			
+
 					for(int i = 1; i < max; i++)
 						p.merge(values.get(i).next());
 
-					catalogo.put(letra, k, p);			
+					catalogo.put(letra, k, p);
 				}
 			}
 

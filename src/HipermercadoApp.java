@@ -158,6 +158,8 @@ public class HipermercadoApp {
 		System.out.print("\tMês: ");
 		mes = Input.lerInt() - 1;
 
+		if (mes < 0 || mes > 11) return;
+
 		try {
 			inicio = System.nanoTime();
 			vendas = hm.getNumeroCompras(mes);
@@ -178,12 +180,18 @@ public class HipermercadoApp {
 
 	private static void query3() {
 		long inicio, fim;
+		ArraysIntIntDouble data = null;
 
 		System.out.print("Cliente a pesquisar: ");
 		String cliente = Input.lerString();
 
 		inicio = System.nanoTime();
-		ArraysIntIntDouble data = hm.getClientData(cliente);
+		try {
+			data = hm.getClientData(cliente);
+		} catch (ClienteNaoExisteException e) {
+			System.out.println("Cliente não existe.");
+			return;
+		}
 		fim = System.nanoTime();
 
 		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
@@ -197,12 +205,18 @@ public class HipermercadoApp {
 
 	private static void query4() {
 		long inicio, fim;
+		ArraysIntIntDouble data;
 
 		System.out.print("Produto a pesquisar: ");
 		String produto = Input.lerString();
 
 		inicio = System.nanoTime();
-		ArraysIntIntDouble data = hm.getProductData(produto);
+		try {
+			data = hm.getProductData(produto);
+		} catch (ProdutoNaoExisteException e) {
+			System.out.println("Produto não existe!");
+			return;
+		}
 		fim = System.nanoTime();
 
 		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
@@ -217,13 +231,19 @@ public class HipermercadoApp {
 	private static void query5() {
 		Navegador nav;
 		List<String> lista = new ArrayList<>();
+		Set<ParStringInt> produtos;
 		long inicio, fim;
 
 		System.out.print("Cliente a pesquisar: ");
 		String cliente = Input.lerString();
 
 		inicio = System.nanoTime();
-		Set<ParStringInt> produtos = hm.getProdutos(cliente);
+		try {
+			produtos = hm.getProdutos(cliente);
+		} catch (ClienteNaoExisteException e) {
+			System.out.println("Cliente não existe.");
+			return;
+		}
 
 		Iterator<ParStringInt> it = produtos.iterator();
 		while (it.hasNext()) {
@@ -248,6 +268,8 @@ public class HipermercadoApp {
 
 		System.out.print("Número de produtos: ");
 		int n = Input.lerInt();
+
+		if (n < 0) return;
 
 		inicio = System.nanoTime();
 		Set<TriploStringIntInt> produtos = hm.getTopProdutos();
@@ -303,6 +325,8 @@ public class HipermercadoApp {
 		System.out.print("Número de clientes: ");
 		int n = Input.lerInt();
 
+		if (n < 0) return;
+
 		inicio = System.nanoTime();
 		Set<ParStringInt> clientes = hm.getTopClientes();
 
@@ -324,6 +348,7 @@ public class HipermercadoApp {
 	private static void query9() {
 		Navegador nav;
 		List<String> lista = new ArrayList<>();
+		Set<ParStringDouble> clientes;
 		long inicio, fim;
 
 		System.out.print("Produto a pesquisar: ");
@@ -333,7 +358,12 @@ public class HipermercadoApp {
 		int n = Input.lerInt();
 
 		inicio = System.nanoTime();
-		Set<ParStringDouble> clientes = hm.getClientes(produto);
+		try {
+			clientes = hm.getClientes(produto);
+		} catch (ProdutoNaoExisteException e) {
+			System.out.println("Produto não existe");
+			return;
+		}
 
 		Iterator<ParStringDouble> it = clientes.iterator();
 		for(int i = 0; i < n && it.hasNext(); i++) {
