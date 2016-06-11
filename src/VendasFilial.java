@@ -114,6 +114,21 @@ public class VendasFilial {
 	}
 
 	/**
+ 	 * Obtém o conjunto de todos os clientes que compraram nesta filial, num dado mês
+ 	 * @param mes
+	 * @return conjunto
+ 	 */
+	public CatalogSet<String> getClientesCompraramMes(int mes) {
+		CatalogSet<String> res = new CatalogSet<>(LETRAS);
+
+		for(int i = 0; i < LETRAS; i++) {
+			final int letra = i;
+			clientes.get(i).forEach( (k,v) -> { if (v.comprou(mes)) res.add(letra, k); } );
+		}
+
+		return res;
+	}
+	/**
  	 * Obtém o conjunto de todos os clientes que não compraram nesta filial
  	 * @return conjunto
  	 */

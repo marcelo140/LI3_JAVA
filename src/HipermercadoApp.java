@@ -72,10 +72,57 @@ public class HipermercadoApp {
             switch(queries.getOpcao()) {
                 case 1 : hm.query1();
                          break;
+				case 2 : query2();
+					  	 break;
+				case 3 : query3();
+						 break;
                     /* queries */
             }
         } while(queries.getOpcao() != 0);
     }
+
+	private static void query2() {
+		int mes, vendas, clientes;
+		long inicio, fim;
+
+		System.out.print("\tMês: ");
+		mes = Input.lerInt() - 1;
+
+		try {
+			inicio = System.nanoTime();
+			vendas = hm.getNumeroCompras(mes);
+			clientes = hm.getClientesCompraramMes(mes);
+			fim = System.nanoTime();
+		}catch(InvalidMonthException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+
+		System.out.println("Número de vendas: " + vendas);
+		System.out.println("Número de clientes: " + clientes);
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+
+		Input.lerString();
+	}
+
+	private static void query3() {
+		System.out.print("Cliente a pesquisar: ");
+		String cliente = Input.lerString();
+		long inicio, fim;
+
+		inicio = System.nanoTime();	
+		ArraysIntIntDouble data = hm.getClientData(cliente);
+		fim = System.nanoTime();
+
+		//imprimir merdas
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
+		System.out.println("Pressa <Enter> para continuar...");
+
+		Input.lerString();
+	}
 
     private static void carregaFicheiros() throws IOException {
         Scanner is = new Scanner(System.in);
