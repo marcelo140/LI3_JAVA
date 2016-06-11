@@ -157,7 +157,6 @@ public class HipermercadoApp {
 
 		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
 		System.out.print("Pressa <Enter> para continuar...");
-
 		Input.lerString();
 	}
 
@@ -217,6 +216,10 @@ public class HipermercadoApp {
 		}
 		fim = System.nanoTime();
 
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+		Input.lerString();
+
 		nav = new Navegador(NUML, lista);
 		nav.show();
 	}
@@ -239,6 +242,10 @@ public class HipermercadoApp {
 			lista.add("\t"+t.first()+"\t"+t.second()+"\t"+t.third());
 		}
 		fim = System.nanoTime();
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+		Input.lerString();
 
 		nav = new Navegador(NUML, lista);
 		nav.show();
@@ -263,7 +270,9 @@ public class HipermercadoApp {
 				lista.add("");
 		}
 
-		System.out.println("Calculado em: " + (double) (fim-inicio)/1.0E9);
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+		Input.lerString();
 
 		nav = new Navegador(NUML, lista);
 		nav.show();
@@ -287,6 +296,10 @@ public class HipermercadoApp {
 			lista.add("\t"+p.first()+"\t"+p.second());
 		}
 		fim = System.nanoTime();
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+		Input.lerString();
 
 		nav = new Navegador(NUML, lista);
 		nav.show();
@@ -312,6 +325,10 @@ public class HipermercadoApp {
 			lista.add("\t" + p.first() + "\t" + Double.toString(p.second()));
 		}
 		fim = System.nanoTime();
+
+		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+		System.out.print("Pressa <Enter> para continuar...");
+		Input.lerString();
 
 		nav = new Navegador(NUML, lista);
 		nav.show();
