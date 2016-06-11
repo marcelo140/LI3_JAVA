@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Hipermercado {
+public class Hipermercado implements Serializable {
     private final int LETRAS = 26;
     private final int MESES = 12;
     private static final int NUML = 20;
