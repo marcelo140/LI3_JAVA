@@ -1,11 +1,12 @@
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * Classe que implementa Vendas por filial. Contém um conjunto de clientes,
  * para cada cliente a sua quantidade mensal e cada produto que o qual comprou
  *
  */
-public class VendasFilial {
+public class VendasFilial implements Serializable {
     private final static int MESES = 12;
 	private final static int LETRAS = 26;
 
