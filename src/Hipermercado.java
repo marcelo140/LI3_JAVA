@@ -203,7 +203,7 @@ public class Hipermercado implements Serializable {
  	 * @throws ClienteNaoExisteException
  	 */
     private Map<String, ProductUnit> getAllProdutos(String cliente) 
-	                                   @throws ProdutoNaoExisteException {
+	                                   throws ClienteNaoExisteException {
 
         Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
 
@@ -211,7 +211,7 @@ public class Hipermercado implements Serializable {
             Client c = filiais[i].getCliente(cliente);
 
 			if (c == null)
-				throw new ClienteNaoExisteException();
+				throw new ClienteNaoExisteException("Cliente não existe");
 
             CatalogMap<String, ProductUnit> tmp = c.getProdutos();
             System.out.println(i + "oi" + tmp.size());
@@ -235,7 +235,7 @@ public class Hipermercado implements Serializable {
  	 * @throws ProdutoNaoExisteException
  	 */
     private Map<String, ClientUnit> getAllClientes(String produto) 
-	                                 @throws ProdutoNaoExisteException {
+	                                 throws ProdutoNaoExisteException {
 
         Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
 
@@ -243,7 +243,7 @@ public class Hipermercado implements Serializable {
             Product p = filiais[i].getProduct(produto);
 			
 			if (p == null)
-				throw new ProdutoNaoExisteException();
+				throw new ProdutoNaoExisteException("Produto não existe");
 
             CatalogMap<String, ClientUnit> tmp = p.getClientes();
 
