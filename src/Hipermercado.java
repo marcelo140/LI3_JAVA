@@ -314,6 +314,20 @@ public class Hipermercado {
 		return res;
 	}
 
+	public List<ParStringDouble> getTop3Clientes() {
+		List<ParStringDouble> res = new ArrayList<>(3*filiais.length);
+
+		for(int f = 0; f < filiais.length; f++) {
+			Iterator<ParStringDouble> it = filiais[f].getClientesByFaturado().iterator();
+
+			for(int i = 0; i < 3 && it.hasNext(); i++) {
+				res.add(it.next());
+			}
+		}
+
+		return res;
+	}
+
 	public void clear() {
 		produtos = new CatalogSet<>();
 		clientes = new CatalogSet<>();
@@ -405,25 +419,6 @@ public class Hipermercado {
 		nav = new Navegador(NUML, lista);
 		nav.show();
 	}
-
-	public void query7() {
-		ArrayList<String> produtosf1 = new ArrayList<>(filiais[0].getProdutos().keySet());
-		ArrayList<String> produtosf2 = new ArrayList<>(filiais[1].getProdutos().keySet());
-		ArrayList<String> produtosf3 = new ArrayList<>(filiais[2].getProdutos().keySet());
-		ArrayList<String> linhas = new ArrayList<>();
-		String header = new String("FILIAL 1 \t FILIAL 2 \t FILIAL 3");
-		Navegador nav;
-
-		produtosf1.stream().sorted((str1, str2) -> Double.compare(filiais[0].getProduct(str2).getTotalFaturado(), filiais[0].getProduct(str1).getTotalFaturado()));
-		produtosf2.stream().sorted((str1, str2) -> Double.compare(filiais[1].getProduct(str2).getTotalFaturado(), filiais[1].getProduct(str1).getTotalFaturado()));
-		produtosf3.stream().sorted((str1, str2) -> Double.compare(filiais[2].getProduct(str2).getTotalFaturado(), filiais[2].getProduct(str1).getTotalFaturado()));
-
-		for (int i = 0; i < 3; i++)
-			linhas.add(new String(produtosf1.get(i) + "\t" + produtosf2.get(i) + "\t" + produtosf3.get(i)));
-
-		nav = new Navegador(NUML, header, linhas);
-		nav.show();
-	 }
 
 	/* ================ ESTATÍSTICAS ===================== */
 
