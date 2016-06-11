@@ -1,26 +1,18 @@
-/**
- * 
- */
-
 import java.util.*;
-import java.util.Set;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.ArrayList;
 
 public class CatalogSet<E> {
-	private ArrayList<TreeSet<E>> cat;
+	private List<Set<E>> cat;
 	int size;
 
 	/**
  	 * Constructs an empty catalog with the specified capacity.
- 	 * @param tamanho
+ 	 * @param length
  	 */
-	public CatalogSet(int tam) {
+	public CatalogSet(int length) {
 		size = 0;
-		cat = new ArrayList<TreeSet<E>>(tam);
+		cat = new ArrayList<Set<E>>(length);
 
-		for(int i = 0; i < tam; i++)
+		for(int i = 0; i < length; i++)
 			cat.add(new TreeSet<E>());
 	}
 
@@ -29,24 +21,21 @@ public class CatalogSet<E> {
  	 */
 	public CatalogSet() {
 		size = 0;
-		cat = new ArrayList<TreeSet<E>>();
+		cat = new ArrayList<Set<E>>();
 		
-		for(TreeSet<E> tree: cat)
-			tree = new TreeSet<E>();
+		for(int i = 0; i < cat.size() ; i++)
+			cat.add(new TreeSet<E>());
 	}
 
 	/**
  	 * Construtor por cópia
 	 */
-	public CatalogSet(CatalogSet<E> c) {
-		int i = 0;
+	private CatalogSet(CatalogSet<E> c) {
 		size = c.size();
-		cat = new ArrayList<TreeSet<E>>(size);
+		cat = new ArrayList<Set<E>>(size);
 
-		for (TreeSet<E> tree : cat) {
-			tree = new TreeSet<E>(c.get(i));	
-			i++;
-		}
+		for (int i = 0; i < c.indexes(); i++)
+			cat.add(new TreeSet<E>(c.get(i)));
 	}
 
 	/**
@@ -65,9 +54,13 @@ public class CatalogSet<E> {
  	 * Inserts the specified element at the specified position in catalog.
  	 * @param index - index at which the specified element is to be inserted
  	 * @param element - element to be inserted
+	 * @throws IndexOutOfBoundsException se o índice não está dentro do catálogo
  	 */
-	public void add(int index, E element) {
-		TreeSet<E> tree = cat.get(index);
+	public void add(int index, E element) throws IndexOutOfBoundsException {
+		if (index < 0 || index >= cat.size()) 
+			throw new IndexOutOfBoundsException();
+
+		Set<E> tree = cat.get(index);
 
 		if (tree.add(element))
 			size++;
@@ -93,8 +86,12 @@ public class CatalogSet<E> {
  	 * Returns the number of elements on the specified index of the catalog.
  	 * @param index - specified index which size is to be returned
  	 * @return the number of elements on the specified index
+	 * @throws IndexOutOfBoundsException Se o índice não está dentro do catálogo
  	 */
-	public int sizeOfIndex(int index) {
+	public int sizeOfIndex(int index) throws IndexOutOfBoundsException {
+		if (index < 0 || index >= cat.size()) 
+			throw new IndexOutOfBoundsException();
+
 		return cat.get(index).size();
 	}
 
@@ -143,14 +140,16 @@ public class CatalogSet<E> {
 		return r;
 	}
 
-	public CatalogMap<E, Object> toMap() {
-		CatalogMap<E, Object> map = new CatalogMap<>();
+	public int hashCode() {
+		return Arrays.hashCode( new Object[] { cat, size });
+	}
 
-		for (int i = 0; i < size; i++) {
-			for (E element : cat.get(i)) 
-				map.put(i, element, null);
-		}
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
 
-		return map;
+		for(Set<E> s: cat)
+			sb.append(s.toString()).append("\n");
+
+		return sb.toString();
 	}
 }

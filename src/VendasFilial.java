@@ -7,8 +7,8 @@ import java.util.*;
  */
 public class VendasFilial {
 
-    private final int MESES = 12;
-	private final int LETRAS = 26;
+    private final static int MESES = 12;
+	private final static int LETRAS = 26;
 
     private CatalogMap<String, Client> clientes;
 	private CatalogMap<String, Product> produtos;
@@ -17,8 +17,8 @@ public class VendasFilial {
      * Construtor padrão
      */
     public VendasFilial() {
-		clientes = new CatalogMap<String, Client>(LETRAS);
-		produtos = new CatalogMap<String, Product>(LETRAS);
+		clientes = new CatalogMap<>(LETRAS);
+		produtos = new CatalogMap<>(LETRAS);
     }
 
 	/**
@@ -180,7 +180,7 @@ public class VendasFilial {
 	}
 
 	public TreeSet<ParStringDouble> getClientesByFaturado() {
-		TreeSet<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
+		TreeSet<ParStringDouble> res = new TreeSet<>(new ComparatorParStringDoubleByDouble() );
 
 		for(int i = 0; i < LETRAS; i++)
 			clientes.get(i).forEach((k,v) -> 
@@ -193,11 +193,8 @@ public class VendasFilial {
  	 * Devolve a lista de clientes que comprou em cada mês
  	 * @return lista de clientes
  	 */
-	public List<Set<String>> getClientesCompraramMes() {
-		List<Set<String>> lista = new ArrayList<>(MESES);
-
-		for(int i = 0; i < MESES; i++)
-			lista.add( new TreeSet<String>() );
+	public CatalogSet<String> getClientesCompraramMes() {
+		CatalogSet<String> lista = new CatalogSet<>(MESES);
 
 		for(int i = 0; i < LETRAS; i++) {
 			clientes.get(i).forEach( (k,v) -> { for (int j = 0; j < MESES; j++)
@@ -215,6 +212,7 @@ public class VendasFilial {
 	 */
 	public void add(Venda v) throws InvalidMonthException {
 		clientes.get(v.getCliente().charAt(0) - 'A', v.getCliente()).add(v);
+
         produtos.get(v.getProduto().charAt(0) - 'A', v.getProduto()).add(v);
     }
 
@@ -251,4 +249,29 @@ public class VendasFilial {
       public int hashCode() {
 			return Arrays.hashCode( new Object[] { clientes, produtos });
       }
+
+		public static CatalogMap<String, Product> mergeProducts(VendasFilial[] filiais) {
+			CatalogMap<String, Product> catalogo = new CatalogMap<>(LETRAS);
+			int max = filiais.length;
+
+			for (int letra = 0; letra < LETRAS; letra++) {
+				Iterator<String> keys = filiais[0].produtos.get(letra).keySet().iterator();
+			
+				List<Iterator<Product>> values = new ArrayList<>(max);
+				for(int i = 0; i < max; i++)
+					values.add(filiais[i].produtos.get(letra).values().iterator());
+
+				while (keys.hasNext()) {
+					String k = keys.next();
+					Product p = new Product(values.get(0).next());
+			
+					for(int i = 1; i < max; i++)
+						p.merge(values.get(i).next());
+
+					catalogo.put(letra, k, p);			
+				}
+			}
+
+			return catalogo;
+		}
 }

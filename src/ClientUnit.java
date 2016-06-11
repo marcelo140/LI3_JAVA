@@ -6,6 +6,7 @@ import java.io.Serializable;
  */
 
 public class ClientUnit implements Serializable {
+	public static final long serialVersionUID = 19L;
     private final int MESES = 12;
 
 	private int quantidade;

@@ -6,7 +6,7 @@ import java.io.Serializable;
  */
 
 public class Product implements Serializable {
-
+	public static final long serialVersionUID = 15L;
 	private final int MESES = 12;
 
 	private CatalogMap<String, ClientUnit> clientes;
