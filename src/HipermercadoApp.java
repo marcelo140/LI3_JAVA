@@ -77,6 +77,11 @@ public class HipermercadoApp {
      * escolha do utilizador
      */
     private static void executaMenuQueries() {
+		if (hm == null) {
+			System.out.println("Hipermercado ainda não inicializado!");
+			return;
+		}
+
         do {
             queries.executa();
             switch(queries.getOpcao()) {
@@ -111,6 +116,7 @@ public class HipermercadoApp {
 			file = defaultDataPath;
 
 		try {
+			if (hm == null) return;
 			hm.guardarDados(file);
 		} catch(IOException e) {
 			System.out.println("Impossível salvar ficheiro " + file);
@@ -384,7 +390,14 @@ public class HipermercadoApp {
 
     public static void estatisticas(){
         int prods, prodnc;
-        int[] f = new int[hm.getNumFiliais()];
+        int[] f;
+
+		if (hm == null) {
+			System.out.println("Hipermercado ainda não inicializado!");
+			return;
+		}
+
+		f = new int[hm.getNumFiliais()];
 
         System.out.println("Ficheiro de Produtos: " + hm.getFichProdutos());
         System.out.println("Ficheiro de Clientes: " + hm.getFichClientes());
@@ -445,7 +458,7 @@ public class HipermercadoApp {
         if (clientesF.isEmpty()) clientesF = clientesFilename;
 
         System.out.print("Ficheiro de Produtos: ");
-        produtosF = Input.lerString(); 
+        produtosF = Input.lerString();
         if (produtosF.isEmpty()) produtosF = produtosFilename;
 
         System.out.print("Ficheiro de Vendas: ");

@@ -166,7 +166,7 @@ public class Hipermercado implements Serializable {
  	 * @throws InvalidMonthException
  	 * @throws InvalidBranchException
  	 */
-    public double getFaturacao(int mes, int filial) throws InvalidMonthException, 
+    public double getFaturacao(int mes, int filial) throws InvalidMonthException,
 	                                                       InvalidBranchException {
         return fat.getFaturacao(mes, filial);
     }
@@ -202,7 +202,7 @@ public class Hipermercado implements Serializable {
  	 * @return lista de produtos e respetivos dados
  	 * @throws ClienteNaoExisteException
  	 */
-    private Map<String, ProductUnit> getAllProdutos(String cliente) 
+    private Map<String, ProductUnit> getAllProdutos(String cliente)
 	                                   throws ClienteNaoExisteException {
 
         Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
@@ -234,14 +234,14 @@ public class Hipermercado implements Serializable {
  	 * @return lista de clientes e respetivos dados
  	 * @throws ProdutoNaoExisteException
  	 */
-    private Map<String, ClientUnit> getAllClientes(String produto) 
+    private Map<String, ClientUnit> getAllClientes(String produto)
 	                                 throws ProdutoNaoExisteException {
 
         Map<String, ClientUnit> tree = new TreeMap<String, ClientUnit>();
 
         for(int i = 0; i < filiais.length; i++) {
             Product p = filiais[i].getProduct(produto);
-			
+
 			if (p == null)
 				throw new ProdutoNaoExisteException("Produto não existe");
 
@@ -268,7 +268,7 @@ public class Hipermercado implements Serializable {
  	 * @return dados do cliente
  	 * @throws ClienteNaoExisteException
  	 */
-    public ArraysIntIntDouble getClientData(String cliente) 
+    public ArraysIntIntDouble getClientData(String cliente)
 				throws ClienteNaoExisteException{
 
         Client[] clients = new Client[filiais.length];
@@ -350,7 +350,7 @@ public class Hipermercado implements Serializable {
  	 */
     public Set<TriploStringIntInt> getTopProdutos() {
         CatalogMap<String, Product> catalog = VendasFilial.mergeProdutos(filiais);
-		
+
         TreeSet<TriploStringIntInt> res =
                   new TreeSet<>(new ComparatorTriploStringIntIntBySnd());
 
