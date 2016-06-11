@@ -7,11 +7,11 @@ public class ParStringDouble {
 		this.d = d;
 	}
 
-	public String getString() {
+	public String first() {
 		return str;
 	}
 
-	public double getDouble() {
+	public double second() {
 		return d;
 	}
 }

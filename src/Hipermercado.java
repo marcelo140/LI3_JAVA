@@ -118,10 +118,11 @@ public class Hipermercado {
 
 	private Map<String, ProductUnit> getAllProdutos(String cliente) {
 		Map<String, ProductUnit> tree = new TreeMap<String, ProductUnit>();
-
+		
 		for(int i = 0; i < filiais.length; i++) {
-			List<Map<String, ProductUnit>> tmp = filiais[i].getCliente(cliente).getProdutos();
-
+			CatalogMap<String, ProductUnit> tmp = filiais[i].getCliente(cliente)
+			                                                .getProdutos();
+			System.out.println(i + "oi" + tmp.size());
 			for(int mes = 0; mes < MESES; mes++) {
 				tmp.get(mes).forEach( (k,v) -> { ProductUnit pu;
 				                                 if ( (pu = tree.get(k)) == null )
@@ -155,19 +156,19 @@ public class Hipermercado {
 		return tree;
 	}
 
-	public Set<ParStringInt> getProdutos(String cliente) {
+	public TreeSet<ParStringInt> getProdutos(String cliente) {
 		Map<String, ProductUnit> tree = getAllProdutos(cliente);
 
-		Set<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
+		TreeSet<ParStringInt> res = new TreeSet( new ComparatorParStringIntByInt() );
 		tree.forEach((k,v) -> res.add(new ParStringInt(k,v.getQuantidade())));
 
 		return res;	
 	}
 
-	public Set<ParStringDouble> getClientes(String produto) {
+	public TreeSet<ParStringDouble> getClientes(String produto) {
 		Map<String, ClientUnit> tree = getAllClientes(produto);
 
-		Set<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
+		TreeSet<ParStringDouble> res = new TreeSet( new ComparatorParStringDoubleByDouble() );
 		tree.forEach((k,v) -> res.add(new ParStringDouble(k,v.getFaturado())));
 
 		return res;
@@ -195,8 +196,7 @@ public class Hipermercado {
 
 	public ArraysIntIntDouble getClientData(String cliente) {
 		Client[] clients = new Client[filiais.length];
-		List<List<Map<String, ProductUnit>>> produtos = 
-		            new ArrayList<List<Map<String,ProductUnit>>>(3);
+		List<CatalogMap<String, ProductUnit>> produtos = new ArrayList<>(3);
 
 		int[] comprasRealizadas = new int[MESES];
 		int[] produtosComprados = new int[MESES];

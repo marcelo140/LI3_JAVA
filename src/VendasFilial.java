@@ -160,7 +160,7 @@ public class VendasFilial {
      * @return um Product com todas as propriedas associadas a um produto
      */
     public Product getProduct(String produto) {
-        return new Product(produtos.get(produto));
+        return produtos.get(produto).clone();
     }
 
 	/**
