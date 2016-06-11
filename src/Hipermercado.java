@@ -226,16 +226,20 @@ public class Hipermercado {
             clientes.add(products[i].getClientes());
         }
 
-        for(int j = 0; j < MESES; j++) {
-            Set<String> c = new HashSet(256);
+        try {
+            for(int j = 0; j < MESES; j++) {
+                Set<String> c = new HashSet(256);
 
-            for (int i = 0; i < filiais.length; i++) {
-                clientes.get(j).forEach((k,v) -> { c.add(k); });
-                vezesComprado[j] += products[i].getVendas(j);
-                faturado[j] += products[i].getFaturado(j);
+                for (int i = 0; i < filiais.length; i++) {
+                    clientes.get(j).forEach((k,v) -> { c.add(k); });
+                    vezesComprado[j] += products[i].getVendas(j);
+                    faturado[j] += products[i].getFaturado(j);
+                }
+
+                clientesCompraram[j] = c.size();
             }
-
-            clientesCompraram[j] = c.size();
+        } catch (InvalidMonthException e) {
+            System.out.println("Fatal error.");
         }
 
         return new ArraysIntIntDouble(vezesComprado, clientesCompraram, faturado);
@@ -387,7 +391,7 @@ public class Hipermercado {
         oos.close();
     }
 
-    public Hipermercado carregarDados(String path) throws IOException, ClassNotFoundException {
+    public static Hipermercado carregarDados(String path) throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
 
         Hipermercado hm = (Hipermercado) ois.readObject();
