@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Navegador {
 
@@ -107,6 +108,10 @@ public class Navegador {
             case 'g' : if (op.length() > 1)
                             nextPage = Integer.parseInt(op.substring(1)) - 1;
                         break;
+            case 'h' : printHelp();
+                       try { System.in.read();  }
+                       catch (IOException e) { break; }
+                       break;
             case 'q' : return;
         }
 
@@ -118,5 +123,12 @@ public class Navegador {
         } catch (InvalidPageException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void printHelp() {
+        System.out.println("\tb<num>  Retrocede <num> páginas.");
+        System.out.println("\tn<num>  Avança <num> páginas.");
+        System.out.println("\tg<num>  Salta para a página <num>.");
+        System.out.println("\t<enter> Utiliza o último comando.");
     }
 }
