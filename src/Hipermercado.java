@@ -264,7 +264,7 @@ public class Hipermercado implements Serializable {
             filiais[i].clear();
     }
 
-    public int carregarVendas(String fich) 
+    public int carregarVendas(String fich)
 	     throws IOException, NullPointerException, NumberFormatException,
 				InvalidMonthException {
 
@@ -400,11 +400,18 @@ public class Hipermercado implements Serializable {
 	/* ================ QUERIES ===================== */
 
     public void query1() {
-        ArrayList<String> lista = new ArrayList<> (fat.getListaNaoComprados());
-        Navegador nav;
+        long inicio, fim;
 
+        inicio = System.nanoTime();
+        ArrayList<String> lista = new ArrayList<> (fat.getListaNaoComprados());
         lista.sort((s1, s2) -> s1.compareTo(s2));
-        nav = new Navegador(NUML, lista);
+        fim = System.nanoTime();
+
+        System.out.println("\nCalculado em " + (double) (fim-inicio) / 1000000000 + "s\n");
+        System.out.print("Pressa <Enter> para continuar...");
+        Input.lerString();
+
+        Navegador nav = new Navegador(NUML, lista);
         nav.show();
     }
 
