@@ -350,6 +350,53 @@ public class HipermercadoApp {
 		nav.show();
 	}
 
+	/* ================ ESTATÍSTICAS ===================== */
+
+    public void estatisticas(){
+        int prods, prodnc;
+        int[] f = new int[filiais.length];
+
+        System.out.println("Ficheiro de Produtos: " + hm.getFichProdutos());
+        System.out.println("Ficheiro de Clientes: " + hm.getFichClientes());
+        System.out.println("Ficheiro de Vendas: " + hm.getFichVendas() + "\n");
+
+        prods = hm.getProdutos();
+        prodnc = hm.getProdutosComprados();
+        System.out.println("Todos os produtos:      " + prods);
+        System.out.println("Produtos comprados:     " + prodnc);
+        System.out.println("Produtos não comprados: (" + (prods - prodnc) + ") " + hm.getListaNaoComprados().toString() + "\n");
+
+        System.out.println("Todos os clientes: " + hm.getClientes() + "\n");
+
+
+        System.out.println("Faturação total: " + hm.getFaturacaoTotal());
+        System.out.println("Vendas a zero:   " + hm.getVendasZero() + "\n");
+
+        for (int i = 0; i < 12 ; i++)
+            System.out.printf("Mês %2d: %d compras\n", i+1, hm.getNumeroCompras(i));
+        System.out.print("\n");
+
+		System.out.printf("FATURAÇÃO:\nMÊS\t");
+		for (int i = 0; i < hm.getNumFiliais(); i++)
+			System.out.printf("FILIAL %d\t\t", i+1);
+		System.out.print("\n");
+		for (int i = 0; i < 12; i++) {
+			System.out.printf("%2d", i+1);
+			try {
+				for (int fil = 0 ; fil < hm.getNumFiliais(); fil++)
+				System.out.printf("\t %f", hm.getFaturacao(i, fil));
+			} catch(InvalidMonthException | InvalidBranchException e) {
+				return;
+			}
+			System.out.print("\n");
+		}
+		System.out.print("\n");
+
+		for (int i = 0; i < 12; i++)
+		    System.out.printf("Mês %2d: %d clientes\n", i+1, hm.getNumClientes(i));
+		System.out.print("\n");
+	}
+
     private static void carregaFicheiros() throws IOException {
         Scanner is = new Scanner(System.in);
 		long inicio, fim;

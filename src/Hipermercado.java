@@ -1,7 +1,8 @@
+public class Hipermercado implements Serializable {
+
 import java.io.*;
 import java.util.*;
-
-public class Hipermercado implements Serializable {
+import org.omg.CORBA.StringHolder;
     private final int LETRAS = 26;
     private final int MESES = 12;
     private static final int NUML = 20;
@@ -110,6 +111,10 @@ public class Hipermercado implements Serializable {
 
     public double getFaturacaoMes(int mes) throws InvalidMonthException {
         return fat.getFaturacaoMes(mes);
+    }
+
+    public double getFaturacao(int mes, int filial) throws InvalidMonthException {
+        return fat.getFaturacao(mes, filial);
     }
 
     private CatalogMap<String, Client> getAllClientes() {
@@ -381,50 +386,35 @@ public class Hipermercado implements Serializable {
 		return res;
 	}
 
-    /* ================ ESTATÍSTICAS ===================== */
+    /**
+     * Devolve o path do ficheiro de produtos
+     * @return o path do ficheiro de produtos
+     */
+    public String getFichProdutos() {
+        return produtosF;
+    }
 
-    public void estatisticas(){
-        int prods, prodnc;
-        int[] f = new int[filiais.length];
+    /**
+     * Devolve o path do ficheiro de clientes
+     * @return o path do ficheiro de clientes
+     */
+    public String getFichClientes() {
+        return clientesF;
+    }
 
-        System.out.println("Ficheiro de Produtos: " + produtosF);
-        System.out.println("Ficheiro de Clientes: " + clientesF);
-        System.out.println("Ficheiro de Vendas: " + vendasF + "\n");
+    /**
+     * Devolve o path do ficheiro de vendas
+     * @return o path do ficheiro de vendas
+     */
+    public String getFichVendas() {
+        return vendasF;
+    }
 
-        prods = getProdutos();
-        prodnc = getProdutosComprados();
-        System.out.println("Todos os produtos:      " + prods);
-        System.out.println("Produtos comprados:     " + prodnc);
-        System.out.println("Produtos não comprados: (" + (prods - prodnc) + ") " + getListaNaoComprados().toString() + "\n");
-
-        System.out.println("Todos os clientes: " + getClientes() + "\n");
-
-
-        System.out.println("Faturação total: " + getFaturacaoTotal());
-        System.out.println("Vendas a zero:   " + getVendasZero() + "\n");
-
-        for (int i = 0; i < 12 ; i++)
-            System.out.printf("Mês %2d: %d compras\n", i+1, fat.getNumCompras(i));
-        System.out.print("\n");
-
-		System.out.printf("FATURAÇÃO:\nMÊS\t");
-		for (int i = 0; i < filiais.length; i++)
-			System.out.printf("FILIAL %d\t\t", i+1);
-		System.out.print("\n");
-		for (int i = 0; i < 12; i++) {
-			System.out.printf("%2d", i+1);
-			try {
-				for (int fil = 0 ; fil < filiais.length; fil++)
-				System.out.printf("\t %f", fat.getFaturacao(i, fil));
-			} catch(InvalidMonthException | InvalidBranchException e) {
-				return;
-			}
-			System.out.print("\n");
-		}
-		System.out.print("\n");
-
-		for (int i = 0; i < 12; i++)
-		    System.out.printf("Mês %2d: %d clientes\n", i+1, getNumClientes(i));
-		System.out.print("\n");
-	}
+    /**
+     * Devolve o número de filiais deste Hipermercado
+     * @return o número de filiais deste Hipermercado
+     */
+     public int getNumFiliais() {
+         return filiais.length;
+     }
 }
