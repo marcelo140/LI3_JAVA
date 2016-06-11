@@ -1,4 +1,7 @@
-public class ParStringInt {
+import java.io.Serializable;
+
+public class ParStringInt implements Serializable{
+
 	private String str;
 	private int integer;
 
@@ -16,7 +19,7 @@ public class ParStringInt {
  	 * @param p ParStringInt a ser copiado
  	 */
 	public ParStringInt(ParStringInt p) {
-		str = p.firts();
+		str = p.first();
 		integer = p.second();
 	}
 
@@ -58,8 +61,12 @@ public class ParStringInt {
 			return false;
 
 		ParStringInt p = (ParStringInt) o;
-		return p.firts().equals(str) &&
-			   p.second().equals(d);
+		return p.first().equals(str) &&
+<<<<<<< HEAD
+			   p.second()== integer;
+=======
+			   p.second() == integer;
+>>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
 	}
 
 	/**
@@ -86,4 +93,9 @@ public class ParStringInt {
         
 
         return hash;
+    }
+<<<<<<< HEAD
 }
+=======
+    }
+>>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd

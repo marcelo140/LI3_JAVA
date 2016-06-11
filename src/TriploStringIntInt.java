@@ -1,6 +1,9 @@
-public class TriploStringIntInt {
-	String str;
-	int d1, d2;
+import java.io.Serializable;
+public class TriploStringIntInt implements Serializable{
+
+
+	private String str;
+	private int d1, d2;
 
 
 	/**
@@ -67,7 +70,7 @@ public class TriploStringIntInt {
 			return false;
 
 		TriploStringIntInt p = (TriploStringIntInt) o;
-		return p.firts().equals(str) &&
+		return p.first().equals(str) &&
 			   p.second()== d1 &&
 			   p.third() == d2;
 	}

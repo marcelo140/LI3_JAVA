@@ -3,12 +3,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ArraysIntIntDouble implements Serializable {
+<<<<<<< HEAD
+=======
 	public static final long serialVersionUID = 18L;
+>>>>>>> 07f2ab69a5cc1403d81695000bc97f50864204dd
 
 	private int[] fst, snd;
 	private double[] trd;
 
-	
+
 	/**
  	 * Cria uma nova instância de ArraysIntIntDouble com os objetos dados.
  	 */
@@ -83,7 +86,7 @@ public class ArraysIntIntDouble implements Serializable {
 			return false;
 
 		ArraysIntIntDouble p = (ArraysIntIntDouble) o;
-		return p.firts().equals(fst) &&
+		return p.first().equals(fst) &&
 			   p.second().equals(snd)&&
 			   p.third().equals(trd);
 	}
@@ -97,7 +100,7 @@ public class ArraysIntIntDouble implements Serializable {
         sb.append("First :").append(fst).append("\n");
         sb.append("Second:").append(snd).append("\n");
         sb.append("Third ").append(trd).append("\n");
-       
+
         return sb.toString();
     }
 
@@ -111,7 +114,7 @@ public class ArraysIntIntDouble implements Serializable {
         hash = 31*hash + fst.hashCode();
         hash = 31*hash + snd.hashCode();
         hash = 31*hash + trd.hashCode();
-        
+
 
         return hash;
 	}
