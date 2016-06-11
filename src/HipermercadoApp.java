@@ -58,9 +58,9 @@ public class HipermercadoApp {
             switch(principal.getOpcao()) {
                 case 1 : carregaFicheiros();
                          break;
-				case 2 : salvaDados();
+				case 2 : carregaDados();
 				         break;
-				case 3 : carregaDados();
+				case 3 : salvaDados();
 				         break;
                 case 4 : executaMenuQueries();
                         break;
@@ -100,6 +100,7 @@ public class HipermercadoApp {
     }
 
 	private static void salvaDados() {
+		System.out.print("Ficheiro onde guardar: ");
 		String file = Input.lerString();
 
 		if (file.isEmpty())
@@ -108,7 +109,7 @@ public class HipermercadoApp {
 		try {
 			hm.guardarDados(file);
 		} catch(IOException e) {
-			System.out.println("Impossível salvar ficheiro: " + e.getMessage());
+			System.out.println("Impossível salvar ficheiro " + file);
 		}
 	}
 
@@ -117,6 +118,7 @@ public class HipermercadoApp {
 	 * Caso o utilizador não defina ficheiro, o default será ../data/hipermercado.dat
 	 */
 	private static void carregaDados() {
+		System.out.print("Ficheiro de onde carregar: ");
 		String file = Input.lerString();
 
 		if (file.isEmpty())
@@ -125,7 +127,7 @@ public class HipermercadoApp {
 		try {
 			hm = Hipermercado.carregarDados(file);
 		} catch(IOException | ClassNotFoundException e) {
-			System.out.println("Impossível carregar ficheiro: " + e.getMessage());
+			System.out.println("Impossível carregar ficheiro " + file);
 		}
 	}
 
@@ -165,12 +167,13 @@ public class HipermercadoApp {
 		ArraysIntIntDouble data = hm.getClientData(cliente);
 		fim = System.nanoTime();
 
-		//imprimir merdas
-
 		System.out.println("\nCalculado em " + (double) (fim-inicio) / 1.0E9 + "s\n");
 		System.out.println("Pressa <Enter> para continuar...");
 
 		Input.lerString();
+
+		Navegador nav = new Navegador(20, "MÊS\tCOMPRAS\tPRODUTOS\tGASTO", data.toListString());
+		nav.show();
 	}
 
 	private static void query5() {
